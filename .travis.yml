@@ -1,0 +1,21 @@
+language: python
+services:
+  - MySQL
+  - PostgreSQL
+
+env:
+  - TESTENV=py27-d14
+  - TESTENV=py27-d15
+  - TESTENV=py27-d16
+  - TESTENV=py27-d17
+  - TESTENV=py27-d18
+
+install:
+  - pip install tox==1.8
+
+script:
+  - tox -e $TESTENV
+
+
+after_success:
+  - coveralls

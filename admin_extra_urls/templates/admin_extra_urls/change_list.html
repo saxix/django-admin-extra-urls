@@ -1,0 +1,29 @@
+{% extends "admin/change_list.html" %}{% load extra_urls i18n admin_static admin_list admin_urls %}{% load url from future %}
+{% block object-tools %}
+
+    <div class="object-tools">
+        {% block object-tools-items %}
+            {% if has_add_permission %}
+                <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}"
+                   class="btn btn-success">
+                    <i class="icon-plus-sign icon-white"></i>&nbsp;
+                    {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+                </a>
+            {% endif %}
+
+            {% for method_name, label, icon, perm in cl.model_admin.extra_buttons %}
+                {% has_permission perm as authorized %}
+                {% if authorized %}
+                    <a href="{% url cl.opts|admin_urlname:method_name %}{% if is_popup %}?_popup=1{% endif %}"
+                       class="btn btn-success">
+                        {% if icon %}
+                            <i class="{{ icon }} icon-white"></i>&nbsp;
+                        {% endif %}
+                        {{ label }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% endblock %}
+    </div>
+
+{% endblock %}
