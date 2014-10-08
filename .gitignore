@@ -1,0 +1,15 @@
+/dist
+*.egg-info
+*.pyc
+*.pyo
+*.sqlite
+*.db
+*.~*
+.coverage
+.idea
+.tox
+.DS_Store
+.cache
+~*
+/data
+/media
