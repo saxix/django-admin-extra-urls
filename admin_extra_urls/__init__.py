@@ -2,8 +2,8 @@ import subprocess
 import datetime
 import os
 
-NAME = 'admin-extra-url'
-VERSION = __version__ = (0, 1, 0, 'alpha', 0)
+NAME = 'admin-extra-urls'
+VERSION = __version__ = (0, 1, 0, 'final', 0)
 __author__ = 'sax'
 
 
