@@ -32,6 +32,6 @@ class UploadMixin(ExtraUrlMixin):
                     self.message_user(request, str(e), messages.ERROR)
 
         return TemplateResponse(request,
-                                'admin_extras/upload.html',
+                                'admin_extra_urls/upload.html',
                                 context)
 
