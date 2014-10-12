@@ -39,7 +39,7 @@ def test_link_reverse(app, admin_user):
 
 def test_link_custom_path_reverse(app, admin_user):
     url = reverse('admin:demo_demomodel1_custom_path')
-    assert url == '/demo/demomodel1/a/b/'
+    assert url == '/admin/demo/demomodel1/a/b/'
 
 
 @pytest.mark.django_db

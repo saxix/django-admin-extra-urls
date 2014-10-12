@@ -5,7 +5,7 @@ DEBUG = True
 STATIC_URL = '/static/'
 
 SITE_ID = 1
-ROOT_URLCONF = 'tests.urls'
+ROOT_URLCONF = 'demo.urls'
 SECRET_KEY = 'abc'
 STATIC_ROOT = mktemp('static')
 MEDIA_ROOT = mktemp('media')
