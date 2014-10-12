@@ -2,6 +2,9 @@
 from functools import update_wrapper
 from django.conf.urls import patterns, url
 import inspect
+from django.contrib.admin.templatetags.admin_urls import admin_urlname
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 def link(path=None, label=None, icon='', permission=None):
@@ -19,11 +22,24 @@ def link(path=None, label=None, icon='', permission=None):
     """
 
     def action_decorator(func):
-        setattr(func, 'link', (path or func.__name__,
-                               label or func.__name__,
-                               icon,
-                               permission))
-        return func
+        def _inner(self, *args, **kwargs):
+            ret = func(self, *args, **kwargs)
+            if not isinstance(ret, HttpResponse):
+                opts = self.model._meta
+                return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
+            return ret
+
+        _inner.link = (path or func.__name__,
+                                 label or func.__name__.title(),
+                                 icon,
+                                 permission)
+
+        return _inner
+        # setattr(func, 'link', (path or func.__name__,
+        #                        label or func.__name__,
+        #                        icon,
+        #                        permission))
+        # return func
 
     return action_decorator
 
@@ -43,11 +59,26 @@ def action(path=None, label=None, icon='', permission=None):
     """
 
     def action_decorator(func):
-        setattr(func, 'action', (path or func.__name__,
+        def _inner(self, request, pk):
+            ret = func(self, request, pk)
+            if not isinstance(ret, HttpResponse):
+                opts = self.model._meta
+                return HttpResponseRedirect(reverse(admin_urlname(opts, 'change'),
+                                                    args=[pk]))
+            return ret
+
+        _inner.action = (path or func.__name__,
                                  label or func.__name__.title(),
                                  icon,
-                                 permission))
-        return func
+                                 permission)
+
+        return _inner
+        # setattr(func, 'action', (path or func.__name__,
+        #                          label or func.__name__.title(),
+        #                          icon,
+        #                          permission))
+        #
+        # return func
 
     return action_decorator
 

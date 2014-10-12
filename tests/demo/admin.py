@@ -19,6 +19,9 @@ class Admin1(ExtraUrlMixin, admin.ModelAdmin):
         self.message_user(request, 'refresh called')
         return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
 
+    @link()
+    def no_response(self, request):
+        self.message_user(request, 'No_response')
 
 class Admin2(ExtraUrlMixin, admin.ModelAdmin):
 

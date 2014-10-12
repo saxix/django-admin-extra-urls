@@ -23,13 +23,23 @@ Example::
         def update_all(self, request):
             ...
             ...
-            opts = self.model._meta
-            return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
 
 
         @action() # /admin/myapp/mymodel/update/10/
         def update(self, request, pk):
             ...
             ...
-            opts = self.model._meta
-            return HttpResponseRedirect(reverse(admin_urlname(opts, 'change'), args=[pk]))
+
+
+    methods decorated with `@link()` will return to `changelist view ` if no
+    HttpResponse are returned
+
+    methods decorated with `@action()` will return to `change view ` if no
+    HttpResponse are returned
+
+
+*Note*
+
+    The package contains a ``UploadMixin`` to manage custom file uploads
+    (simply set `upload_handler` to a function.
+    This can be checked to see how to create wizard with an intermediate form.

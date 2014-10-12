@@ -48,3 +48,10 @@ def test_action(app, demomodel2, admin_user):
     res = app.get(url, user=admin_user)
     res = res.click(' Update').follow()
     assert map(str, res.context['messages']) == ['action called']
+
+
+def test_default_httpresponseaction(app,  admin_user):
+    url = reverse('admin:demo_demomodel1_changelist')
+    res = app.get(url, user=admin_user)
+    res = res.click('No_Response').follow()
+    assert map(str, res.context['messages']) == ['No_response']
