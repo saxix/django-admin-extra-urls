@@ -30,12 +30,10 @@ Example::
             ...
             ...
 
+    You don't need to return a HttpResponse, by default:
 
-    methods decorated with `@link()` will return to `changelist view ` if no
-    HttpResponse are returned
-
-    methods decorated with `@action()` will return to `change view ` if no
-    HttpResponse are returned
+    - with `@link()` browser will be redirected to `changelist view`
+    - with `@action()` browser will be redirected to `change view `
 
 
 *Note*
