@@ -12,10 +12,11 @@ env:
   - TESTENV=py34-d17
 
 install:
-  - pip install tox==1.8
+  - pip install tox==1.8 python-coveralls
 
 script:
-  - tox -e $TESTENV --cov admin_extra_urls
+  - tox -e $TESTENV -- --cov=admin_extra_urls --cov-report=html --cov-config=tests/.coveragerc
+
 
 
 after_success:

@@ -1,11 +1,9 @@
 [run]
 branch = True
-source = concurrency
+source = admin_extra_urls
 include =
 
-omit = concurrency/__init__.py
-       concurrency/utils.py
-       concurrency/__tests/*
+omit = admin_extra_urls/__init__.py
 
 [report]
 # Regexes for lines to exclude from consideration
