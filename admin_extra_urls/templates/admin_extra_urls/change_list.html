@@ -25,5 +25,13 @@
             {% endfor %}
         {% endblock %}
     </div>
-
+    <script>
+        $('.btn').click(function(e) {
+            if ($(this).hasClass( "disabled" )){
+                e.preventDefault();
+            }else{
+                $(this).removeClass('btn-success').addClass('disabled');
+            }
+        });
+    </script>
 {% endblock %}

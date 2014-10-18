@@ -6,6 +6,9 @@ from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
+def labelize(label):
+    return label.replace('_', ' ').title()
+
 
 def link(path=None, label=None, icon='', permission=None):
     """
@@ -30,16 +33,11 @@ def link(path=None, label=None, icon='', permission=None):
             return ret
 
         _inner.link = (path or func.__name__,
-                                 label or func.__name__.title(),
+                                 label or labelize(func.__name__),
                                  icon,
                                  permission)
 
         return _inner
-        # setattr(func, 'link', (path or func.__name__,
-        #                        label or func.__name__,
-        #                        icon,
-        #                        permission))
-        # return func
 
     return action_decorator
 
@@ -68,17 +66,11 @@ def action(path=None, label=None, icon='', permission=None):
             return ret
 
         _inner.action = (path or func.__name__,
-                                 label or func.__name__.title(),
+                                 label or labelize(func.__name__),
                                  icon,
                                  permission)
 
         return _inner
-        # setattr(func, 'action', (path or func.__name__,
-        #                          label or func.__name__.title(),
-        #                          icon,
-        #                          permission))
-        #
-        # return func
 
     return action_decorator
 

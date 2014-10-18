@@ -1,3 +1,10 @@
+Release 0.2 (dev)
+-----------------
+* disable button after click to prevent double click
+* improved automatic button's label creation
+* it's not anymore mandatory to return a HttpResponse
+
+
 Release 0.1
 -----------
 
