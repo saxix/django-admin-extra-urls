@@ -1,16 +1,16 @@
 import os
 import sys
-import warnings
-
-warnings.filterwarnings("ignore", category=DeprecationWarning)
+# import warnings
+#
+# warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 def pytest_configure(config):
-    from django.conf import settings
-    sys.path.append(os.path.dirname(__file__))
-    if not settings.configured:
-        os.environ['DJANGO_SETTINGS_MODULE'] = 'demo.settings'
-
+    sys.path.append(os.path.join(os.path.dirname(__file__), "tests"))
+    # import demo.settings
+    # from django.conf import settings
+    # if not settings.configured:
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'demo.settings'
     try:
         from django.apps import AppConfig  # noqa
         import django

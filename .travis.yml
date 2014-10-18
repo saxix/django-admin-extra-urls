@@ -4,17 +4,18 @@ services:
   - PostgreSQL
 
 env:
-  - TESTENV=py27-d14
-  - TESTENV=py27-d15
   - TESTENV=py27-d16
   - TESTENV=py27-d17
-  - TESTENV=py27-d18
+  - TESTENV=py33-d16
+  - TESTENV=py33-d17
+  - TESTENV=py34-d16
+  - TESTENV=py34-d17
 
 install:
   - pip install tox==1.8
 
 script:
-  - tox -e $TESTENV
+  - tox -e $TESTENV --cov admin_extra_urls
 
 
 after_success:

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
+import inspect
+import six
 from functools import update_wrapper
 from django.conf.urls import patterns, url
-import inspect
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
 
 def labelize(label):
-    return label.replace('_', ' ').title()
+    return label.replace('_', ' ').strip().title()
 
 
 def link(path=None, label=None, icon='', permission=None):
@@ -29,7 +30,7 @@ def link(path=None, label=None, icon='', permission=None):
         def _inner(self, *args, **kwargs):
             ret = func(self, *args, **kwargs)
             if not isinstance(ret, HttpResponse):
-                reverse(admin_urlname(self.model._meta, 'changelist'))
+                url = reverse(admin_urlname(self.model._meta, 'changelist'))
                 return HttpResponseRedirect(url)
             return ret
 
@@ -91,7 +92,7 @@ class ExtraUrlMixin(object):
     def get_urls(self):
         extra_urls = []
         for c in inspect.getmro(self.__class__):
-            for method_name, method in c.__dict__.iteritems():
+            for method_name, method in six.iteritems(c.__dict__):
                 if hasattr(method, 'link'):
                     extra_urls.append((False, method_name,
                                        getattr(method, 'link')))

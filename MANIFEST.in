@@ -1,5 +1,6 @@
-include README.md
+include README.rst
 include CHANGES
+include LICENSE
 include MANIFEST.in
 recursive-include docs *
 recursive-include admin_extra_urls *
