@@ -9,6 +9,10 @@ from .extras import ExtraUrlMixin, link
 
 class UploadMixin(ExtraUrlMixin):
     upload_handler = None
+    upload_form_template = 'admin_extra_urls/upload.html'
+
+    def get_upload_form_template(self, request):
+        return self.upload_form_template
 
     @link(icon='icon-upload')
     def upload(self, request):
@@ -32,6 +36,6 @@ class UploadMixin(ExtraUrlMixin):
                     self.message_user(request, str(e), messages.ERROR)
 
         return TemplateResponse(request,
-                                'admin_extra_urls/upload.html',
+                                self.get_upload_form_template(request),
                                 context)
 
