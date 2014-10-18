@@ -1,5 +1,6 @@
 Release 0.2 (dev)
 -----------------
+* add ability to customize the upload template
 * disable button after click to prevent double click
 * improved automatic button's label creation
 * it's not anymore mandatory to return a HttpResponse

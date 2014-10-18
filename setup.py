@@ -13,6 +13,10 @@ def read(*parts):
     return codecs.open(os.path.join(here, *parts), "r").read()
 
 
+test_requires = ["tox>=1.8"
+                 "pytest-django",
+                 "pytest-echo",
+]
 setup(
     name=app.NAME,
     version=app.get_version(),
