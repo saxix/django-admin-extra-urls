@@ -28,14 +28,17 @@ class UploadMixin(ExtraUrlMixin):
                 try:
                     f = request.FILES['file']
                     rows, updated, created = self.upload_handler(f)
-                    msg = "Loaded {}. Parsed:{} updated:{} created:{}".format(f.name,
-                                                                              rows, updated, created)
+                    msg = "Loaded {}. Parsed:{} " \
+                          "updated:{} created:{}".format(f.name,
+                                                         rows,
+                                                         updated,
+                                                         created)
                     self.message_user(request, msg, messages.SUCCESS)
-                    return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
+                    return HttpResponseRedirect(reverse(admin_urlname(opts,
+                                                                      'changelist')))
                 except Exception as e:
                     self.message_user(request, str(e), messages.ERROR)
 
         return TemplateResponse(request,
                                 self.get_upload_form_template(request),
                                 context)
-
