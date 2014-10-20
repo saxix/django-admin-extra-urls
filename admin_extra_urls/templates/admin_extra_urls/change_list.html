@@ -14,16 +14,22 @@
             {% for method_name, label, icon, perm in cl.model_admin.extra_buttons %}
                 {% has_permission perm as authorized %}
                 {% if authorized %}
+        {% spaceless %}
                     <a href="{% url cl.opts|admin_urlname:method_name %}{% if is_popup %}?_popup=1{% endif %}"
-                       class="btn btn-success">
-                        {% if icon %}
-                            <i class="{{ icon }} icon-white"></i>&nbsp;
-                        {% endif %}
-                        {{ label }}
+                       class="btn btn-success">{% if icon %}<i class="{{ icon }} icon-white"></i>&nbsp;{% endif %}{{ label }}
                     </a>
+        {% endspaceless %}
                 {% endif %}
             {% endfor %}
         {% endblock %}
     </div>
-
+    <script>
+        $('.btn').click(function(e) {
+            if ($(this).hasClass( "disabled" )){
+                e.preventDefault();
+            }else{
+                $(this).removeClass('btn-success').addClass('disabled');
+            }
+        });
+    </script>
 {% endblock %}

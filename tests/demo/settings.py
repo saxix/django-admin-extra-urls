@@ -1,33 +1,20 @@
-import os
-from tempfile import mktemp
 
 DEBUG = True
 STATIC_URL = '/static/'
 
 SITE_ID = 1
-ROOT_URLCONF = 'tests.urls'
+ROOT_URLCONF = 'demo.urls'
 SECRET_KEY = 'abc'
-STATIC_ROOT = mktemp('static')
-MEDIA_ROOT = mktemp('media')
 
 INSTALLED_APPS = ['django.contrib.auth',
                   'django.contrib.contenttypes',
                   'django.contrib.sessions',
                   'django.contrib.sites',
                   'django.contrib.messages',
-                  'django.contrib.staticfiles',
+                  # 'django.contrib.staticfiles',
                   'django.contrib.admin',
                   'admin_extra_urls',
                   'demo']
-
-SOUTH_MIGRATION_MODULES = {
-    'tests': 'tests.south_migrations',
-}
-
-MIGRATION_MODULES = {
-    'tests': 'tests.migrations',
-    'auth': 'tests.auth_migrations',
-}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -38,9 +25,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-TEMPLATE_DIRS = ['tests/templates']
-
-LOGGING = {
+xLOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
@@ -82,33 +67,11 @@ LOGGING = {
     }
 }
 
-db = os.environ.get('DBENGINE', 'pg')
-if db == 'pg':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'admin_extra_urls',
-            'HOST': '127.0.0.1',
-            'PORT': '',
-            'USER': 'postgres',
-            'PASSWORD': ''}}
-elif db == 'mysql':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'admin_extra_urls',
-            'HOST': '127.0.0.1',
-            'PORT': '',
-            'USER': 'root',
-            'PASSWORD': '',
-            'CHARSET': 'utf8',
-            'COLLATION': 'utf8_general_ci',
-            'TEST_CHARSET': 'utf8',
-            'TEST_COLLATION': 'utf8_general_ci'}}
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': 'admin_extra_urls.sqlite',
-            'HOST': '',
-            'PORT': ''}}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'admin_extra_urls.sqlite',
+        'HOST': '',
+        'PORT': ''}}
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
