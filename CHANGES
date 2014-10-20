@@ -1,5 +1,5 @@
-Release 0.2 (dev)
------------------
+Release 0.2
+-----------
 
 * python 3.3, 3.4 compatibility
 * add ability to customize the upload template
