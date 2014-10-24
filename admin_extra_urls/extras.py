@@ -90,15 +90,17 @@ class ExtraUrlMixin(object):
         super(ExtraUrlMixin, self).__init__(model, admin_site)
 
     def get_urls(self):
-        extra_urls = []
+        self.extra_buttons = []
+        self.extra_detail_buttons = []
+        extra_urls = {}
         for c in inspect.getmro(self.__class__):
             for method_name, method in six.iteritems(c.__dict__):
                 if hasattr(method, 'link'):
-                    extra_urls.append((False, method_name,
-                                       getattr(method, 'link')))
+                    extra_urls[method_name] = (False, method_name,
+                                       getattr(method, 'link'))
                 elif hasattr(method, 'action'):
-                    extra_urls.append((True, method_name,
-                                       getattr(method, 'action')))
+                    extra_urls[method_name] = (True, method_name,
+                                       getattr(method, 'action'))
 
         original = super(ExtraUrlMixin, self).get_urls()
 
@@ -111,7 +113,7 @@ class ExtraUrlMixin(object):
         info = [self.model._meta.app_label, self.model._meta.model_name, '']
         extras = []
 
-        for entry in extra_urls:
+        for __, entry in extra_urls.items():
             isdetail, method_name, (path, label, icon, perm_name) = entry
             info[2] = method_name
             if isdetail:
