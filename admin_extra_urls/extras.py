@@ -12,7 +12,7 @@ def labelize(label):
     return label.replace('_', ' ').strip().title()
 
 
-def link(path=None, label=None, icon='', permission=None):
+def link(path=None, label=None, icon='', permission=None, order=999):
     """
     decorator to mark ModelAdmin method as 'url' links.
 
@@ -37,14 +37,15 @@ def link(path=None, label=None, icon='', permission=None):
         _inner.link = (path or func.__name__,
                        label or labelize(func.__name__),
                        icon,
-                       permission)
+                       permission,
+                       order)
 
         return _inner
 
     return action_decorator
 
 
-def action(path=None, label=None, icon='', permission=None):
+def action(path=None, label=None, icon='', permission=None, order=999):
     """
     decorator to mark ModelAdmin method as 'url' action.
 
@@ -70,7 +71,8 @@ def action(path=None, label=None, icon='', permission=None):
         _inner.action = (path or func.__name__,
                          label or labelize(func.__name__),
                          icon,
-                         permission)
+                         permission,
+                         order)
 
         return _inner
 
@@ -97,10 +99,10 @@ class ExtraUrlMixin(object):
             for method_name, method in six.iteritems(c.__dict__):
                 if hasattr(method, 'link'):
                     extra_urls[method_name] = (False, method_name,
-                                       getattr(method, 'link'))
+                                               getattr(method, 'link'))
                 elif hasattr(method, 'action'):
                     extra_urls[method_name] = (True, method_name,
-                                       getattr(method, 'action'))
+                                               getattr(method, 'action'))
 
         original = super(ExtraUrlMixin, self).get_urls()
 
@@ -114,19 +116,22 @@ class ExtraUrlMixin(object):
         extras = []
 
         for __, entry in extra_urls.items():
-            isdetail, method_name, (path, label, icon, perm_name) = entry
+            isdetail, method_name, (path, label, icon, perm_name, order) = entry
             info[2] = method_name
             if isdetail:
                 self.extra_detail_buttons.append([method_name, label,
-                                                  icon, perm_name])
+                                                  icon, perm_name, order])
                 uri = r'^%s/(?P<pk>.*)/$' % path
             else:
                 uri = r'^%s/$' % path
                 self.extra_buttons.append([method_name, label,
-                                           icon, perm_name])
+                                           icon, perm_name, order])
 
             extras.append(url(uri,
                               wrap(getattr(self, method_name)),
                               name='{}_{}_{}'.format(*info)))
+
+        self.extra_buttons = sorted(self.extra_buttons, key=lambda d: d[-1])
+        self.extra_detail_buttons = sorted(self.extra_detail_buttons, key=lambda d: d[-1])
 
         return patterns('', *extras) + original
