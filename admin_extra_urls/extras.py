@@ -12,7 +12,7 @@ def labelize(label):
     return label.replace('_', ' ').strip().title()
 
 
-def link(path=None, label=None, icon='', permission=None, order=999):
+def link(path=None, label=None, icon='', permission=None, css_class="btn btn-success", order=999):
     """
     decorator to mark ModelAdmin method as 'url' links.
 
@@ -26,7 +26,7 @@ def link(path=None, label=None, icon='', permission=None, order=999):
 
     """
 
-    def action_decorator(func):
+    def link_decorator(func):
         def _inner(self, *args, **kwargs):
             ret = func(self, *args, **kwargs)
             if not isinstance(ret, HttpResponse):
@@ -38,14 +38,15 @@ def link(path=None, label=None, icon='', permission=None, order=999):
                        label or labelize(func.__name__),
                        icon,
                        permission,
-                       order)
+                       order,
+                       css_class)
 
         return _inner
 
-    return action_decorator
+    return link_decorator
 
 
-def action(path=None, label=None, icon='', permission=None, order=999):
+def action(path=None, label=None, icon='', permission=None, css_class="btn btn-success", order=999):
     """
     decorator to mark ModelAdmin method as 'url' action.
 
@@ -72,7 +73,8 @@ def action(path=None, label=None, icon='', permission=None, order=999):
                          label or labelize(func.__name__),
                          icon,
                          permission,
-                         order)
+                         order,
+                         css_class)
 
         return _inner
 
@@ -116,16 +118,16 @@ class ExtraUrlMixin(object):
         extras = []
 
         for __, entry in extra_urls.items():
-            isdetail, method_name, (path, label, icon, perm_name, order) = entry
+            isdetail, method_name, (path, label, icon, perm_name, order, css_class) = entry
             info[2] = method_name
             if isdetail:
                 self.extra_detail_buttons.append([method_name, label,
-                                                  icon, perm_name, order])
+                                                  icon, perm_name, css_class, order])
                 uri = r'^%s/(?P<pk>.*)/$' % path
             else:
                 uri = r'^%s/$' % path
                 self.extra_buttons.append([method_name, label,
-                                           icon, perm_name, order])
+                                           icon, perm_name, css_class, order])
 
             extras.append(url(uri,
                               wrap(getattr(self, method_name)),

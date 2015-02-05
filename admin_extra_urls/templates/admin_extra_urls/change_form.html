@@ -4,13 +4,13 @@
     <div class="object-tools">
         {% block object-tools-items %}
             {{block.super}}
-            {% for method_name, label, icon, perm in adminform.model_admin.extra_detail_buttons %}
+            {% for method_name, label, icon, perm, css_class in adminform.model_admin.extra_detail_buttons %}
                 {% has_permission perm as authorized %}
                 {% if authorized %}
                     {%nlless%}
-                    <a href="{% url opts|admin_urlname:method_name original.pk %}{% if is_popup %}?_popup=1{% endif %}"
-                       class="btn btn-success">
-                        {% if icon %}<i class="{{ icon }} icon-white"></i>&nbsp;{% endif %}
+                    <a id="btn-{{method_name}}" href="{% url opts|admin_urlname:method_name original.pk %}{% if is_popup %}?_popup=1{% endif %}"
+                       class="extra-link {{css_class}} {{method_name}}">
+                        {% if icon %}<i class="{{ icon }}"></i>&nbsp;{% endif %}
                         {{ label }}</a>
                     {% endnlless %}
                 {% endif %}
