@@ -36,6 +36,14 @@ Example::
     - with `@action()` browser will be redirected to `change view `
 
 
+More options::
+
+
+        @link(label='Update', icon="icon-refresh icon-white", permission='model_change", order=-1)
+        def update_all(self, request):
+            ....
+
+
 *Note*
 
     The package contains a ``UploadMixin`` to manage custom file uploads

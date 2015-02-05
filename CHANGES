@@ -1,3 +1,8 @@
+Release 0.4
+-----------
+* add css_class attribute
+
+
 Release 0.3
 -----------
 * add ability to order buttons
@@ -5,7 +10,6 @@ Release 0.3
 
 Release 0.2
 -----------
-
 * python 3.3, 3.4 compatibility
 * add ability to customize the upload template
 * disable button after click to prevent double click
@@ -15,5 +19,4 @@ Release 0.2
 
 Release 0.1
 -----------
-
 * Initial release
