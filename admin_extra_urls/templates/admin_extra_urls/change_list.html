@@ -11,12 +11,12 @@
                 </a>
             {% endif %}
 
-            {% for method_name, label, icon, perm, css_class in cl.model_admin.extra_buttons %}
-                {% has_permission perm as authorized %}
-                {% if authorized %}
+            {% for method_name,urlattrs in cl.model_admin.extra_buttons %}
+                {% has_permission urlattrs.perm as authorized %}
+                {% if authorized and urlattrs.visible %}
         {% spaceless %}
                     <a id="btn-{{method_name}}" href="{% url cl.opts|admin_urlname:method_name %}{% if is_popup %}?_popup=1{% endif %}"
-                       class="extra-link {{css_class}} {{method_name}}">{% if icon %}<i class="{{ icon }} icon-white"></i>&nbsp;{% endif %}{{ label }}
+                       class="extra-link {{urlattrs.css_class}} {{method_name}}">{% if urlattrs.icon %}<i class="{{ urlattrs.icon }} icon-white"></i>&nbsp;{% endif %}{{ urlattrs.label }}
                     </a>
         {% endspaceless %}
                 {% endif %}

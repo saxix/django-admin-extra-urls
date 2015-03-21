@@ -1,3 +1,11 @@
+Release 0.5
+-----------
+* Potentially backward incompatible:
+  Changed the way the urls options are put in the context.
+* add 'visible' attribute to `link()` and `action()`
+* add new custom tag `extraurl`
+
+
 Release 0.4
 -----------
 * add css_class attribute

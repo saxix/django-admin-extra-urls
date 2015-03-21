@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collections import namedtuple
 import inspect
 import six
 from functools import update_wrapper
@@ -12,7 +13,15 @@ def labelize(label):
     return label.replace('_', ' ').strip().title()
 
 
-def link(path=None, label=None, icon='', permission=None, css_class="btn btn-success", order=999):
+class ExtraUrlConfigException(RuntimeError):
+    pass
+
+
+opts = namedtuple('UrlOptions', 'path,label,icon,perm,order,css_class,visible')
+
+
+def link(path=None, label=None, icon='', permission=None,
+         css_class="btn btn-success", order=999, visible=True):
     """
     decorator to mark ModelAdmin method as 'url' links.
 
@@ -34,19 +43,21 @@ def link(path=None, label=None, icon='', permission=None, css_class="btn btn-suc
                 return HttpResponseRedirect(url)
             return ret
 
-        _inner.link = (path or func.__name__,
-                       label or labelize(func.__name__),
-                       icon,
-                       permission,
-                       order,
-                       css_class)
+        _inner.link = opts(path or func.__name__,
+                           label or labelize(func.__name__),
+                           icon,
+                           permission,
+                           order,
+                           css_class,
+                           visible)
 
         return _inner
 
     return link_decorator
 
 
-def action(path=None, label=None, icon='', permission=None, css_class="btn btn-success", order=999):
+def action(path=None, label=None, icon='', permission=None,
+           css_class="btn btn-success", order=999, visible=True):
     """
     decorator to mark ModelAdmin method as 'url' action.
 
@@ -62,19 +73,24 @@ def action(path=None, label=None, icon='', permission=None, css_class="btn btn-s
 
     def action_decorator(func):
         def _inner(self, request, pk):
-            ret = func(self, request, pk)
+            try:
+                ret = func(self, request, pk)
+            except TypeError:
+                raise ExtraUrlConfigException("'%s()' must accept 3 arguments. "
+                                              "Did you missed 'request' and 'pk' ?" % func.__name__)
             if not isinstance(ret, HttpResponse):
                 url = reverse(admin_urlname(self.model._meta, 'change'),
                               args=[pk])
                 return HttpResponseRedirect(url)
             return ret
 
-        _inner.action = (path or func.__name__,
-                         label or labelize(func.__name__),
-                         icon,
-                         permission,
-                         order,
-                         css_class)
+        _inner.action = opts(path or func.__name__,
+                             label or labelize(func.__name__),
+                             icon,
+                             permission,
+                             order,
+                             css_class,
+                             visible)
 
         return _inner
 
@@ -118,21 +134,18 @@ class ExtraUrlMixin(object):
         extras = []
 
         for __, entry in extra_urls.items():
-            isdetail, method_name, (path, label, icon, perm_name, order, css_class) = entry
+            isdetail, method_name, options = entry
             info[2] = method_name
             if isdetail:
-                self.extra_detail_buttons.append([method_name, label,
-                                                  icon, perm_name, css_class, order])
-                uri = r'^%s/(?P<pk>.*)/$' % path
+                self.extra_detail_buttons.append([method_name, options])
+                uri = r'^%s/(?P<pk>.*)/$' % options.path
             else:
-                uri = r'^%s/$' % path
-                self.extra_buttons.append([method_name, label,
-                                           icon, perm_name, css_class, order])
+                uri = r'^%s/$' % options.path
+                self.extra_buttons.append([method_name, options])
 
             extras.append(url(uri,
                               wrap(getattr(self, method_name)),
                               name='{}_{}_{}'.format(*info)))
-
         self.extra_buttons = sorted(self.extra_buttons, key=lambda d: d[-1])
         self.extra_detail_buttons = sorted(self.extra_detail_buttons, key=lambda d: d[-1])
 
