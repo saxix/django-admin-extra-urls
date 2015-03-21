@@ -23,9 +23,8 @@ class Admin1(ExtraUrlMixin, admin.ModelAdmin):
     def no_response(self, request):
         self.message_user(request, 'No_response')
 
+
 class Admin2(ExtraUrlMixin, admin.ModelAdmin):
-
-
     @action()
     def update(self, request, pk):
         opts = self.model._meta

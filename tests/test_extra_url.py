@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
 from django.core.urlresolvers import reverse
-from django.utils.translation import gettext as _
 from django_dynamic_fixture import G
 import django_webtest
 import pytest
@@ -46,11 +45,11 @@ def test_link_custom_path_reverse(app, admin_user):
 def test_action(app, demomodel2, admin_user):
     url = reverse('admin:demo_demomodel2_change', args=[demomodel2.pk])
     res = app.get(url, user=admin_user)
-    res = res.click(r' Update', index=1).follow()
+    res = res.click(r'Update', index=1).follow()
     assert str(res.context['messages']._loaded_messages[0].message) == 'action called'
 
 
-def test_default_httpresponseaction(app,  admin_user):
+def test_default_httpresponseaction(app, admin_user):
     url = reverse('admin:demo_demomodel1_changelist')
     res = app.get(url, user=admin_user)
     res = res.click('No Response').follow()
