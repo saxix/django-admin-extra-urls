@@ -1,20 +1,13 @@
-{% extends "admin/change_form.html" %}{% load extra_urls i18n admin_static admin_list admin_urls %}{% load url from future %}
+{% extends "admin/change_form.html" %}
+{% load extra_urls i18n admin_static admin_list admin_urls %}
+{% load url from future %}
+
 {% block object-tools %}
 
     <div class="object-tools">
         {% block object-tools-items %}
-            {{block.super}}
-            {% for method_name,urlattrs in adminform.model_admin.extra_detail_buttons %}
-                {% has_permission urlattrs.perm as authorized %}
-                {% if authorized and urlattrs.visible %}
-                    {%nlless%}
-                    <a id="btn-{{method_name}}" href="{% url opts|admin_urlname:method_name opts.original.pk %}{% if is_popup %}?_popup=1{% endif %}"
-                       class="extra-link {{urlattrs.css_class}} {{urlattrs.method_name}}">
-                        {% if icon %}<i class="{{ urlattrs.icon }}"></i>&nbsp;{% endif %}
-                        {{ urlattrs.label }}</a>
-                    {% endnlless %}
-                {% endif %}
-            {% endfor %}
+            {{ block.super }}
+            {% include "admin_extra_urls/includes/change_form_buttons.html" %}
         {% endblock %}
     </div>
 
