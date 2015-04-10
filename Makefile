@@ -5,6 +5,6 @@ clean:
 	@rm -f coverage.xml flake.out pep8.out pytest.xml
 
 fullclean: clean
-	@rm -rf .tox .cache
+	@rm -rf .tox .cache dist build
 
 
