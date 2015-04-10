@@ -37,6 +37,7 @@ class PyTest(TestCommand):
 tests_require = ["tox>=1.8",
                  "django_webtest",
                  "pytest",
+                 "wheel",
                  "django_dynamic_fixture",
                  "pytest-django",
                  "pytest-echo"]

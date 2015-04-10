@@ -1,8 +1,8 @@
-Release 0.7 (dev)
------------------
+Release 0.7
+-----------
 * fixes wrong template that produce double button on screen
 * add django 1.8 to travis config
-
+* wheel package
 
 Release 0.6.1
 -------------
