@@ -1,4 +1,5 @@
 /dist
+/build
 *.egg-info
 *.pyc
 *.pyo
@@ -13,3 +14,4 @@
 ~*
 /data
 /media
+/atlassian-ide-plugin.xml

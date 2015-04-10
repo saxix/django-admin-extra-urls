@@ -4,6 +4,7 @@ from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
+
 from .extras import ExtraUrlMixin, link
 
 
