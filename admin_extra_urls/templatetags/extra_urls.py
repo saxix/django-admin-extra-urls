@@ -1,5 +1,6 @@
-from itertools import chain
 import re
+from itertools import chain
+
 from django import template
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.urlresolvers import reverse

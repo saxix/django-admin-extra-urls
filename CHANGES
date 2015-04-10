@@ -1,3 +1,9 @@
+Release 0.7 (dev)
+-----------------
+* fixes wrong template that produce double button on screen
+* add django 1.8 to travis config
+
+
 Release 0.6.1
 -------------
 * templates refactoring

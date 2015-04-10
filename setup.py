@@ -38,12 +38,11 @@ tests_require = ["tox>=1.8",
                  "django_webtest",
                  "pytest",
                  "django_dynamic_fixture",
-                 "psycopg2",
                  "pytest-django",
-                 "pytest-echo",
-]
-install_requires=["django>1.5,<1.8",
-                  "six"],
+                 "pytest-echo"]
+
+install_requires = ["django>1.5,<1.8",
+                    "six"],
 
 setup(
     name=app.NAME,

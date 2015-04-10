@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-from collections import namedtuple
 import inspect
-import six
+from collections import namedtuple
 from functools import update_wrapper
+
+import six
+
 from django.conf.urls import patterns, url
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.urlresolvers import reverse
@@ -76,8 +78,10 @@ def action(path=None, label=None, icon='', permission=None,
             try:
                 ret = func(self, request, pk)
             except TypeError:
-                raise ExtraUrlConfigException("'%s()' must accept 3 arguments. "
-                                              "Did you missed 'request' and 'pk' ?" % func.__name__)
+                msg = "'%s()' must accept 3 arguments. " \
+                      "Did you missed 'request' and 'pk' ?" % func.__name__
+                raise ExtraUrlConfigException(msg)
+
             if not isinstance(ret, HttpResponse):
                 url = reverse(admin_urlname(self.model._meta, 'change'),
                               args=[pk])
