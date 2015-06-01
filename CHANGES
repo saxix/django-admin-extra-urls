@@ -1,3 +1,7 @@
+Release 0.7.1
+-------------
+* fixes wrong template that produce wrong link for action()
+
 Release 0.7
 -----------
 * fixes wrong template that produce double button on screen
