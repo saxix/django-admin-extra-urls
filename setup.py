@@ -42,8 +42,7 @@ tests_require = ["tox>=1.8",
                  "pytest-django",
                  "pytest-echo"]
 
-install_requires = ["django>1.5,<1.8",
-                    "six"],
+install_requires = ["six"],
 
 setup(
     name=app.NAME,
@@ -63,8 +62,13 @@ setup(
         'Environment :: Web Environment',
         'Operating System :: OS Independent',
         'Framework :: Django',
+        'Framework :: Django :: 1.6',
+        'Framework :: Django :: 1.7',
+        'Framework :: Django :: 1.8',
         'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Topic :: Software Development :: Libraries :: Application Frameworks',

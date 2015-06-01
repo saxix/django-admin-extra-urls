@@ -5,7 +5,7 @@
     {% has_permission urlattrs.perm as authorized %}
     {% if authorized and urlattrs.visible %}
         {% nlless %}
-            <a id="btn-{{method_name}}" href="{% url opts|admin_urlname:method_name opts.original.pk %}{% if is_popup %}?_popup=1{% endif %}"
+            <a id="btn-{{method_name}}" href="{% url opts|admin_urlname:method_name original.pk %}{% if is_popup %}?_popup=1{% endif %}"
                class="extra-link {{urlattrs.css_class}} {{urlattrs.method_name}}">
                 {% if icon %}
                     <i class="{{ urlattrs.icon }}"></i>&nbsp;
