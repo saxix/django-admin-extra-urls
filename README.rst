@@ -49,7 +49,7 @@ How to use it
             ...
             ...
 
-You don't need to return a HttpResponse, by default:
+You don't need to return a HttpResponse. The default behaviour is:
 
     - with `link()` browser will be redirected to ``changelist_view``
 
