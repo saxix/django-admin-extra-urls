@@ -2,8 +2,6 @@ admin-extra-urls
 ================
 
 
-|python| |pypi| |license| |travis|
-
 plugable django application that offers one single Mixin ``ExtraUrlMixin``
 to easily add new url (and related buttons on the screen) to any ModelAdmin.
 
@@ -76,21 +74,58 @@ More options
     This can be checked to see how to create wizard with an intermediate form.
 
 
+Links
+~~~~~
 
-.. |python| image:: https://pypip.in/py_versions/admin-extra-urls/badge.svg
-    :target: https://pypi.python.org/pypi/admin-extra-urls/
++--------------------+----------------+--------------+------------------------+
+| Stable             | |master-build| | |master-cov| | |master-req|           |
++--------------------+----------------+--------------+------------------------+
+| Development        | |dev-build|    | |dev-cov|    | |dev-req|              |
++--------------------+----------------+--------------+-----------------------------+
+| Project home page: |https://github.com/saxix/django-admin-extra-urls             |
++--------------------+---------------+---------------------------------------------+
+| Issue tracker:     |https://github.com/saxix/django-admin-extra-urls/issues?sort |
++--------------------+---------------+---------------------------------------------+
+| Download:          |http://pypi.python.org/pypi/django-admin-extra-urls/         |
++--------------------+---------------+---------------------------------------------+
+
+
+.. |master-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=master
+                    :target: http://travis-ci.org/saxix/django-admin-extra-urls/
+
+.. |master-cov| image:: https://coveralls.io/repos/saxix/django-admin-extra-urls/badge.png?branch=master
+                    :target: https://coveralls.io/r/saxix/django-admin-extra-urls
+
+.. |master-req| image:: https://requires.io/github/saxix/django-admin-extra-urls/requirements.png?branch=master
+                    :target: https://requires.io/github/saxix/django-admin-extra-urls/requirements/?branch=master
+                    :alt: Requirements Status
+
+
+.. |dev-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=develop
+                  :target: http://travis-ci.org/saxix/django-admin-extra-urls/
+
+.. |dev-cov| image:: https://coveralls.io/repos/saxix/django-admin-extra-urls/badge.png?branch=develop
+                :target: https://coveralls.io/r/saxix/django-admin-extra-urls
+
+.. |dev-req| image:: https://requires.io/github/saxix/django-admin-extra-urls/requirements.png?branch=develop
+                    :target: https://requires.io/github/saxix/django-admin-extra-urls/requirements/?branch=develop
+                    :alt: Requirements Status
+
+
+.. |python| image:: https://pypip.in/py_versions/django-admin-extra-urls/badge.svg
+    :target: https://pypi.python.org/pypi/django-admin-extra-urls/
     :alt: Supported Python versions
 
-.. |pypi| image:: https://pypip.in/version/admin-extra-urls/badge.svg?text=version
-    :target: https://pypi.python.org/pypi/admin-extra-urls/
+.. |pypi| image:: https://pypip.in/version/django-admin-extra-urls/badge.svg?text=version
+    :target: https://pypi.python.org/pypi/django-admin-extra-urls/
     :alt: Latest Version
 
-.. |license| image:: https://pypip.in/license/admin-extra-urls/badge.svg
-    :target: https://pypi.python.org/pypi/admin-extra-urls/
+.. |license| image:: https://pypip.in/license/django-admin-extra-urls/badge.svg
+    :target: https://pypi.python.org/pypi/django-admin-extra-urls/
     :alt: License
 
-.. image:: https://pypip.in/wheel/<PYPI_PKG_NAME>/badge.svg
-    :target: https://pypi.python.org/pypi/<PYPI_PKG_NAME>/
+.. image:: https://pypip.in/wheel/django-admin-extra-urls/badge.svg
+    :target: https://pypi.python.org/pypi/django-admin-extra-urls/
     :alt: Wheel Status
 
 .. |travis| image:: https://travis-ci.org/saxix/django-admin-extra-urls.svg?branch=develop

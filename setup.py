@@ -47,6 +47,9 @@ install_requires = ["six"],
 setup(
     name=app.NAME,
     version=app.get_version(),
+    url='https://github.com/saxix/django-admin-extra-urls',
+    download_url='https://pypi.python.org/pypi/admin-extra-urls',
+
     description='Django mixin to easily add urls to any ModelAdmin',
     long_description=read("README.rst"),
     packages=find_packages('.'),
