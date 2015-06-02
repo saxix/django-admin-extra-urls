@@ -77,10 +77,10 @@ More options
 Links
 ~~~~~
 
-+--------------------+----------------+--------------+------------------------+
-| Stable             | |master-build| | |master-cov| | |master-req|           |
-+--------------------+----------------+--------------+------------------------+
-| Development        | |dev-build|    | |dev-cov|    | |dev-req|              |
++--------------------+----------------+--------------+-----------------------------+
+| Stable             | |master-build| | |master-cov| | |master-req|                |
++--------------------+----------------+--------------+-----------------------------+
+| Development        | |dev-build|    | |dev-cov|    | |dev-req|                   |
 +--------------------+----------------+--------------+-----------------------------+
 | Project home page: |https://github.com/saxix/django-admin-extra-urls             |
 +--------------------+---------------+---------------------------------------------+
@@ -116,12 +116,12 @@ Links
     :target: https://pypi.python.org/pypi/django-admin-extra-urls/
     :alt: Supported Python versions
 
-.. |pypi| image:: https://pypip.in/version/django-admin-extra-urls/badge.svg?text=version
-    :target: https://pypi.python.org/pypi/django-admin-extra-urls/
+.. |pypi| image:: https://pypip.in/version/admin-extra-urls/badge.svg?text=version
+    :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: Latest Version
 
-.. |license| image:: https://pypip.in/license/django-admin-extra-urls/badge.svg
-    :target: https://pypi.python.org/pypi/django-admin-extra-urls/
+.. |license| image:: https://pypip.in/license/admin-extra-urls/badge.svg
+    :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: License
 
 .. image:: https://pypip.in/wheel/django-admin-extra-urls/badge.svg
