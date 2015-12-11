@@ -78,9 +78,9 @@ Links
 ~~~~~
 
 +--------------------+----------------+--------------+-----------------------------+
-| Stable             | |master-build| | |master-cov| | |master-req|                |
+| Stable             | |master-build| | |master-cov| |                             |
 +--------------------+----------------+--------------+-----------------------------+
-| Development        | |dev-build|    | |dev-cov|    | |dev-req|                   |
+| Development        | |dev-build|    | |dev-cov|    |                             |
 +--------------------+----------------+--------------+-----------------------------+
 | Project home page: |https://github.com/saxix/django-admin-extra-urls             |
 +--------------------+---------------+---------------------------------------------+
@@ -96,20 +96,12 @@ Links
 .. |master-cov| image:: https://coveralls.io/repos/saxix/django-admin-extra-urls/badge.png?branch=master
                     :target: https://coveralls.io/r/saxix/django-admin-extra-urls
 
-.. |master-req| image:: https://requires.io/github/saxix/django-admin-extra-urls/requirements.png?branch=master
-                    :target: https://requires.io/github/saxix/django-admin-extra-urls/requirements/?branch=master
-                    :alt: Requirements Status
-
 
 .. |dev-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=develop
                   :target: http://travis-ci.org/saxix/django-admin-extra-urls/
 
 .. |dev-cov| image:: https://coveralls.io/repos/saxix/django-admin-extra-urls/badge.png?branch=develop
                 :target: https://coveralls.io/r/saxix/django-admin-extra-urls
-
-.. |dev-req| image:: https://requires.io/github/saxix/django-admin-extra-urls/requirements.png?branch=develop
-                    :target: https://requires.io/github/saxix/django-admin-extra-urls/requirements/?branch=develop
-                    :alt: Requirements Status
 
 
 .. |python| image:: https://pypip.in/py_versions/django-admin-extra-urls/badge.svg
