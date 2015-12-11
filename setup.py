@@ -7,7 +7,8 @@ from setuptools.command.test import test as TestCommand
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 sys.path.append(os.path.join(ROOT, 'src'))
-import admin_extra_urls as app
+
+from concurrency import VERSION
 
 
 def read(*parts):
@@ -16,9 +17,6 @@ def read(*parts):
 
 
 setup_requires = []
-if 'test' in sys.argv:
-    setup_requires.append('pytest')
-
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -45,6 +43,10 @@ tests_require = ["tox>=1.8",
 
 install_requires = ["six"],
 
+if 'test' in sys.argv:
+    setup_requires += tests_require
+
+
 setup(
     name=app.NAME,
     version=app.get_version(),
@@ -62,6 +64,7 @@ setup(
         'tests': tests_require,
     },
     tests_require=tests_require,
+    setup_requires = setup_requires,
     cmdclass={'test': PyTest},
     classifiers=[
         'Environment :: Web Environment',
