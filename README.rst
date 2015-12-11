@@ -2,7 +2,7 @@ admin-extra-urls
 ================
 
 
-plugable django application that offers one single Mixin ``ExtraUrlMixin``
+pluggable django application that offers one single mixin class ``ExtraUrlMixin``
 to easily add new url (and related buttons on the screen) to any ModelAdmin.
 
 It provides two decorators ``link()`` and ``action()``.
