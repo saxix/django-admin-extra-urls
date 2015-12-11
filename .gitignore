@@ -1,3 +1,4 @@
+.eggs
 /dist
 /build
 *.egg-info
