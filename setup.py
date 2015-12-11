@@ -5,9 +5,9 @@ import codecs
 from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
-dirname = 'admin_extra_urls'
-
-app = __import__(dirname)
+ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
+sys.path.append(os.path.join(ROOT, 'src'))
+import admin_extra_urls as app
 
 
 def read(*parts):
@@ -39,6 +39,7 @@ tests_require = ["tox>=1.8",
                  "pytest",
                  "wheel",
                  "django_dynamic_fixture",
+                 "pytest-pythonpath",
                  "pytest-django",
                  "pytest-echo"]
 
@@ -52,7 +53,8 @@ setup(
 
     description='Django mixin to easily add urls to any ModelAdmin',
     long_description=read("README.rst"),
-    packages=find_packages('.'),
+    package_dir={'': 'src'},
+    packages=find_packages('src'),
     include_package_data=True,
     install_requires=install_requires,
     platforms=['linux'],

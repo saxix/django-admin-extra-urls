@@ -49,7 +49,7 @@ How to use it
             ...
             ...
 
-You don't need to return a HttpResponse. The default behaviour is:
+You don't need to return a HttpResponse. The default behavior is:
 
     - with `link()` browser will be redirected to ``changelist_view``
 
@@ -134,4 +134,3 @@ Links
 .. |django| image:: https://img.shields.io/badge/Django-1.8-orange.svg
     :target: http://djangoproject.com/
     :alt: Django 1.7, 1.8
-

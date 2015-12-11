@@ -3,5 +3,5 @@ include CHANGES
 include LICENSE
 include MANIFEST.in
 recursive-include docs *
-recursive-include admin_extra_urls *
-recursive-exclude admin_extra_urls *.pyc
+recursive-include src/admin_extra_urls *
+recursive-exclude src/admin_extra_urls *.pyc
