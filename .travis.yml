@@ -19,10 +19,10 @@ env:
   - TESTENV=py34-d18
   - TESTENV=py34-d19
 
-  - TESTENV=py35-d16
-  - TESTENV=py35-d17
-  - TESTENV=py35-d18
-  - TESTENV=py35-d19
+  # - TESTENV=py35-d16
+  # - TESTENV=py35-d17
+  # - TESTENV=py35-d18
+  # - TESTENV=py35-d19
 
 install:
   - pip install tox==1.8 python-coveralls
