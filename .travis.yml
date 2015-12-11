@@ -1,26 +1,30 @@
 language: python
+sudo: false
+
 services:
-  - MySQL
   - PostgreSQL
 
 env:
   - TESTENV=py27-d16
   - TESTENV=py27-d17
   - TESTENV=py27-d18
+  - TESTENV=py27-d19
+
   - TESTENV=py33-d16
   - TESTENV=py33-d17
   - TESTENV=py33-d18
+  - TESTENV=py33-d19
+
   - TESTENV=py34-d16
   - TESTENV=py34-d17
   - TESTENV=py34-d18
+  - TESTENV=py34-d19
 
 install:
   - pip install tox==1.8 python-coveralls
 
 script:
   - tox -e $TESTENV -- --cov=admin_extra_urls --cov-report=html --cov-config=tests/.coveragerc
-
-
 
 after_success:
   - coveralls
