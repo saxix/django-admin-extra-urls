@@ -8,15 +8,13 @@ from setuptools.command.test import test as TestCommand
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 sys.path.append(os.path.join(ROOT, 'src'))
 
-from concurrency import VERSION
+import admin_extra_urls as app
 
 
 def read(*parts):
     here = os.path.abspath(os.path.dirname(__file__))
     return codecs.open(os.path.join(here, *parts), "r").read()
 
-
-setup_requires = []
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -34,6 +32,7 @@ class PyTest(TestCommand):
 
 tests_require = ["tox>=1.8",
                  "django_webtest",
+                 "django",
                  "pytest",
                  "wheel",
                  "django_dynamic_fixture",
@@ -41,7 +40,8 @@ tests_require = ["tox>=1.8",
                  "pytest-django",
                  "pytest-echo"]
 
-install_requires = ["six"],
+install_requires = ["six"]
+setup_requires = []
 
 if 'test' in sys.argv:
     setup_requires += tests_require
@@ -59,12 +59,12 @@ setup(
     packages=find_packages('src'),
     include_package_data=True,
     install_requires=install_requires,
+    setup_requires=setup_requires,
     platforms=['linux'],
     extras_require={
         'tests': tests_require,
     },
     tests_require=tests_require,
-    setup_requires = setup_requires,
     cmdclass={'test': PyTest},
     classifiers=[
         'Environment :: Web Environment',
