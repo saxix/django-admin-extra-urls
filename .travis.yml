@@ -25,10 +25,13 @@ env:
   # - TESTENV=py35-d19
 
 install:
-  - pip install tox==1.8 python-coveralls
+  - pip install tox==1.8
 
 script:
   - tox -e $TESTENV -- --cov=admin_extra_urls --cov-report=html --cov-config=tests/.coveragerc
 
+before_install:
+  - pip install codecov
+
 after_success:
-  - coveralls
+  - codecov
