@@ -25,7 +25,7 @@ env:
   # - TESTENV=py35-d19
 
 install:
-  - pip install tox coverage python-coveralls>=2.5 coveralls>=0.5 codecov
+  - pip install tox "coverage<=4.0" "coveralls>=0.5" codecov
 
 script:
   - tox -e $TESTENV -- --cov=admin_extra_urls --cov-report=xml --cov-config=tests/.coveragerc
