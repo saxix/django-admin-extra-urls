@@ -3,7 +3,7 @@ import datetime
 import os
 
 NAME = 'admin-extra-urls'
-VERSION = __version__ = (0, 7, 1, 'final', 0)
+VERSION = __version__ = (0, 8, 0, 'final', 0)
 __author__ = 'sax'
 
 

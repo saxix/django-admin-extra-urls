@@ -1,12 +1,19 @@
+Release 0.8
+-----------
+* Django 1.9 compatibility
+
+
 Release 0.7.1
 -------------
 * fixes wrong template that produce wrong link for action()
+
 
 Release 0.7
 -----------
 * fixes wrong template that produce double button on screen
 * add django 1.8 to travis config
 * wheel package
+
 
 Release 0.6.1
 -------------

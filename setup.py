@@ -1,13 +1,15 @@
 #!/usr/bin/env python
+import codecs
 import os
 import sys
-import codecs
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 
-dirname = 'admin_extra_urls'
+ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
+sys.path.insert(0, os.path.join(ROOT, 'src'))
 
-app = __import__(dirname)
+app = __import__('admin_extra_urls')
 
 
 def read(*parts):
@@ -15,12 +17,8 @@ def read(*parts):
     return codecs.open(os.path.join(here, *parts), "r").read()
 
 
-setup_requires = []
-if 'test' in sys.argv:
-    setup_requires.append('pytest')
-
-
 class PyTest(TestCommand):
+
     def finalize_options(self):
         sys.path.append(os.path.join(os.path.dirname(__file__), "tests"))
         TestCommand.finalize_options(self)
@@ -34,27 +32,33 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-tests_require = ["tox>=1.8",
-                 "django_webtest",
-                 "pytest",
-                 "wheel",
-                 "django_dynamic_fixture",
-                 "pytest-django",
-                 "pytest-echo"]
+tests_require = read('requirements/testing.pip')
+dev_require = read('requirements/develop.pip')
 
-install_requires = ["six"],
+install_requires = ["six"]
+setup_requires = []
+
+if 'test' in sys.argv:
+    setup_requires += tests_require
+
 
 setup(
     name=app.NAME,
     version=app.get_version(),
+    url='https://github.com/saxix/django-admin-extra-urls',
+    download_url='https://pypi.python.org/pypi/admin-extra-urls',
+
     description='Django mixin to easily add urls to any ModelAdmin',
     long_description=read("README.rst"),
-    packages=find_packages('.'),
+    package_dir={'': 'src'},
+    packages=find_packages('src'),
     include_package_data=True,
     install_requires=install_requires,
+    setup_requires=setup_requires,
     platforms=['linux'],
     extras_require={
         'tests': tests_require,
+        'dev': dev_require + tests_require,
     },
     tests_require=tests_require,
     cmdclass={'test': PyTest},
@@ -65,12 +69,14 @@ setup(
         'Framework :: Django :: 1.6',
         'Framework :: Django :: 1.7',
         'Framework :: Django :: 1.8',
+        'Framework :: Django :: 1.9',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
 
