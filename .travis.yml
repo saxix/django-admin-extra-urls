@@ -1,9 +1,6 @@
 language: python
 sudo: false
 
-services:
-  - PostgreSQL
-
 env:
   - TESTENV=py27-d16
   - TESTENV=py27-d17

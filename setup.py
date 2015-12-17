@@ -1,14 +1,15 @@
 #!/usr/bin/env python
+import codecs
 import os
 import sys
-import codecs
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
-sys.path.append(os.path.join(ROOT, 'src'))
+sys.path.insert(0, os.path.join(ROOT, 'src'))
 
-import admin_extra_urls as app
+app = __import__('admin_extra_urls')
 
 
 def read(*parts):
@@ -17,6 +18,7 @@ def read(*parts):
 
 
 class PyTest(TestCommand):
+
     def finalize_options(self):
         sys.path.append(os.path.join(os.path.dirname(__file__), "tests"))
         TestCommand.finalize_options(self)
@@ -30,15 +32,23 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-tests_require = ["tox>=1.8",
+tests_require = ["tox>=2.3",
+                 "coverage",
                  "django_webtest",
                  "django",
                  "pytest",
-                 "wheel",
-                 "django_dynamic_fixture",
-                 "pytest-pythonpath",
+                 "pytest-cov",
                  "pytest-django",
-                 "pytest-echo"]
+                 "pytest-echo",
+                 "pytest-pythonpath",
+                 "wheel",
+                 "django_dynamic_fixture"]
+
+dev_require = ['flake8',
+               'check-manifest',
+               'readme',
+               'autopep8',
+               'pep8']
 
 install_requires = ["six"]
 setup_requires = []
@@ -63,6 +73,7 @@ setup(
     platforms=['linux'],
     extras_require={
         'tests': tests_require,
+        'dev': dev_require + tests_require,
     },
     tests_require=tests_require,
     cmdclass={'test': PyTest},
@@ -73,12 +84,14 @@ setup(
         'Framework :: Django :: 1.6',
         'Framework :: Django :: 1.7',
         'Framework :: Django :: 1.8',
+        'Framework :: Django :: 1.9',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
 

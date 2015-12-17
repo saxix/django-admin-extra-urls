@@ -2,6 +2,9 @@ include README.rst
 include CHANGES
 include LICENSE
 include MANIFEST.in
+include tox.ini
+include setup.py
+include setup.cfg
 recursive-include docs *
 recursive-include src/admin_extra_urls *
-recursive-exclude src/admin_extra_urls *.pyc
+recursive-include tests *.py
