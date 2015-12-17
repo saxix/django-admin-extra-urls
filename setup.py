@@ -32,23 +32,8 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
-tests_require = ["tox>=2.3",
-                 "coverage",
-                 "django_webtest",
-                 "django",
-                 "pytest",
-                 "pytest-cov",
-                 "pytest-django",
-                 "pytest-echo",
-                 "pytest-pythonpath",
-                 "wheel",
-                 "django_dynamic_fixture"]
-
-dev_require = ['flake8',
-               'check-manifest',
-               'readme',
-               'autopep8',
-               'pep8']
+tests_require = read('requirements/testing.pip')
+dev_require = read('requirements/develop.pip')
 
 install_requires = ["six"]
 setup_requires = []

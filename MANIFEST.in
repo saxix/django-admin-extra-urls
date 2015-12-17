@@ -5,6 +5,7 @@ include MANIFEST.in
 include tox.ini
 include setup.py
 include setup.cfg
+recursive-include requirements *.pip
 recursive-include docs *
 recursive-include src/admin_extra_urls *
 recursive-include tests *.py
