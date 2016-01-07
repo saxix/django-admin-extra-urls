@@ -1,3 +1,8 @@
+
+develop:
+	pip install -U pip setuptools
+	pip install -e .[dev]
+
 clean:
 	# cleaning
 	@find . -name __pycache__ -o -name .eggs | xargs rm -rf

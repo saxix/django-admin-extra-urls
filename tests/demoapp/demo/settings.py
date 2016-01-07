@@ -74,3 +74,16 @@ DATABASES = {
         'PORT': ''}}
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+# django 1.10
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': ['django.contrib.messages.context_processors.messages']
+        },
+    },
+]
