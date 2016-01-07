@@ -22,7 +22,7 @@ def app(request):
 def demomodel2():
     return G(DemoModel2)
 
-
+# @pytest.mark.skipif(django.VERSION[:2] > (1,9))
 def test_link(app, admin_user):
     url = reverse('admin:demo_demomodel1_changelist')
     res = app.get(url, user=admin_user)
@@ -30,6 +30,7 @@ def test_link(app, admin_user):
     assert str(res.context['messages']._loaded_messages[0].message) == 'refresh called'
 
 
+# @pytest.mark.skipif(django.VERSION[:2] > (1,9))
 def test_link_reverse(app, admin_user):
     url = reverse('admin:demo_demomodel1_refresh')
     res = app.get(url, user=admin_user).follow()

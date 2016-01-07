@@ -5,7 +5,7 @@ from functools import update_wrapper
 
 import six
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -153,4 +153,4 @@ class ExtraUrlMixin(object):
         self.extra_buttons = sorted(self.extra_buttons, key=lambda d: d[-1])
         self.extra_detail_buttons = sorted(self.extra_detail_buttons, key=lambda d: d[-1])
 
-        return patterns('', *extras) + original
+        return extras + original

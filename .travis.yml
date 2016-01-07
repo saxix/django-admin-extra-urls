@@ -2,16 +2,13 @@ language: python
 sudo: false
 
 env:
-  - TESTENV=py27-d16
   - TESTENV=py27-d17
   - TESTENV=py27-d18
   - TESTENV=py27-d19
 
-  - TESTENV=py33-d16
   - TESTENV=py33-d17
   - TESTENV=py33-d18
 
-  - TESTENV=py34-d16
   - TESTENV=py34-d17
   - TESTENV=py34-d18
   - TESTENV=py34-d19
