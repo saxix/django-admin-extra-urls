@@ -104,8 +104,8 @@ Links
                 :target: https://coveralls.io/r/saxix/django-admin-extra-urls
 
 
-.. |python| image:: https://pypip.in/py_versions/django-admin-extra-urls/badge.svg
-    :target: https://pypi.python.org/pypi/django-admin-extra-urls/
+.. |python| image:: https://pypip.in/py_versions/admin-extra-urls/badge.svg
+    :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: Supported Python versions
 
 .. |pypi| image:: https://pypip.in/version/admin-extra-urls/badge.svg?text=version
@@ -116,8 +116,8 @@ Links
     :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: License
 
-.. image:: https://pypip.in/wheel/django-admin-extra-urls/badge.svg
-    :target: https://pypi.python.org/pypi/django-admin-extra-urls/
+.. image:: https://pypip.in/wheel/admin-extra-urls/badge.svg
+    :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: Wheel Status
 
 .. |travis| image:: https://travis-ci.org/saxix/django-admin-extra-urls.svg?branch=develop
