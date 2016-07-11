@@ -3,10 +3,10 @@
 
 {% block object-tools %}
 
-    <ul class="object-tools">
+    <ul class="object-tools grp-object-tools">
         {% block object-tools-items %}
             {{ block.super }}
-            {% include "admin_extra_urls/includes/change_form_buttons.html" %}
+            {% include "admin_extra_urls/grappelli/includes/change_form_buttons.html" %}
         {% endblock %}
     </ul>
 

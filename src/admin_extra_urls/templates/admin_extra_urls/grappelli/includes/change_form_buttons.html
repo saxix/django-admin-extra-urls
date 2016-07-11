@@ -1,0 +1,40 @@
+{% load extra_urls i18n admin_static admin_list admin_urls %}
+
+{% for method_name, urlattrs in adminform.model_admin.extra_detail_buttons %}
+{% has_permission urlattrs.perm as authorized %}
+{% if authorized and urlattrs.visible%}
+{% nlless %}
+<li>{% if original.pk %}
+    <a id="btn-{{method_name}}"
+       href="{% url opts|admin_urlname:method_name original.pk %}{% if is_popup %}?_popup=1{% endif %}"
+       class="extra-link {{urlattrs.css_class}} {{urlattrs.method_name}}">
+        {% if icon %}
+        <i class="{{ urlattrs.icon }}"></i>&nbsp;
+        {% endif %}
+        {{ urlattrs.label }}
+    </a>
+    {% else %}
+        {% if not urlsattrs.exclude_if_adding %}
+            <a id="btn-{{method_name}}" href="#"
+               class="extra-link disabled {{urlattrs.css_class}} {{urlattrs.method_name}}">
+                {% if icon %}
+                <i class="{{ urlattrs.icon }}"></i>&nbsp;
+                {% endif %}
+                {{ urlattrs.label }}
+            </a>
+        {%endif %}
+    {% endif %}
+</li>
+{% endnlless %}
+{% endif %}
+{% endfor %}
+
+<script>
+    grp.jQuery('.btn').click(function (e) {
+        if ($(this).hasClass("disabled")) {
+            e.preventDefault();
+        } else {
+            $(this).removeClass('btn-success').addClass('disabled');
+        }
+    });
+</script>
