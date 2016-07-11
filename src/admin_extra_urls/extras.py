@@ -5,6 +5,7 @@ from functools import update_wrapper
 
 import six
 
+from django.conf import settings
 from django.conf.urls import url
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.urlresolvers import reverse
@@ -18,12 +19,13 @@ def labelize(label):
 class ExtraUrlConfigException(RuntimeError):
     pass
 
+IS_GRAPPELLI_INSTALLED = 'grappelli' in settings.INSTALLED_APPS
 
 opts = namedtuple('UrlOptions', 'path,label,icon,perm,order,css_class,visible')
 
 
 def link(path=None, label=None, icon='', permission=None,
-         css_class="btn btn-success", order=999, visible=True):
+         css_class="btn btn-success", order=999, visible=True, **kwargs):
     """
     decorator to mark ModelAdmin method as 'url' links.
 
@@ -59,7 +61,8 @@ def link(path=None, label=None, icon='', permission=None,
 
 
 def action(path=None, label=None, icon='', permission=None,
-           css_class="btn btn-success", order=999, visible=True):
+           css_class="btn btn-success", order=999, visible=True,
+           exclude_if_adding=False, **kwargs):
     """
     decorator to mark ModelAdmin method as 'url' action.
 
@@ -105,8 +108,12 @@ class ExtraUrlMixin(object):
     """
     Allow to add new 'url' to the standard ModelAdmin
     """
-    change_list_template = 'admin_extra_urls/change_list.html'
-    change_form_template = 'admin_extra_urls/change_form.html'
+    if IS_GRAPPELLI_INSTALLED:
+        change_list_template = 'admin_extra_urls/grappelli/change_list.html'
+        change_form_template = 'admin_extra_urls/grappelli/change_form.html'
+    else:
+        change_list_template = 'admin_extra_urls/change_list.html'
+        change_form_template = 'admin_extra_urls/change_form.html'
 
     def __init__(self, model, admin_site):
         self.extra_buttons = []
@@ -114,8 +121,8 @@ class ExtraUrlMixin(object):
         super(ExtraUrlMixin, self).__init__(model, admin_site)
 
     def get_urls(self):
-        self.extra_buttons = []
-        self.extra_detail_buttons = []
+        extra_buttons = []
+        extra_detail_buttons = []
         extra_urls = {}
         for c in inspect.getmro(self.__class__):
             for method_name, method in six.iteritems(c.__dict__):
@@ -141,16 +148,16 @@ class ExtraUrlMixin(object):
             isdetail, method_name, options = entry
             info[2] = method_name
             if isdetail:
-                self.extra_detail_buttons.append([method_name, options])
+                extra_detail_buttons.append([method_name, options])
                 uri = r'^%s/(?P<pk>.*)/$' % options.path
             else:
                 uri = r'^%s/$' % options.path
-                self.extra_buttons.append([method_name, options])
+                extra_buttons.append([method_name, options])
 
             extras.append(url(uri,
                               wrap(getattr(self, method_name)),
                               name='{}_{}_{}'.format(*info)))
-        self.extra_buttons = sorted(self.extra_buttons, key=lambda d: d[-1])
-        self.extra_detail_buttons = sorted(self.extra_detail_buttons, key=lambda d: d[-1])
+        self.extra_buttons = sorted(extra_buttons, key=lambda d: d[-1].order)
+        self.extra_detail_buttons = sorted(extra_detail_buttons, key=lambda d: d[-1].order)
 
         return extras + original
