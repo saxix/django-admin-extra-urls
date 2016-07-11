@@ -3,14 +3,15 @@
 {% for method_name, urlattrs in adminform.model_admin.extra_detail_buttons %}
     {% has_permission urlattrs.perm as authorized %}
     {% if authorized and urlattrs.visible %}
-        {% nlless %}
-            <a id="btn-{{method_name}}" href="{% url opts|admin_urlname:method_name original.pk %}{% if is_popup %}?_popup=1{% endif %}"
+        {% nlless %}<li>
+            <a id="btn-{{method_name}}"
+               href="{% if original.pk %}{% url opts|admin_urlname:method_name original.pk %}{% if is_popup %}?_popup=1{% endif %}{%else%}#{%endif%}"
                class="extra-link {{urlattrs.css_class}} {{urlattrs.method_name}}">
                 {% if icon %}
                     <i class="{{ urlattrs.icon }}"></i>&nbsp;
                 {% endif %}
                 {{ urlattrs.label }}
-            </a>
+            </a></li>
         {% endnlless %}
     {% endif %}
 {% endfor %}
