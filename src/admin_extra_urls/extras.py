@@ -8,6 +8,7 @@ import six
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
@@ -25,7 +26,8 @@ opts = namedtuple('UrlOptions', 'path,label,icon,perm,order,css_class,visible')
 
 
 def link(path=None, label=None, icon='', permission=None,
-         css_class="btn btn-success", order=999, visible=True, **kwargs):
+         css_class="btn btn-success", order=999, visible=True,
+         **kwargs):
     """
     decorator to mark ModelAdmin method as 'url' links.
 
@@ -41,6 +43,11 @@ def link(path=None, label=None, icon='', permission=None,
 
     def link_decorator(func):
         def _inner(self, *args, **kwargs):
+            if permission:
+                if callable(permission):
+                    permission(args[0])
+                elif not args[0].user.has_perm(permission):
+                    raise PermissionDenied
             ret = func(self, *args, **kwargs)
             if not isinstance(ret, HttpResponse):
                 url = reverse(admin_urlname(self.model._meta, 'changelist'))
@@ -78,6 +85,12 @@ def action(path=None, label=None, icon='', permission=None,
 
     def action_decorator(func):
         def _inner(self, request, pk):
+            obj = self.model.objects.get(pk=pk)
+            if permission:
+                if callable(permission):
+                    permission(request, obj)
+                elif not request.user.has_perm(permission, obj):
+                    raise PermissionDenied
             try:
                 ret = func(self, request, pk)
             except TypeError:
