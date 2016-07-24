@@ -1,3 +1,9 @@
+Release 1.2
+-----------
+* check permission before run action/link
+* permission argument can be a callable. It should raise PermissionDenied if needed
+
+
 Release 1.1
 -----------
 * @action now has 'exclude_if_adding' to hide a button in add mode
