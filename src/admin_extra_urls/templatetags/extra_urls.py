@@ -3,9 +3,9 @@ from itertools import chain
 
 from django import template
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.template import Node, TemplateSyntaxError
-from rest_framework.exceptions import PermissionDenied
 
 register = template.Library()
 
