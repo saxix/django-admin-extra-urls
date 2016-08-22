@@ -20,6 +20,7 @@ def labelize(label):
 class ExtraUrlConfigException(RuntimeError):
     pass
 
+
 IS_GRAPPELLI_INSTALLED = 'grappelli' in settings.INSTALLED_APPS
 
 opts = namedtuple('UrlOptions', 'path,label,icon,perm,order,css_class,visible')
@@ -40,6 +41,9 @@ def link(path=None, label=None, icon='', permission=None,
     :param required permission to run the action
 
     """
+    if callable(permission):
+        permission = encapsulate(permission)
+
 
     def link_decorator(func):
         def _inner(self, *args, **kwargs):
@@ -83,6 +87,9 @@ def action(path=None, label=None, icon='', permission=None,
 
     """
 
+    if callable(permission):
+        permission = encapsulate(permission)
+
     def action_decorator(func):
         def _inner(self, request, pk):
             obj = self.model.objects.get(pk=pk)
@@ -115,6 +122,13 @@ def action(path=None, label=None, icon='', permission=None,
         return _inner
 
     return action_decorator
+
+
+def encapsulate(func):
+    def wrapper():
+        return func
+
+    return wrapper
 
 
 class ExtraUrlMixin(object):
