@@ -1,7 +1,7 @@
 {% load extra_urls i18n admin_static admin_list admin_urls %}
 
 {% for method_name,urlattrs in cl.model_admin.extra_buttons %}
-    {% has_permission urlattrs.perm as authorized %}
+    {% has_permission urlattrs as authorized %}
     {% if authorized and urlattrs.visible %}
         {% spaceless %}<li>
             <a id="btn-{{method_name}}" href="{% url cl.opts|admin_urlname:method_name %}{% if is_popup %}?_popup=1{% endif %}"

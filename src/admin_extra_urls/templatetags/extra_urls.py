@@ -3,6 +3,7 @@ from itertools import chain
 
 from django import template
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.template import Node, TemplateSyntaxError
 
@@ -14,7 +15,14 @@ def has_permission(context, perm_name):
     if not perm_name:
         return True
     request = context['request']
-    return request.user.has_perm(perm_name)
+    user = request.user
+    if callable(perm_name):
+        try:
+            return perm_name(request, context.get('original', None))
+        except PermissionDenied:
+            return False
+    else:
+        return  user.has_perm(perm_name)
 
 
 class NewlinelessNode(template.Node):
