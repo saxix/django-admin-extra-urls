@@ -125,7 +125,7 @@ def action(path=None, label=None, icon='', permission=None,
 
 
 def encapsulate(func):
-    def wrapper():
+    def wrapper(*args, **kwargs):
         return func
 
     return wrapper
