@@ -1,17 +1,12 @@
 {% extends "admin/change_list.html" %}{% load i18n admin_static admin_list admin_urls suit_list suit_tags %}
 {% if not is_popup %}
     {% block breadcrumbs %}
-        <ul class="breadcrumb">
-            <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-                <span class="divider">&raquo;</span></li>
-            <li>
-                <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_label|capfirst|escape }}</a>
-                <span class="divider">&raquo;</span></li>
-            <li>
-                <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst|escape }}</a>
-                <span class="divider">&raquo;</span></li>
-            <li class="active">Upload</li>
-        </ul>
+        <div class="breadcrumbs">
+            <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+            &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+            &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+            &rsaquo; Upload
+        </div>
     {% endblock %}
 {% endif %}
 {% block content %}
