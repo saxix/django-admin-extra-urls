@@ -10,7 +10,7 @@ def pytest_configure(config):
     # import demo.settings
     # from django.conf import settings
     # if not settings.configured:
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'demo.settings'
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
     try:
         from django.apps import AppConfig  # noqa
         import django
