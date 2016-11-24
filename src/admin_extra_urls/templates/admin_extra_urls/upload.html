@@ -1,4 +1,4 @@
-{% extends "admin/change_list.html" %}{% load i18n admin_static admin_list admin_urls suit_list suit_tags %}
+{% extends "admin/change_list.html" %}{% load i18n admin_static admin_list admin_urls %}
 {% if not is_popup %}
     {% block breadcrumbs %}
         <div class="breadcrumbs">
@@ -16,7 +16,7 @@
     <br>
     <br>
     <hr>
-    <form method="post" enctype="multipart/form-data">
+    <form   method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="file">
         <input type="submit">

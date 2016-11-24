@@ -19,7 +19,7 @@ class UploadMixin(ExtraUrlMixin):
     def upload(self, request):
         opts = self.model._meta
         context = dict(
-            self.admin_site.each_context(),
+            self.admin_site.each_context(request),
             opts=opts,
             help_text=self.upload_handler.__doc__,
             app_label=opts.app_label,

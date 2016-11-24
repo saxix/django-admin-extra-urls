@@ -11,3 +11,7 @@ class DemoModel2(models.Model):
 
 class DemoModel3(models.Model):
     name = models.CharField(max_length=255)
+
+
+class DemoModel4(models.Model):
+    name = models.CharField(max_length=255)
