@@ -44,7 +44,6 @@ def link(path=None, label=None, icon='', permission=None,
     if callable(permission):
         permission = encapsulate(permission)
 
-
     def link_decorator(func):
         def _inner(self, *args, **kwargs):
             if permission:

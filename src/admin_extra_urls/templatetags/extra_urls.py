@@ -22,7 +22,7 @@ def has_permission(context, perm_name):
         except PermissionDenied:
             return False
     else:
-        return  user.has_perm(perm_name)
+        return user.has_perm(perm_name)
 
 
 class NewlinelessNode(template.Node):

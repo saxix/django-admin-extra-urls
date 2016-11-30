@@ -4,7 +4,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from admin_extra_urls.extras import ExtraUrlMixin, link, action
 from admin_extra_urls.mixins import _confirm_action
-from .models import DemoModel1, DemoModel2, DemoModel3
+from admin_extra_urls.upload import UploadMixin
+from .models import DemoModel1, DemoModel2, DemoModel3, DemoModel4
 
 
 class Admin1(ExtraUrlMixin, admin.ModelAdmin):
@@ -51,6 +52,11 @@ class Admin3(admin.ModelAdmin):
     pass
 
 
+class Admin4(UploadMixin, admin.ModelAdmin):
+    upload_handler = lambda *args: None
+
+
 admin.site.register(DemoModel1, Admin1)
 admin.site.register(DemoModel2, Admin2)
 admin.site.register(DemoModel3, Admin3)
+admin.site.register(DemoModel4, Admin4)

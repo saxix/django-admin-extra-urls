@@ -8,7 +8,6 @@ from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
-from django.utils.translation import gettext as _
 
 logger = logging.getLogger(__name__)
 
