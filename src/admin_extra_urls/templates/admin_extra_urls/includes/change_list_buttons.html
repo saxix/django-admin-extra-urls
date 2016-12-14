@@ -16,11 +16,13 @@
 {% endfor %}
 
 <script>
-    $('.btn').click(function(e) {
-        if ($(this).hasClass( "disabled" )){
-            e.preventDefault();
-        }else{
-            $(this).removeClass('btn-success').addClass('disabled');
-        }
-    });
+    (function($) {
+        $('.btn').click(function(e) {
+            if ($(this).hasClass( "disabled" )){
+                e.preventDefault();
+            }else{
+                $(this).removeClass('btn-success').addClass('disabled');
+            }
+        });
+    })(django.jQuery);
 </script>
