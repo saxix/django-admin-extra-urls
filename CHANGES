@@ -1,3 +1,9 @@
+Release 1.4
+-----------
+* fixes #8 use django jquery
+* fixes #7 fixes upload mixin
+
+
 Release 1.3.1
 -------------
 * fixes issue when callable is used to manage permission in detail form
