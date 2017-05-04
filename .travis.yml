@@ -1,7 +1,6 @@
 language: python
 
 python:
-  - 3.5
   - 3.6
 
 sudo: false
@@ -13,7 +12,7 @@ env:
   - TOXENV=d18-pypy
   - TOXENV=d19-py27
   - TOXENV=d19-py34
-  - TOXENV=d19-py35
+#  - TOXENV=d19-py35
   - TOXENV=d19-pypy
   - TOXENV=d110-py27
   - TOXENV=d110-py34
@@ -21,7 +20,7 @@ env:
   - TOXENV=d110-pypy
   - TOXENV=d111-py27
   - TOXENV=d111-py34
-  - TOXENV=d111-py35
+#  - TOXENV=d111-py35
   - TOXENV=d111-py36
   - TOXENV=d111-pypy
 
