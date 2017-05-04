@@ -7,7 +7,6 @@ sudo: false
 
 env:
   - TOXENV=d18-py27
-  - TOXENV=d18-py33
   - TOXENV=d18-py34
   - TOXENV=d18-py35
   - TOXENV=d18-pypy
