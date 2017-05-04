@@ -10,7 +10,7 @@ from django.template import Node, TemplateSyntaxError
 register = template.Library()
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def has_permission(context, perm_name):
     if not perm_name:
         return True
