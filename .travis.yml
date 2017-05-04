@@ -16,7 +16,7 @@ env:
   - TOXENV=d19-pypy
   - TOXENV=d110-py27
   - TOXENV=d110-py34
-  - TOXENV=d110-py35
+#  - TOXENV=d110-py35
   - TOXENV=d110-pypy
   - TOXENV=d111-py27
   - TOXENV=d111-py34
