@@ -2,10 +2,42 @@ language: python
 
 python:
   - 2.7
-  - 3.3
   - 3.4
   - 3.5
   - 3.6
+
+env:
+  - DJANGO=d18
+  - DJANGO=d19
+  - DJANGO=d110
+  - DJANGO=d111
+#  - TOXENV=d18-py27
+#  - TOXENV=d18-py34
+#  - TOXENV=d18-py35
+#  - TOXENV=d18-pypy
+#  - TOXENV=d19-py27
+#  - TOXENV=d19-py34
+#  - TOXENV=d19-py35
+#  - TOXENV=d19-pypy
+#  - TOXENV=d110-py27
+#  - TOXENV=d110-py34
+#  - TOXENV=d110-py35
+#  - TOXENV=d110-pypy
+#  - TOXENV=d111-py27
+#  - TOXENV=d111-py34
+#  - TOXENV=d111-py35
+#  - TOXENV=d111-py36
+#  - TOXENV=d111-pypy
+
+
+matrix:
+  exclude:
+    - python: 3.6
+      env: DJANGO=d18
+    - python: 3.6
+      env: DJANGO=d19
+    - python: 3.6
+      env: DJANGO=d110
 
 sudo: false
 
@@ -14,7 +46,7 @@ install:
   - pip install "coverage<=4.0" "coveralls>=0.5" codecov
 
 script:
-  - tox -e $TOXENV
+  - tox -e "${DJANGO}-py${TRAVIS_PYTHON_VERSION}"
 
 after_success:
   - coverage combine
