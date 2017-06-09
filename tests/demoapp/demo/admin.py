@@ -9,7 +9,7 @@ from .models import DemoModel1, DemoModel2, DemoModel3, DemoModel4
 
 
 class Admin1(ExtraUrlMixin, admin.ModelAdmin):
-    @link(label='Refresh')
+    @link(label='Refresh', permission='demo.add_demomodel1')
     def refresh(self, request):
         opts = self.model._meta
         self.message_user(request, 'refresh called')
