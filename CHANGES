@@ -1,3 +1,7 @@
+Release 1.5
+-----------
+* fixes permissions check on change list template
+
 Release 1.4
 -----------
 * fixes #8 use django jquery
