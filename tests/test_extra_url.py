@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 import logging
 
-import django_webtest
 import pytest
-from demo.models import DemoModel2
 from django.contrib.auth.models import Permission
 from django.core.urlresolvers import reverse
-from django_dynamic_fixture import G
 
 logger = logging.getLogger(__name__)
 

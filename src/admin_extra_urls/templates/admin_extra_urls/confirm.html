@@ -1,14 +1,21 @@
 {% extends 'admin/base_site.html' %}
 {% load i18n admin_static admin_list admin_urls %}
 {% block breadcrumbs %}
-    <ul>
-        <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-            </li>
-        <li>
-            <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_label|capfirst|escape }}</a>
-            </li>
-        <li class="active">{{ opts.verbose_name_plural|capfirst }}</li>
-    </ul>
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo;
+        <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_label|capfirst|escape }}</a>
+        &rsaquo;
+        Delete all
+    </div>
+{#    <ul>#}
+{#        <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>#}
+{#            </li>#}
+{#        <li>#}
+{#            <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_label|capfirst|escape }}</a>#}
+{#            </li>#}
+{#        <li class="active">{{ opts.verbose_name_plural|capfirst }}</li>#}
+{#    </ul>#}
 {% endblock %}
 
 {% block content %}
