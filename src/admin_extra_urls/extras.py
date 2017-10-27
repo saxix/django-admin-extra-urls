@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import inspect
+import warnings
 from collections import namedtuple
 from functools import update_wrapper
 
@@ -23,12 +24,14 @@ class ExtraUrlConfigException(RuntimeError):
 
 IS_GRAPPELLI_INSTALLED = 'grappelli' in settings.INSTALLED_APPS
 
-opts = namedtuple('UrlOptions', 'path,label,icon,perm,order,css_class,visible')
+ExtraUrlConfig = namedtuple('ExtraUrlConfig', 'path,label,icon,perm,order,css_class,visible')
+ExtraUrlOptions = namedtuple('ExtraUrlOptions', 'path,label,icon,perm,order,css_class,visible,authorized,method')
+
+NOTSET = object()
 
 
 def link(path=None, label=None, icon='', permission=None,
-         css_class="btn btn-success", order=999, visible=True,
-         **kwargs):
+         css_class="btn btn-success", order=999, visible=True, **kwargs):
     """
     decorator to mark ModelAdmin method as 'url' links.
 
@@ -57,13 +60,13 @@ def link(path=None, label=None, icon='', permission=None,
                 return HttpResponseRedirect(url)
             return ret
 
-        _inner.link = opts(path or func.__name__,
-                           label or labelize(func.__name__),
-                           icon,
-                           permission,
-                           order,
-                           css_class,
-                           visible)
+        _inner.link = ExtraUrlConfig(path or func.__name__,
+                                     label or labelize(func.__name__),
+                                     icon,
+                                     permission,
+                                     order,
+                                     css_class,
+                                     visible)
 
         return _inner
 
@@ -71,8 +74,8 @@ def link(path=None, label=None, icon='', permission=None,
 
 
 def action(path=None, label=None, icon='', permission=None,
-           css_class="btn btn-success", order=999, visible=True,
-           exclude_if_adding=False, **kwargs):
+           css_class="btn btn-success", order=999, visible=lambda o: o and o.pk,
+           exclude_if_adding=NOTSET, **kwargs):
     """
     decorator to mark ModelAdmin method as 'url' action.
 
@@ -86,23 +89,22 @@ def action(path=None, label=None, icon='', permission=None,
 
     """
 
+    if exclude_if_adding != NOTSET:
+        warnings.warn("exclude_if_adding has not effect", DeprecationWarning)
+
     if callable(permission):
         permission = encapsulate(permission)
 
     def action_decorator(func):
-        def _inner(self, request, pk):
+        def _inner(self, request, pk, **kwargs):
             obj = self.model.objects.get(pk=pk)
             if permission:
                 if callable(permission):
                     permission(request, obj)
                 elif not request.user.has_perm(permission, obj):
                     raise PermissionDenied
-            try:
-                ret = func(self, request, pk)
-            except TypeError:
-                msg = "'%s()' must accept 3 arguments. " \
-                      "Did you missed 'request' and 'pk' ?" % func.__name__
-                raise ExtraUrlConfigException(msg)
+            # TODO: check arguments to be sure both request and pk are passed
+            ret = func(self, request, pk, **kwargs)
 
             if not isinstance(ret, HttpResponse):
                 url = reverse(admin_urlname(self.model._meta, 'change'),
@@ -110,13 +112,13 @@ def action(path=None, label=None, icon='', permission=None,
                 return HttpResponseRedirect(url)
             return ret
 
-        _inner.action = opts(path or func.__name__,
-                             label or labelize(func.__name__),
-                             icon,
-                             permission,
-                             order,
-                             css_class,
-                             visible)
+        _inner.action = ExtraUrlConfig(path or func.__name__,
+                                       label or labelize(func.__name__),
+                                       icon,
+                                       permission,
+                                       order,
+                                       css_class,
+                                       visible=visible)
 
         return _inner
 
