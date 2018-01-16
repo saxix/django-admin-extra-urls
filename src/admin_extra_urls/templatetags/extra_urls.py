@@ -8,17 +8,15 @@ from admin_extra_urls.extras import ExtraUrlOptions
 
 register = template.Library()
 
-
-@register.assignment_tag(takes_context=True)
-def has_permission(context, perm_name):
-    warnings.warn(
-        "`has_permission` has been deprecated in admin-extra-urls 1.6"
-        " and will be removed. See `eval_extra_options` ",
-        DeprecationWarning
-    )
-    return False
-
-
+#
+# @register.assignment_tag(takes_context=True)
+# def has_permission(context, perm_name):
+#     warnings.warn(
+#         "`has_permission` has been deprecated in admin-extra-urls 1.6"
+#         " and will be removed. See `eval_extra_options` ",
+#         DeprecationWarning
+#     )
+#     return False
 #     if not perm_name:
 #         return True
 #     request = context['request']

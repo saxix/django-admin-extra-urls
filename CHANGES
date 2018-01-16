@@ -1,9 +1,14 @@
+Release 1.7
+-----------
+* removed deprecated `has_permission`
+* add support django 2.0
+
+
 Release 1.6
 -----------
 * dropped support for django 1.8
 * `action()` default behaviour  do not display button if in `add` mode
 * all `**kwargs` passed to action() will be passed to decorated method
-* deprecated `has_permission` templatetag
 * deprecated `has_permission` templatetag
 
 
