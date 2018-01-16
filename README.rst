@@ -51,42 +51,29 @@ How to use it
 
 You don't need to return a HttpResponse. The default behavior is:
 
-    - with `link()` browser will be redirected to ``changelist_view``
+    - with `link()` button is displayed in the 'list' view and the browser will be redirected to ``changelist_view``
 
-    - with `action()` browser will be redirected to ``change_view``
-
-
-`link()` / action() options
----------------------------
-
-`path=None`
-
-path url path for the action. will be the url where the button will point to.
-
-label=`None`
-
-label for the button. by default the "labelized" function name
-
-`icon=''`
-
-icon for the button
-
-`permission=None`
-
-permission required to use the button. can be a callable qith the current object as argument.
-
-`css_class="btn btn-success"`
-
-extra css classes to use for the button
-
-`order=999`
-
-in case of multiple button the order to use
+    - with `action()`  button is displayed in the 'update' view and the browser will be redirected to ``change_view``
 
 
-`visible=lambda o: o and o.pk`
+link() / action() options
+-------------------------
 
-callable or bool. By default do not display the button if in `add` mode
++------------+----------------------+----------------------------------------------------------------------------------------+
+| path       | None                 | path url path for the action. will be the url where the button will point to.          |
++------------+----------------------+----------------------------------------------------------------------------------------+
+| label      | None                 | label for the button. by default the "labelized" function name                         |
++------------+----------------------+----------------------------------------------------------------------------------------+
+| icon       | ''                   | icon for the button                                                                    |
++------------+----------------------+----------------------------------------------------------------------------------------+
+| permission | None                 | permission required to use the button. can be a callable (current object as argument). |
++------------+----------------------+----------------------------------------------------------------------------------------+
+| css_class  | "btn btn-success"    | extra css classes to use for the button                                                |
++------------+----------------------+----------------------------------------------------------------------------------------+
+| order      | 999                  | in case of multiple button the order to use                                            |
++------------+----------------------+----------------------------------------------------------------------------------------+
+| visible    | lambda o: o and o.pk | callable or bool. By default do not display the button if in `add` mode                |
++-----------------------------------+----------------------------------------------------------------------------------------+
 
 
 *Note*
