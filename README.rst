@@ -102,15 +102,14 @@ Links
 .. |master-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=master
                     :target: http://travis-ci.org/saxix/django-admin-extra-urls/
 
-.. |master-cov| image:: https://coveralls.io/repos/saxix/django-admin-extra-urls/badge.png?branch=master
-                    :target: https://coveralls.io/r/saxix/django-admin-extra-urls
-
+.. |master-cov| image:: https://codecov.io/gh/saxix/django-admin-extra-urls/branch/master/graph/badge.svg
+                    :target: https://codecov.io/gh/saxix/django-admin-extra-urls
 
 .. |dev-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=develop
                   :target: http://travis-ci.org/saxix/django-admin-extra-urls/
 
-.. |dev-cov| image:: https://coveralls.io/repos/saxix/django-admin-extra-urls/badge.png?branch=develop
-                :target: https://coveralls.io/r/saxix/django-admin-extra-urls
+.. |dev-cov| image:: https://codecov.io/gh/saxix/django-admin-extra-urls/branch/develop/graph/badge.svg
+                    :target: https://codecov.io/gh/saxix/django-admin-extra-urls
 
 
 .. |python| image:: https://pypip.in/py_versions/admin-extra-urls/badge.svg
