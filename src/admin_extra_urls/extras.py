@@ -10,8 +10,13 @@ from django.conf import settings
 from django.conf.urls import url
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+
 from django.http import HttpResponse, HttpResponseRedirect
+
+try:
+    from django.urls import reverse  # django 2.0
+except ImportError:
+    from django.core.urlresolvers import reverse
 
 
 def labelize(label):

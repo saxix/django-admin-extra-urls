@@ -1,7 +1,6 @@
 {% load extra_urls i18n admin_static admin_list admin_urls %}
 
 {% for method_name,urlattrs in adminform.model_admin.extra_detail_buttons %}
-{% has_permission options.perm as authorized %}
 {% if authorized and options.visible%}
 {% nlless %}
 <li>{% if original.pk %}

@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from admin_extra_urls.extras import ExtraUrlMixin, link, action
+from admin_extra_urls.extras import ExtraUrlMixin, link, action, reverse
 from admin_extra_urls.mixins import _confirm_action
 from admin_extra_urls.upload import UploadMixin
 from .models import DemoModel1, DemoModel2, DemoModel3, DemoModel4

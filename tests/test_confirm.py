@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
-from django.core.urlresolvers import reverse
+from admin_extra_urls.extras import reverse
 
 logger = logging.getLogger(__name__)
 
 
-def test_confirm(app, admin_user):
+def test_confirm(django_app, admin_user):
     url = reverse('admin:demo_demomodel1_changelist')
-    res = app.get(url, user=admin_user)
+    res = django_app.get(url, user=admin_user)
     res = res.click('Confirm')
     assert str(res.content).find("Confirm action")
     res = res.form.submit().follow()
