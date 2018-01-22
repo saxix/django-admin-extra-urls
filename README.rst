@@ -74,8 +74,8 @@ link() / action() options
 +------------+----------------------+----------------------------------------------------------------------------------------+
 | order      | 999                  | in case of multiple button the order to use                                            |
 +------------+----------------------+----------------------------------------------------------------------------------------+
-| visible    | lambda o: o and o.pk | callable or bool. By default do not display the button if in `add` mode                |
-+-----------------------------------+----------------------------------------------------------------------------------------+
+| visible    | lambda o: o and o.pk | callable or bool. By default do not display "action" button if in `add` mode           |
++------------+----------------------+----------------------------------------------------------------------------------------+
 
 
 *Note*
@@ -83,6 +83,25 @@ link() / action() options
     The package contains a ``UploadMixin`` to manage custom file uploads
     (simply set `upload_handler` to a function.
     This can be checked to see how to create wizard with an intermediate form.
+
+
+Integration with other libraries
+--------------------------------
+
+django-import-export
+~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    @admin.register(Rule)
+    class RuleAdmin(ExtraUrlMixin, ImportExportMixin, BaseModelAdmin):
+        @link(label='Export')
+        def _export(self, request):
+            return self.export_action(request)
+
+        @link(label='Import')
+        def _import(self, request):
+            return self.import_action(request)
 
 
 Links
