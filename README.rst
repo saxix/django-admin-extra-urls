@@ -36,6 +36,8 @@ How to use it
 
 .. code-block:: python
 
+    from admin_extra_urls.extras import ExtraUrlMixin, link, action
+    
     class MyModelModelAdmin(ExtraUrlMixin, admin.ModelAdmin):
 
         @link() # /admin/myapp/mymodel/update_all/
