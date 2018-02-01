@@ -37,7 +37,7 @@ How to use it
 .. code-block:: python
 
     from admin_extra_urls.extras import ExtraUrlMixin, link, action
-    
+
     class MyModelModelAdmin(ExtraUrlMixin, admin.ModelAdmin):
 
         @link() # /admin/myapp/mymodel/update_all/
@@ -138,10 +138,6 @@ Links
 .. |license| image:: https://pypip.in/license/admin-extra-urls/badge.svg
     :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: License
-
-.. image:: https://pypip.in/wheel/admin-extra-urls/badge.svg
-    :target: https://pypi.python.org/pypi/admin-extra-urls/
-    :alt: Wheel Status
 
 .. |travis| image:: https://travis-ci.org/saxix/django-admin-extra-urls.svg?branch=develop
     :target: https://travis-ci.org/saxix/django-admin-extra-urls
