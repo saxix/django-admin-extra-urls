@@ -1,3 +1,5 @@
+import django
+
 DEBUG = True
 STATIC_URL = '/static/'
 
@@ -14,9 +16,7 @@ INSTALLED_APPS = ['django.contrib.auth',
                   'django.contrib.admin',
                   'admin_extra_urls',
                   'demo']
-import django
-
-if django.VERSION[0] == 2 :
+if django.VERSION[0] == 2:
     MIDDLEWARE = (
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
@@ -35,52 +35,9 @@ else:
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
     )
 
-xLOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'full': {
-            'format': '%(levelname)-8s: %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-        'verbose': {
-            'format': '%(levelname)-8s: %(asctime)s %(name)-25s %(message)s'
-        },
-        'simple': {
-            'format': '%(levelname)-8s %(asctime)s %(name)-25s %(funcName)s %(message)s'
-        },
-        'debug': {
-            'format': '%(levelno)s:%(levelname)-8s %(name)s %(funcName)s:%(lineno)s:: %(message)s'
-        }
-    },
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'null': {
-            'level': 'DEBUG',
-            'class': 'django.utils.log.NullHandler'
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'debug'
-        }
-    },
-    'loggers': {
-        'concurrency': {
-            'handlers': ['null'],
-            'propagate': False,
-            'level': 'DEBUG'
-        }
-    }
-}
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'admin_extra_urls.sqlite',
         'HOST': '',
         'PORT': ''}}
 

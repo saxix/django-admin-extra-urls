@@ -36,6 +36,8 @@ How to use it
 
 .. code-block:: python
 
+    from admin_extra_urls.extras import ExtraUrlMixin, link, action
+
     class MyModelModelAdmin(ExtraUrlMixin, admin.ModelAdmin):
 
         @link() # /admin/myapp/mymodel/update_all/
@@ -46,7 +48,7 @@ How to use it
 
         @action() # /admin/myapp/mymodel/update/10/
         def update(self, request, pk):
-            ...
+            obj = self.get_object(pk=pk)
             ...
 
 You don't need to return a HttpResponse. The default behavior is:
@@ -66,21 +68,34 @@ link() / action() options
 +------------+----------------------+----------------------------------------------------------------------------------------+
 | icon       | ''                   | icon for the button                                                                    |
 +------------+----------------------+----------------------------------------------------------------------------------------+
-| permission | None                 | permission required to use the button. can be a callable (current object as argument). |
+| permission | None                 | permission required to use the button. Can be a callable (current object as argument). |
 +------------+----------------------+----------------------------------------------------------------------------------------+
 | css_class  | "btn btn-success"    | extra css classes to use for the button                                                |
 +------------+----------------------+----------------------------------------------------------------------------------------+
 | order      | 999                  | in case of multiple button the order to use                                            |
 +------------+----------------------+----------------------------------------------------------------------------------------+
-| visible    | lambda o: o and o.pk | callable or bool. By default do not display the button if in `add` mode                |
-+-----------------------------------+----------------------------------------------------------------------------------------+
+| visible    | lambda o: o and o.pk | callable or bool. By default do not display "action" button if in `add` mode           |
++------------+----------------------+----------------------------------------------------------------------------------------+
 
 
-*Note*
 
-    The package contains a ``UploadMixin`` to manage custom file uploads
-    (simply set `upload_handler` to a function.
-    This can be checked to see how to create wizard with an intermediate form.
+Integration with other libraries
+--------------------------------
+
+django-import-export
+~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    @admin.register(Rule)
+    class RuleAdmin(ExtraUrlMixin, ImportExportMixin, BaseModelAdmin):
+        @link(label='Export')
+        def _export(self, request):
+            return self.export_action(request)
+
+        @link(label='Import')
+        def _import(self, request):
+            return self.import_action(request)
 
 
 Links
@@ -102,15 +117,14 @@ Links
 .. |master-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=master
                     :target: http://travis-ci.org/saxix/django-admin-extra-urls/
 
-.. |master-cov| image:: https://coveralls.io/repos/saxix/django-admin-extra-urls/badge.png?branch=master
-                    :target: https://coveralls.io/r/saxix/django-admin-extra-urls
-
+.. |master-cov| image:: https://codecov.io/gh/saxix/django-admin-extra-urls/branch/master/graph/badge.svg
+                    :target: https://codecov.io/gh/saxix/django-admin-extra-urls
 
 .. |dev-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=develop
                   :target: http://travis-ci.org/saxix/django-admin-extra-urls/
 
-.. |dev-cov| image:: https://coveralls.io/repos/saxix/django-admin-extra-urls/badge.png?branch=develop
-                :target: https://coveralls.io/r/saxix/django-admin-extra-urls
+.. |dev-cov| image:: https://codecov.io/gh/saxix/django-admin-extra-urls/branch/develop/graph/badge.svg
+                    :target: https://codecov.io/gh/saxix/django-admin-extra-urls
 
 
 .. |python| image:: https://pypip.in/py_versions/admin-extra-urls/badge.svg
@@ -124,10 +138,6 @@ Links
 .. |license| image:: https://pypip.in/license/admin-extra-urls/badge.svg
     :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: License
-
-.. image:: https://pypip.in/wheel/admin-extra-urls/badge.svg
-    :target: https://pypi.python.org/pypi/admin-extra-urls/
-    :alt: Wheel Status
 
 .. |travis| image:: https://travis-ci.org/saxix/django-admin-extra-urls.svg?branch=develop
     :target: https://travis-ci.org/saxix/django-admin-extra-urls

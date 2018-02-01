@@ -1,6 +1,8 @@
 coverage
-django_dynamic_fixture<=1.9
+django_dynamic_fixture
 django_webtest
+pdbpp
+pyquery
 pytest
 pytest-cov
 pytest-django
