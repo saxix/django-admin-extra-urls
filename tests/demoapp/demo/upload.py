@@ -4,7 +4,7 @@ from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 
-from .extras import ExtraUrlMixin, link, reverse
+from admin_extra_urls.extras import ExtraUrlMixin, link, reverse
 
 
 class UploadMixin(ExtraUrlMixin):

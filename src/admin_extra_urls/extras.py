@@ -1,22 +1,18 @@
 # -*- coding: utf-8 -*-
 import inspect
-import warnings
-from collections import namedtuple
-from functools import update_wrapper
 
 import six
+from collections import namedtuple
+from functools import update_wrapper
 
 from django.conf import settings
 from django.conf.urls import url
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.exceptions import PermissionDenied
-
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.http import urlencode
 
-try:
-    from django.urls import reverse  # django 2.0
-except ImportError:
-    from django.core.urlresolvers import reverse
+from admin_extra_urls.comapt import getfullargspec, reverse
 
 
 def labelize(label):
@@ -30,9 +26,26 @@ class ExtraUrlConfigException(RuntimeError):
 IS_GRAPPELLI_INSTALLED = 'grappelli' in settings.INSTALLED_APPS
 
 ExtraUrlConfig = namedtuple('ExtraUrlConfig', 'path,label,icon,perm,order,css_class,visible')
-ExtraUrlOptions = namedtuple('ExtraUrlOptions', 'path,label,icon,perm,order,css_class,visible,authorized,method')
+ExtraUrlOptions = namedtuple('ExtraUrlOptions',
+                             'path,querystring,label,icon,perm,order,css_class,visible,authorized,method')
 
 NOTSET = object()
+
+
+def encapsulate(func):
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def check_permission(permission, request, obj=None):
+    if callable(permission):
+        if not permission(request, obj):
+            raise PermissionDenied
+    elif not request.user.has_perm(permission):
+        raise PermissionDenied
+    return True
 
 
 def link(path=None, label=None, icon='', permission=None,
@@ -49,29 +62,35 @@ def link(path=None, label=None, icon='', permission=None,
     :param required permission to run the action
 
     """
+
     if callable(permission):
         permission = encapsulate(permission)
 
     def link_decorator(func):
-        def _inner(self, *args, **kwargs):
+        args = getfullargspec(func).args
+        if len(args) < 2:  # pragma: no cover
+            raise ValueError('AdminExtraUrls: error decorating `{0}`. '
+                             'Link methods need at least 2 arguments '
+                             '(ie. action(self,request,*args, **kwargs)'.format(func.__name__))
+
+        def _inner(self, request, *args, **kwargs):
             if permission:
-                if callable(permission):
-                    permission(args[0])
-                elif not args[0].user.has_perm(permission):
-                    raise PermissionDenied
-            ret = func(self, *args, **kwargs)
+                check_permission(permission, request)
+            ret = func(self, request, *args, **kwargs)
             if not isinstance(ret, HttpResponse):
                 url = reverse(admin_urlname(self.model._meta, 'changelist'))
-                return HttpResponseRedirect(url)
+                filters = request.GET.get('_changelist_filters', '')
+                return HttpResponseRedirect("?".join([url, filters]))
             return ret
 
-        _inner.link = ExtraUrlConfig(path or func.__name__,
-                                     label or labelize(func.__name__),
-                                     icon,
-                                     permission,
-                                     order,
-                                     css_class,
-                                     visible)
+        _inner.func = func
+        _inner.link = ExtraUrlConfig(path=path or func.__name__,
+                                     label=label or labelize(func.__name__),
+                                     icon=icon,
+                                     perm=permission,
+                                     order=order,
+                                     css_class=css_class,
+                                     visible=visible)
 
         return _inner
 
@@ -80,7 +99,7 @@ def link(path=None, label=None, icon='', permission=None,
 
 def action(path=None, label=None, icon='', permission=None,
            css_class="btn btn-success", order=999, visible=lambda o: o and o.pk,
-           exclude_if_adding=NOTSET, **kwargs):
+           **kwargs):
     """
     decorator to mark ModelAdmin method as 'url' action.
 
@@ -94,27 +113,29 @@ def action(path=None, label=None, icon='', permission=None,
 
     """
 
-    if exclude_if_adding != NOTSET:
-        warnings.warn("exclude_if_adding has not effect", DeprecationWarning)
-
     if callable(permission):
         permission = encapsulate(permission)
 
     def action_decorator(func):
-        def _inner(self, request, pk, **kwargs):
-            obj = self.model.objects.get(pk=pk)
+        args = getfullargspec(func).args
+        if len(args) < 3:  # pragma: no cover
+            raise ValueError('AdminExtraUrls: error decorating `{0}`. '
+                             'Action methods need at least 3 arguments '
+                             '(ie. action(self,request,id,*args, **kwargs)'.format(func.__name__))
+
+        def _inner(modeladmin, request, pk, *args, **kwargs):
             if permission:
-                if callable(permission):
-                    permission(request, obj)
-                elif not request.user.has_perm(permission, obj):
-                    raise PermissionDenied
-            # TODO: check arguments to be sure both request and pk are passed
-            ret = func(self, request, pk, **kwargs)
+                obj = modeladmin.model.objects.get(pk=pk)
+                check_permission(permission, request, obj)
+
+            ret = func(modeladmin, request, pk, *args, **kwargs)
 
             if not isinstance(ret, HttpResponse):
-                url = reverse(admin_urlname(self.model._meta, 'change'),
+                url = reverse(admin_urlname(modeladmin.model._meta, 'change'),
                               args=[pk])
-                return HttpResponseRedirect(url)
+                preserved_filters = request.GET.get('_changelist_filters', '')
+                filters = urlencode({'_changelist_filters': preserved_filters})
+                return HttpResponseRedirect("?".join([url, filters]))
             return ret
 
         _inner.action = ExtraUrlConfig(path or func.__name__,
@@ -130,18 +151,11 @@ def action(path=None, label=None, icon='', permission=None,
     return action_decorator
 
 
-def encapsulate(func):
-    def wrapper(*args, **kwargs):
-        return func
-
-    return wrapper
-
-
 class ExtraUrlMixin(object):
     """
     Allow to add new 'url' to the standard ModelAdmin
     """
-    if IS_GRAPPELLI_INSTALLED:
+    if IS_GRAPPELLI_INSTALLED:  # pragma: no cover
         change_list_template = 'admin_extra_urls/grappelli/change_list.html'
         change_form_template = 'admin_extra_urls/grappelli/change_form.html'
     else:

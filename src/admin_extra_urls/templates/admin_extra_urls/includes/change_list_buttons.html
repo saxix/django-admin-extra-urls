@@ -4,7 +4,7 @@
     {% eval_extra_options method_name urlattrs as options %}
     {% if options.visible and options.authorized %}
         {% spaceless %}<li>
-            <a id="btn-{{method_name}}" href="{% url cl.opts|admin_urlname:method_name %}{% if is_popup %}?_popup=1{% endif %}"
+            <a id="btn-{{method_name}}" href="{% url cl.opts|admin_urlname:method_name %}?{{ options.querystring }}{% if is_popup %}&_popup=1{% endif %}"
                class="historylink extra-link {{options.css_class}} {{method_name}}">
                 {% if options.icon %}
                     <i class="{{ options.icon }} icon-white"></i>&nbsp;

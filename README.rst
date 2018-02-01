@@ -48,7 +48,7 @@ How to use it
 
         @action() # /admin/myapp/mymodel/update/10/
         def update(self, request, pk):
-            ...
+            obj = self.get_object(pk=pk)
             ...
 
 You don't need to return a HttpResponse. The default behavior is:
@@ -68,7 +68,7 @@ link() / action() options
 +------------+----------------------+----------------------------------------------------------------------------------------+
 | icon       | ''                   | icon for the button                                                                    |
 +------------+----------------------+----------------------------------------------------------------------------------------+
-| permission | None                 | permission required to use the button. can be a callable (current object as argument). |
+| permission | None                 | permission required to use the button. Can be a callable (current object as argument). |
 +------------+----------------------+----------------------------------------------------------------------------------------+
 | css_class  | "btn btn-success"    | extra css classes to use for the button                                                |
 +------------+----------------------+----------------------------------------------------------------------------------------+
@@ -77,12 +77,6 @@ link() / action() options
 | visible    | lambda o: o and o.pk | callable or bool. By default do not display "action" button if in `add` mode           |
 +------------+----------------------+----------------------------------------------------------------------------------------+
 
-
-*Note*
-
-    The package contains a ``UploadMixin`` to manage custom file uploads
-    (simply set `upload_handler` to a function.
-    This can be checked to see how to create wizard with an intermediate form.
 
 
 Integration with other libraries

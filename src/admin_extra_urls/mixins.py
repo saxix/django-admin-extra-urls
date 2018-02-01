@@ -2,11 +2,12 @@
 from __future__ import absolute_import, unicode_literals
 
 import logging
-from django.contrib import messages
 
+from django.contrib import messages
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
+
 from .extras import reverse
 
 logger = logging.getLogger(__name__)

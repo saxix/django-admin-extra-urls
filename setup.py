@@ -1,16 +1,24 @@
 #!/usr/bin/env python
+import ast
 import codecs
 import os
 import sys
 
+import re
 from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
-sys.path.insert(0, os.path.join(ROOT, 'src'))
+init = os.path.join(ROOT, 'src', 'admin_extra_urls', '__init__.py')
 
-app = __import__('admin_extra_urls')
 
+_version_re = re.compile(r'__version__\s+=\s+(.*)')
+_name_re = re.compile(r'NAME\s+=\s+(.*)')
+
+with open(init, 'rb') as f:
+    content = f.read().decode('utf-8')
+    version = str(ast.literal_eval(_version_re.search(content).group(1)))
+    name = str(ast.literal_eval(_name_re.search(content).group(1)))
 
 def read(*parts):
     here = os.path.abspath(os.path.dirname(__file__))
@@ -43,8 +51,8 @@ if 'test' in sys.argv:
 
 
 setup(
-    name=app.NAME,
-    version=app.get_version(),
+    name=name,
+    version=version,
     url='https://github.com/saxix/django-admin-extra-urls',
     download_url='https://pypi.python.org/pypi/admin-extra-urls',
 

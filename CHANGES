@@ -1,3 +1,10 @@
+Release 1.8
+-----------
+* standard "post action redirect" now preserve existing filters
+* check arguments of decorated methods
+* fixes permission check using callable
+* removed UploadMixin. It is now part of the demo app.
+
 Release 1.7
 -----------
 * removed deprecated `has_permission`

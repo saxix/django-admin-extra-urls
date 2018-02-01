@@ -5,7 +5,7 @@
     {% if options.visible and options.authorized %}
         {% nlless %}<li>
             <a id="btn-{{method_name}}"
-               href="{% if original.pk %}{% url opts|admin_urlname:method_name original.pk %}{% if is_popup %}?_popup=1{% endif %}{%else%}#{%endif%}"
+               href="{% if original.pk %}{% url opts|admin_urlname:method_name original.pk %}?{{ options.querystring }}{% if is_popup %}&_popup=1{% endif %}{%else%}#{%endif%}"
                class="extra-link {{options.css_class}} {{options.method_name}}">
                 {% if icon %}
                     <i class="{{ options.icon }}"></i>&nbsp;
