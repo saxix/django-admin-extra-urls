@@ -38,7 +38,6 @@ else:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'admin_extra_urls.sqlite',
         'HOST': '',
         'PORT': ''}}
 
