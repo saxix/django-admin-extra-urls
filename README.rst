@@ -127,15 +127,15 @@ Links
                     :target: https://codecov.io/gh/saxix/django-admin-extra-urls
 
 
-.. |python| image:: https://pypip.in/py_versions/admin-extra-urls/badge.svg
+.. |python| image:: https://img.shields.io/pypi/pyversions/admin-extra-urls.svg
     :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: Supported Python versions
 
-.. |pypi| image:: https://pypip.in/version/admin-extra-urls/badge.svg?text=version
+.. |pypi| image:: https://img.shields.io/pypi/v/admin-extra-urls.svg?label=version
     :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: Latest Version
 
-.. |license| image:: https://pypip.in/license/admin-extra-urls/badge.svg
+.. |license| image:: https://img.shields.io/pypi/l/admin-extra-urls.svg
     :target: https://pypi.python.org/pypi/admin-extra-urls/
     :alt: License
 
