@@ -110,7 +110,7 @@ Links
 +--------------------+---------------+---------------------------------------------+
 | Issue tracker:     |https://github.com/saxix/django-admin-extra-urls/issues?sort |
 +--------------------+---------------+---------------------------------------------+
-| Download:          |http://pypi.python.org/pypi/django-admin-extra-urls/         |
+| Download:          |http://pypi.python.org/pypi/admin-extra-urls/                |
 +--------------------+---------------+---------------------------------------------+
 
 
