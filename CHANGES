@@ -1,3 +1,9 @@
+Release 1.9
+-----------
+* Fixed the link css classes (issue #15)
+* Fixed broken download url (issue #12)
+* Fixed broken pypip.in badges (issue #11)
+
 Release 1.8
 -----------
 * standard "post action redirect" now preserve existing filters
