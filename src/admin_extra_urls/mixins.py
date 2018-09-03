@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 import logging
 
 from django.contrib import messages
@@ -13,12 +11,19 @@ from .extras import reverse
 logger = logging.getLogger(__name__)
 
 
+class ActionFailed(Exception):
+    pass
+
+
 def _confirm_action(modeladmin, request,
                     action, message,
                     success_message="",
                     description='',
                     pk=None,
-                    extra_context=None, **kwargs):
+                    extra_context=None,
+                    template='admin_extra_urls/confirm.html',
+                    error_message=None,
+                    **kwargs):
     opts = modeladmin.model._meta
     context = dict(
         modeladmin.admin_site.each_context(request),
@@ -31,13 +36,18 @@ def _confirm_action(modeladmin, request,
         context.update(extra_context)
 
     if request.method == 'POST':
-        ret = action(request)
-        modeladmin.message_user(request, success_message, messages.SUCCESS)
+        ret = None
+        try:
+            ret = action(request)
+            modeladmin.message_user(request, success_message, messages.SUCCESS)
+        except Exception as e:
+            modeladmin.message_user(request, error_message or str(e), messages.ERROR)
+
         return ret or HttpResponseRedirect(reverse(admin_urlname(opts,
                                                                  'changelist')))
 
     return TemplateResponse(request,
-                            'admin_extra_urls/confirm.html',
+                            template,
                             context)
 
 # class ConfirmActionMixin(object):

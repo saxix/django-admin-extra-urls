@@ -3,7 +3,8 @@
 import pytest
 from django.core.exceptions import PermissionDenied
 
-from admin_extra_urls.extras import reverse, check_permission
+from admin_extra_urls.extras import check_permission
+
 
 def test_check_permission(rf, staff_user, admin_user):
     request = rf.get('/')
@@ -12,8 +13,8 @@ def test_check_permission(rf, staff_user, admin_user):
         check_permission('demo_add_demomodel1', request)
 
     with pytest.raises(PermissionDenied):
-        check_permission(lambda r,o: False, request)
+        check_permission(lambda r, o: False, request)
 
     request.user = admin_user
     assert check_permission('demo_add_demomodel1', request)
-    assert check_permission(lambda r,o: True, request)
+    assert check_permission(lambda r, o: True, request)

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import inspect
-
 import six
 from collections import namedtuple
 from functools import update_wrapper

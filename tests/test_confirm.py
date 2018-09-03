@@ -23,9 +23,9 @@ def test_confirm_action(rf, staff_user):
     request = rf.get('/customer/details')
     request.user = staff_user
     _confirm_action(site._registry[DemoModel1], request,
-                          lambda r: True,
-                          "Confirm action",
-                          "Successfully executed",
-                          description="",
-                          pk=None,
-                          extra_context={'a': 1})
+                    lambda r: True,
+                    "Confirm action",
+                    "Successfully executed",
+                    description="",
+                    pk=None,
+                    extra_context={'a': 1})
