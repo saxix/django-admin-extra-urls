@@ -1,3 +1,8 @@
+Release 1.10
+-----------
+* add Django 2.1 support
+* Updates _confirm_action utility to properly handle exceptions
+
 Release 1.9
 -----------
 * Fixed the link css classes (issue #15)
