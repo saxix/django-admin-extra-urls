@@ -10,9 +10,8 @@ from django.conf.urls import url
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.utils.http import urlencode
-
-from admin_extra_urls.comapt import getfullargspec, reverse
 
 
 def labelize(label):
@@ -67,7 +66,7 @@ def link(path=None, label=None, icon='', permission=None,
         permission = encapsulate(permission)
 
     def link_decorator(func):
-        args = getfullargspec(func).args
+        args = inspect.getfullargspec(func).args
         if len(args) < 2:  # pragma: no cover
             raise ValueError('AdminExtraUrls: error decorating `{0}`. '
                              'Link methods need at least 2 arguments '
@@ -117,7 +116,7 @@ def action(path=None, label=None, icon='', permission=None,
         permission = encapsulate(permission)
 
     def action_decorator(func):
-        args = getfullargspec(func).args
+        args = inspect.getfullargspec(func).args
         if len(args) < 3:  # pragma: no cover
             raise ValueError('AdminExtraUrls: error decorating `{0}`. '
                              'Action methods need at least 3 arguments '
