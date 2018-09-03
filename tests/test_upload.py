@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from admin_extra_urls.extras import reverse, check_permission
+from admin_extra_urls.extras import reverse
 
 
 def test_upload(app, admin_user):
