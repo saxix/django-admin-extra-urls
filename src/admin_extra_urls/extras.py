@@ -54,10 +54,25 @@ def link(path=None, label=None, icon='', permission=None,
     Each decorated method will be added to the ModelAdmin.urls and
     appear as button close to the 'Add <model>'.
 
-    :param path url path for the action
-    :param label button label
-    :param icon button icon
-    :param required permission to run the action
+
+    :param path: The name to use.
+    :type path: str.
+
+    - *path*:
+        suffix to use to build url. Default: method name
+    - **label**:
+        label to display. Default: cleanded/titled version of method name
+    - icon
+        Fontawesome style icon.
+        If set ``<i class="{{ options.icon }}"></i>`` will be prepend to the button label
+
+    - css_class:
+        CSS class to set. Default: "btn btn-success"
+    - permission:
+
+    - order:
+
+    - visible:
 
     """
 
@@ -102,7 +117,7 @@ def action(path=None, label=None, icon='', permission=None,
     decorator to mark ModelAdmin method as 'url' action.
 
     Each decorated method will be added to the ModelAdmin.urls and
-    appear as button close to the 'Add <model>'.
+    appear as button into the edit page
 
     :param path url path for the action
     :param label button label

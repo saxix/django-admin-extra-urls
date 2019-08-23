@@ -1,6 +1,14 @@
+Release 2.2
+-----------
+* add support Django 2.2
+* dropped support Python <3.5
+* dropped support Django <2.0
+
+
 Release 2.1
 -----------
 * code cleanup
+
 
 Release 2.0
 -----------
@@ -9,11 +17,13 @@ Release 2.0
 * add Django 2.1 support
 * Updates _confirm_action utility to properly handle exceptions
 
+
 Release 1.9
 -----------
 * Fixed the link css classes (issue #15)
 * Fixed broken download url (issue #12)
 * Fixed broken pypip.in badges (issue #11)
+
 
 Release 1.8
 -----------
@@ -21,6 +31,7 @@ Release 1.8
 * check arguments of decorated methods
 * fixes permission check using callable
 * removed UploadMixin. It is now part of the demo app.
+
 
 Release 1.7
 -----------
