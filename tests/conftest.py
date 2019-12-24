@@ -1,6 +1,5 @@
 import django_webtest
 import pytest
-
 from demo.models import DemoModel2
 
 
@@ -25,4 +24,3 @@ def staff_user(request, django_user_model, django_username_field):
                                                                   'is_staff': True})
 
     return user
-

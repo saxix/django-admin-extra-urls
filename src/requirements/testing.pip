@@ -1,5 +1,5 @@
 coverage
-django_dynamic_fixture
+factory-boy
 django_webtest
 pdbpp
 pyquery
