@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from admin_extra_urls.extras import reverse
 
 

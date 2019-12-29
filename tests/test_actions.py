@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
-
+import factory
 import pytest
+from demo.models import DemoModel2
 from django.contrib.auth.models import Permission
-from django_dynamic_fixture import G
 
 from admin_extra_urls.extras import reverse
-from demo.models import DemoModel2
+
+
+class DemoModel2Factory(factory.DjangoModelFactory):
+    class Meta:
+        model = DemoModel2
 
 
 @pytest.mark.django_db
@@ -26,7 +29,7 @@ def test_action_noresponse(app, demomodel2, admin_user):
 
 
 def test_action_preserve_filters(django_app, admin_user):
-    a, b, c = G(DemoModel2, n=3)
+    a, _, _ = DemoModel2Factory.create_batch(3)
     base_url = reverse('admin:demo_demomodel2_changelist')
     url = "%s?filter=on" % base_url
     res = django_app.get(url, user=admin_user)
@@ -36,7 +39,7 @@ def test_action_preserve_filters(django_app, admin_user):
 
 
 def test_action_permission(app, staff_user):
-    obj = G(DemoModel2)
+    obj = DemoModel2Factory()
     perms = Permission.objects.filter(codename__in=['change_demomodel2'])
     staff_user.user_permissions.add(*perms)
 
@@ -51,7 +54,7 @@ def test_action_permission(app, staff_user):
 
 
 def test_action_permission_callable(app, staff_user):
-    obj = G(DemoModel2)
+    obj = DemoModel2Factory()
     perms = Permission.objects.filter(codename__in=['change_demomodel2'])
     staff_user.user_permissions.add(*perms)
 

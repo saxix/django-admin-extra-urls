@@ -1,4 +1,4 @@
-{% load extra_urls i18n admin_static admin_list admin_urls %}
+{% load extra_urls i18n static admin_list admin_urls %}
 
 {% for method_name, urlattrs in adminform.model_admin.extra_detail_buttons %}
     {% eval_extra_options method_name urlattrs as options %}

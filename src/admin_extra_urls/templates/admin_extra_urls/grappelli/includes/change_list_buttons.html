@@ -1,4 +1,4 @@
-{% load extra_urls i18n admin_static admin_list admin_urls %}
+{% load extra_urls i18n static admin_list admin_urls %}
 
 {% for method_name,urlattrs in cl.model_admin.extra_buttons %}
     {% if options.authorized and options.visible %}

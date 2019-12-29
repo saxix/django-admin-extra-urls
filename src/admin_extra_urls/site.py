@@ -1,5 +1,2 @@
-# -*- coding: utf-8 -*-
-
-
-class AdminSiteMixin(object):
+class AdminSiteMixin:
     pass
