@@ -2,10 +2,12 @@ from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponseRedirect
-from admin_extra_urls.extras import ExtraUrlMixin, link, action, reverse
+
+from admin_extra_urls.extras import ExtraUrlMixin, action, link, reverse
 from admin_extra_urls.mixins import _confirm_action
-from .upload import UploadMixin
+
 from .models import DemoModel1, DemoModel2, DemoModel3, DemoModel4
+from .upload import UploadMixin
 
 
 class TestFilter(SimpleListFilter):

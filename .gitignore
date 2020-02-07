@@ -17,3 +17,6 @@
 /media
 /atlassian-ide-plugin.xml
 coverage.xml
+Pipfile
+Pipfile.lock
+.venv/

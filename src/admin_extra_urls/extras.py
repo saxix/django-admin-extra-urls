@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 import inspect
-import six
 from collections import namedtuple
 from functools import update_wrapper
 
@@ -54,10 +52,25 @@ def link(path=None, label=None, icon='', permission=None,
     Each decorated method will be added to the ModelAdmin.urls and
     appear as button close to the 'Add <model>'.
 
-    :param path url path for the action
-    :param label button label
-    :param icon button icon
-    :param required permission to run the action
+
+    :param path: The name to use.
+    :type path: str.
+
+    - *path*:
+        suffix to use to build url. Default: method name
+    - **label**:
+        label to display. Default: cleanded/titled version of method name
+    - icon
+        Fontawesome style icon.
+        If set ``<i class="{{ options.icon }}"></i>`` will be prepend to the button label
+
+    - css_class:
+        CSS class to set. Default: "btn btn-success"
+    - permission:
+
+    - order:
+
+    - visible:
 
     """
 
@@ -102,7 +115,7 @@ def action(path=None, label=None, icon='', permission=None,
     decorator to mark ModelAdmin method as 'url' action.
 
     Each decorated method will be added to the ModelAdmin.urls and
-    appear as button close to the 'Add <model>'.
+    appear as button into the edit page
 
     :param path url path for the action
     :param label button label
@@ -149,7 +162,7 @@ def action(path=None, label=None, icon='', permission=None,
     return action_decorator
 
 
-class ExtraUrlMixin(object):
+class ExtraUrlMixin:
     """
     Allow to add new 'url' to the standard ModelAdmin
     """
@@ -163,14 +176,14 @@ class ExtraUrlMixin(object):
     def __init__(self, model, admin_site):
         self.extra_buttons = []
         self.extra_detail_buttons = []
-        super(ExtraUrlMixin, self).__init__(model, admin_site)
+        super().__init__(model, admin_site)
 
     def get_urls(self):
         extra_buttons = []
         extra_detail_buttons = []
         extra_urls = {}
         for c in inspect.getmro(self.__class__):
-            for method_name, method in six.iteritems(c.__dict__):
+            for method_name, method in c.__dict__.items():
                 if hasattr(method, 'link'):
                     extra_urls[method_name] = (False, method_name,
                                                getattr(method, 'link'))
@@ -178,7 +191,7 @@ class ExtraUrlMixin(object):
                     extra_urls[method_name] = (True, method_name,
                                                getattr(method, 'action'))
 
-        original = super(ExtraUrlMixin, self).get_urls()
+        original = super().get_urls()
 
         def wrap(view):
             def wrapper(*args, **kwargs):

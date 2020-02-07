@@ -12,3 +12,12 @@ clean:
 fullclean:
 	@rm -rf .tox .cache
 	$(MAKE) clean
+
+docs:
+	rm -fr ~build/docs/
+	sphinx-build -n docs/ ~build/docs/
+
+
+.PHONY: build docs
+
+

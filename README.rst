@@ -91,6 +91,9 @@ django-import-export
     class RuleAdmin(ExtraUrlMixin, ImportExportMixin, BaseModelAdmin):
         @link(label='Export')
         def _export(self, request):
+            if '_changelist_filters' in request.GET:
+                real_query = QueryDict(request.GET.get('_changelist_filters'))
+                request.GET = real_query
             return self.export_action(request)
 
         @link(label='Import')

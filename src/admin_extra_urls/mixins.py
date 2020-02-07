@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import logging
 
 from django.contrib import messages
@@ -50,6 +49,6 @@ def _confirm_action(modeladmin, request,
                             template,
                             context)
 
-# class ConfirmActionMixin(object):
+# class ConfirmActionMixin:
 #     def _confirm(self, request, action, message, description='', info='', **kwargs):
 #         return _confirm_action(self, request, action, message, description, info, **kwargs)
