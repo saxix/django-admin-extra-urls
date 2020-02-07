@@ -6,7 +6,7 @@ from django.contrib.auth.models import Permission
 from admin_extra_urls.extras import reverse
 
 
-class DemoModel2Factory(factory.DjangoModelFactory):
+class DemoModel2Factory(factory.django.DjangoModelFactory):
     class Meta:
         model = DemoModel2
 
