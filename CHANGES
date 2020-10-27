@@ -1,6 +1,9 @@
 Release 2.3 (in development)
 -----------
-
+* add support Django 3.1
+* add support Python 3.9
+* dropped support to Django <2.2
+* dropped support to Python <3.6
 
 Release 2.2
 -----------
@@ -18,7 +21,7 @@ Release 2.1
 Release 2.0
 -----------
 * dropped support Python 2.x
-* dropped support Django < 2.0
+* dropped support Django <2.0
 * add Django 2.1 support
 * Updates _confirm_action utility to properly handle exceptions
 
