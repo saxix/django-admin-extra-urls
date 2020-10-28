@@ -1,7 +1,7 @@
 Release 2.3 (in development)
 -----------
-* add support Django 3.1
-* add support Python 3.9
+* added support Django 3.1
+* added support Python 3.9
 * dropped support to Django <2.2
 * dropped support to Python <3.6
 
