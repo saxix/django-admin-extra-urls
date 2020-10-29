@@ -3,7 +3,7 @@ from collections import namedtuple
 from functools import update_wrapper
 
 from django.conf import settings
-from django.conf.urls import url
+from django.conf.urls import re_path
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect
@@ -212,9 +212,9 @@ class ExtraUrlMixin:
                 uri = r'^%s/$' % options.path
                 extra_buttons.append([method_name, options])
 
-            extras.append(url(uri,
-                              wrap(getattr(self, method_name)),
-                              name='{}_{}_{}'.format(*info)))
+            extras.append(re_path(uri,
+                                  wrap(getattr(self, method_name)),
+                                  name='{}_{}_{}'.format(*info)))
         self.extra_buttons = sorted(extra_buttons, key=lambda d: d[-1].order)
         self.extra_detail_buttons = sorted(extra_detail_buttons, key=lambda d: d[-1].order)
 
