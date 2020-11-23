@@ -45,7 +45,7 @@ How to use it
         actions = ['smart_action']
 
         @extras.action() # /admin/myapp/mymodel/update_all/
-        def update_all(self, request):
+        def consolidate(self, request):
             ...
             ...
 
@@ -57,7 +57,7 @@ How to use it
 
         @extras.action() # /admin/myapp/mymodel/
         @extras.try_catch
-        def smart_action(self, request, queryset=None):
+        def call_handler(self, request, queryset=None):
             # apply actionnto the whole data without
             # check all
             if not queryset:
@@ -73,6 +73,8 @@ How to use it
                 return extras._confirm_action(self, request, self.truncate,
                                        'Continuing will erase the entire content of the table.',
                                        'Successfully executed', )
+
+
 
 You don't need to return a HttpResponse. The default behavior is:
 
