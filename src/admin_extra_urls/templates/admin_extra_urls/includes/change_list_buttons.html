@@ -1,7 +1,7 @@
 {% load extra_urls i18n static admin_list admin_urls %}
 {% for urlattrs in cl.model_admin.extra_actions %}
     {% bind urlattrs as options %}
-    {% if options.visible and options.authorized %}
+    {% if not options.details and options.visible and options.authorized %}
         {% include "admin_extra_urls/includes/button.html" with options=options %}
     {% endif %}
 {% endfor %}

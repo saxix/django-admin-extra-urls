@@ -41,15 +41,26 @@ class Button:
             self.authorized = user.has_perm(self._perm)
 
 
-class ButtonLink(Button):
+class ButtonHREF(Button):
 
     def url(self):
-        opts = self.context['opts']
         try:
             base_url = reverse(self.path)
         except NoReverseMatch:
-            base_url = self.path.format(opts=opts)
+            try:
+                base_url = self.path.format(**self.context.flatten())
+            except KeyError as e:
+                base_url = str(e)
+        self.label = base_url
         return "%s?%s" % (base_url, self.querystring)
+
+
+class ChangeFormButton(ButtonHREF):
+    details = True
+
+
+class ChangeListButton(ButtonHREF):
+    details = False
 
 
 class ButtonAction(Button):
@@ -67,5 +78,4 @@ class ButtonAction(Button):
                                args=[self.context['original'].pk])
         else:
             base_url = reverse(admin_urlname(opts, self.method))
-
         return "%s?%s" % (base_url, self.querystring)

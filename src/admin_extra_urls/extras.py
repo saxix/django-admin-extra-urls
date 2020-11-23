@@ -1,3 +1,3 @@
-from .config import ButtonAction, ButtonLink
-from .decorators import action, link, try_catch
-from .mixins import ExtraUrlMixin
+import warnings
+warnings.warn("extras is deprecated. Please use `from admon_extra_urls import api`", DeprecationWarning)
+from .api import *
