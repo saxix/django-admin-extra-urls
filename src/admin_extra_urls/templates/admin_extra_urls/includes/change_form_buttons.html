@@ -1,18 +1,9 @@
-{% load extra_urls i18n admin_static admin_list admin_urls %}
+{% load extra_urls i18n static admin_list admin_urls %}
 
-{% for method_name, urlattrs in adminform.model_admin.extra_detail_buttons %}
-    {% eval_extra_options method_name urlattrs as options %}
-    {% if options.visible and options.authorized %}
-        {% nlless %}<li>
-            <a id="btn-{{method_name}}"
-               href="{% if original.pk %}{% url opts|admin_urlname:method_name original.pk %}?{{ options.querystring }}{% if is_popup %}&_popup=1{% endif %}{%else%}#{%endif%}"
-               class="extra-link {{options.css_class}} {{options.method_name}}">
-                {% if icon %}
-                    <i class="{{ options.icon }}"></i>&nbsp;
-                {% endif %}
-                {{ options.label }}
-            </a></li>
-        {% endnlless %}
+{% for urlattrs in adminform.model_admin.extra_actions %}
+    {% bind urlattrs as options %}
+    {% if options.details and options.visible and options.authorized %}
+    {% include "admin_extra_urls/includes/button.html" with options=options %}
     {% endif %}
 {% endfor %}
 

@@ -1,13 +1,45 @@
+Release 3.1
+-----------
+* ButtonLink splitted in ChangeFormButton, ChangeListButton
+
+
+Release 3.0
+-----------
+* full code refactoring
+* new ButtonLink and `extra_buttons`
+* deprecate `link()` decorator
+* new decorator `try_catch` to  wrap action with try..catch and sent user feedback
+* drop support Django<2.2
+* project renamed as "django-admin-extra-urls"
+
+
+Release 2.3 (in development)
+-----------
+* added support Django 3.1
+* added support Python 3.9
+* dropped support to Django <2.2
+* dropped support to Python <3.6
+
+Release 2.2
+-----------
+* add support Django 3.0
+* add support Django 2.2
+* dropped support Python <3.5
+* dropped support Django <2.0
+
+
 Release 2.1
 -----------
 * code cleanup
 
+
 Release 2.0
 -----------
 * dropped support Python 2.x
-* dropped support Django < 2.0
+* dropped support Django <2.0
 * add Django 2.1 support
 * Updates _confirm_action utility to properly handle exceptions
+
 
 Release 1.9
 -----------
@@ -15,12 +47,14 @@ Release 1.9
 * Fixed broken download url (issue #12)
 * Fixed broken pypip.in badges (issue #11)
 
+
 Release 1.8
 -----------
 * standard "post action redirect" now preserve existing filters
 * check arguments of decorated methods
 * fixes permission check using callable
 * removed UploadMixin. It is now part of the demo app.
+
 
 Release 1.7
 -----------

@@ -1,15 +1,17 @@
-admin-extra-urls
-================
+django-admin-extra-urls
+=======================
+
+.. image:: https://raw.githubusercontent.com/saxix/django-admin-extra-urls/develop/docs/image.png
+    :scale: 80%
+    :align: center
 
 
 pluggable django application that offers one single mixin class ``ExtraUrlMixin``
 to easily add new url (and related buttons on the screen) to any ModelAdmin.
 
-It provides two decorators ``link()`` and ``action()``.
-
-- ``link()`` is intended to be used for multiple records. It will produce a button in the change list view.
-
-- ``action()`` works on a single record. It will produce a button in the change form view.
+- ``action()`` decorator It will produce a button in the change form view.
+- ``ChangeFormButton()`` to add button that pont to external urls.
+- ``ChangeListButton()`` to add button that pont to external urls.
 
 
 
@@ -18,7 +20,7 @@ Install
 
 .. code-block:: python
 
-    pip install admin-extra-urls
+    pip install django-admin-extra-urls
 
 
 After installation add it to ``INSTALLED_APPS``
@@ -36,29 +38,48 @@ How to use it
 
 .. code-block:: python
 
-    from admin_extra_urls.extras import ExtraUrlMixin, link, action
+    from admin_extra_urls import api as extras
 
-    class MyModelModelAdmin(ExtraUrlMixin, admin.ModelAdmin):
+    class MyModelModelAdmin(extras.ExtraUrlMixin, admin.ModelAdmin):
+        extra_buttons = [extras.ChangeFormButton('/{original.pk}/'),]
+        actions = ['smart_action']
 
-        @link() # /admin/myapp/mymodel/update_all/
+        @extras.action() # /admin/myapp/mymodel/update_all/
         def update_all(self, request):
             ...
             ...
 
-
-        @action() # /admin/myapp/mymodel/update/10/
+        @extras.action() # /admin/myapp/mymodel/update/10/
         def update(self, request, pk):
+            # if `pk` exists the button will be in change_form
             obj = self.get_object(pk=pk)
             ...
 
+        @extras.action() # /admin/myapp/mymodel/
+        @extras.try_catch
+        def smart_action(self, request, queryset=None):
+            # apply actionnto the whole data without
+            # check all
+            if not queryset:
+                queryset = self.model.objects.all()
+            ...
+
+        @extras.action(label='Truncate', permission=lambda request, obj: request.user.is_superuser)
+        def truncate(self, request):
+
+            if request.method == 'POST':
+                self.model.objects._truncate()
+            else:
+                return extras._confirm_action(self, request, self.truncate,
+                                       'Continuing will erase the entire content of the table.',
+                                       'Successfully executed', )
+
 You don't need to return a HttpResponse. The default behavior is:
 
-    - with `link()` button is displayed in the 'list' view and the browser will be redirected to ``changelist_view``
-
-    - with `action()`  button is displayed in the 'update' view and the browser will be redirected to ``change_view``
+    - if the  method contains the `pk` argument  button will be  displayed in the 'update' view and the browser will be redirected to ``change_view``
 
 
-link() / action() options
+action() options
 -------------------------
 
 +------------+----------------------+----------------------------------------------------------------------------------------+
@@ -89,11 +110,14 @@ django-import-export
 
     @admin.register(Rule)
     class RuleAdmin(ExtraUrlMixin, ImportExportMixin, BaseModelAdmin):
-        @link(label='Export')
+        @action(label='Export')
         def _export(self, request):
+            if '_changelist_filters' in request.GET:
+                real_query = QueryDict(request.GET.get('_changelist_filters'))
+                request.GET = real_query
             return self.export_action(request)
 
-        @link(label='Import')
+        @action(label='Import')
         def _import(self, request):
             return self.import_action(request)
 

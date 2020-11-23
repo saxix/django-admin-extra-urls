@@ -1,17 +1,8 @@
-{% load extra_urls i18n admin_static admin_list admin_urls %}
-
-{% for method_name,urlattrs in cl.model_admin.extra_buttons %}
-    {% eval_extra_options method_name urlattrs as options %}
-    {% if options.visible and options.authorized %}
-        {% spaceless %}<li>
-            <a id="btn-{{method_name}}" href="{% url cl.opts|admin_urlname:method_name %}?{{ options.querystring }}{% if is_popup %}&_popup=1{% endif %}"
-               class="historylink extra-link {{options.css_class}} {{method_name}}">
-                {% if options.icon %}
-                    <i class="{{ options.icon }} icon-white"></i>&nbsp;
-                {% endif %}
-                {{ options.label }}
-            </a></li>
-        {% endspaceless %}
+{% load extra_urls i18n static admin_list admin_urls %}
+{% for urlattrs in cl.model_admin.extra_actions %}
+    {% bind urlattrs as options %}
+    {% if not options.details and options.visible and options.authorized %}
+        {% include "admin_extra_urls/includes/button.html" with options=options %}
     {% endif %}
 {% endfor %}
 

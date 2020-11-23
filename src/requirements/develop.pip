@@ -4,3 +4,4 @@ flake8
 pep8
 readme
 wheel
+sphinx
