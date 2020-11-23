@@ -1,4 +1,4 @@
-from admin_extra_urls.extras import reverse
+from django.urls import reverse
 
 
 def test_upload(app, admin_user):

@@ -1,12 +1,14 @@
 import factory
 import pytest
+from django.urls import reverse
+from factory.django import DjangoModelFactory
+
 from demo.models import DemoModel2
 from django.contrib.auth.models import Permission
 
 from admin_extra_urls.extras import reverse
 
-
-class DemoModel2Factory(factory.django.DjangoModelFactory):
+class DemoModel2Factory(DjangoModelFactory):
     class Meta:
         model = DemoModel2
 
@@ -15,7 +17,7 @@ class DemoModel2Factory(factory.django.DjangoModelFactory):
 def test_action(app, demomodel2, admin_user):
     url = reverse('admin:demo_demomodel2_change', args=[demomodel2.pk])
     res = app.get(url, user=admin_user)
-    res = res.click(r'Update', index=1).follow()
+    res = res.click(r'Update', index=0).follow()
     assert str(res.context['messages']._loaded_messages[0].message) == 'action called'
 
 

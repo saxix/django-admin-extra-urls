@@ -1,9 +1,9 @@
 import logging
+from django.urls import reverse
 
 from demo.models import DemoModel1
 from django.contrib.admin import site
 
-from admin_extra_urls.extras import reverse
 from admin_extra_urls.mixins import _confirm_action
 
 logger = logging.getLogger(__name__)

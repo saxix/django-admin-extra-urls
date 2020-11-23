@@ -1,8 +1,7 @@
 import logging
 
 from django.contrib.auth.models import Permission
-
-from admin_extra_urls.extras import reverse
+from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +41,8 @@ def test_link_custom_path_reverse(django_app, admin_user):
 def test_default_httpresponseaction(app, admin_user):
     url = reverse('admin:demo_demomodel1_changelist')
     res = app.get(url, user=admin_user)
-    res = res.click('No Response').follow()
+    res = res.click('No Response').follow().follow()
+    assert res.status_code == 200
     assert str(res.context['messages']._loaded_messages[0].message) == 'No_response'
 
 

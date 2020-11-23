@@ -1,3 +1,13 @@
+Release 3.0
+-----------
+* full code refactoring
+* new ButtonLink and `extra_buttons`
+* deprecate `link()` decorator
+* new decorator `try_catch` to  wrap action with try..catch and sent user feedback
+* drop support Django<2.2
+* project renamed as "django-admin-extra-urls"
+
+
 Release 2.3 (in development)
 -----------
 * added support Django 3.1
