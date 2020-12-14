@@ -4,12 +4,11 @@ from collections import namedtuple
 from functools import update_wrapper
 
 from django.conf import settings
-from django.conf.urls import url
 from django.contrib import messages
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
-from django.urls import reverse
+from django.urls import re_path, reverse
 
 logger = logging.getLogger(__name__)
 
@@ -112,9 +111,7 @@ class ExtraUrlMixin:
                 uri = r'^%s/$' % options.path
                 extra_actions.append(options)
 
-            extras.append(url(uri,
-                              wrap(getattr(self, options.method)),
-                              name='{}_{}_{}'.format(*info)))
+            extras.append(re_path(uri, wrap(getattr(self, options.method)), name='{}_{}_{}'.format(*info)))
 
         for href in self.extra_buttons:
             extra_actions.append(href)
