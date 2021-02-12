@@ -4,7 +4,6 @@ from collections import namedtuple
 from functools import update_wrapper
 
 from django.conf import settings
-from django.conf.urls import url
 from django.contrib import messages
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponseRedirect
@@ -71,6 +70,7 @@ class DummyAdminform:
 
     def __iter__(self):
         yield
+
 
 class ExtraUrlMixin:
     """
@@ -157,9 +157,10 @@ class ExtraUrlMixin:
             }
             if options.urls:
                 for uri in options.urls:
+                    options.details = 'pk' in uri
                     extras.append(re_path(uri,
-                                      wrap(getattr(self, options.method)),
-                                      name='{}_{}_{}'.format(*info)))
+                                          wrap(getattr(self, options.method)),
+                                          name='{}_{}_{}'.format(*info)))
             else:
                 if options.details:
                     extra_actions.append(options)
@@ -168,8 +169,8 @@ class ExtraUrlMixin:
                     uri = r'^%s/$' % options.path
                     extra_actions.append(options)
                 extras.append(re_path(uri,
-                                  wrap(getattr(self, options.method)),
-                                  name='{}_{}_{}'.format(*info)))
+                                      wrap(getattr(self, options.method)),
+                                      name='{}_{}_{}'.format(*info)))
 
         for href in self.extra_buttons:
             extra_actions.append(href)

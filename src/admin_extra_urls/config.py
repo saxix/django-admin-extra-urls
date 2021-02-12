@@ -3,8 +3,6 @@ from django.urls import NoReverseMatch, reverse
 
 from admin_extra_urls.templatetags.extra_urls import get_preserved_filters
 
-from .utils import labelize
-
 empty = object()
 
 
