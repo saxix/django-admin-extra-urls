@@ -3,14 +3,12 @@ from django.urls import NoReverseMatch, reverse
 
 from admin_extra_urls.templatetags.extra_urls import get_preserved_filters
 
-from .utils import labelize
-
 empty = object()
 
 
 class Button:
     def __init__(self, path, *, label=None, icon='', permission=None,
-                 css_class="btn btn-success", order=999, visible=empty, details=True):
+                 css_class="btn btn-success", order=999, visible=empty, details=True, urls=None):
         self.path = path
         self.label = label or path
 
@@ -21,6 +19,7 @@ class Button:
         self._visible = visible
         self._bound = False
         self.details = details
+        self.urls = urls
 
     def bind(self, context):
         self.context = context
@@ -68,7 +67,7 @@ class ButtonAction(Button):
         self.func = func
         super().__init__(**kwargs)
         self.path = self.path or func.__name__
-        self.label = self.label or labelize(func.__name__)
+        # self.label = self.label or labelize(func.__name__)
         self.method = func.__name__
 
     def url(self):

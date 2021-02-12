@@ -1,7 +1,8 @@
 autopep8
 check-manifest
+django
 flake8
 pep8
 readme
-wheel
 sphinx
+wheel

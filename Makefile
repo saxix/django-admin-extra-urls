@@ -17,6 +17,10 @@ docs:
 	rm -fr ~build/docs/
 	sphinx-build -n docs/ ~build/docs/
 
+lint:
+	@flake8 src/
+	@isort src/
+
 
 .PHONY: build docs
 

@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.http import urlencode
 
 from .config import ButtonAction, empty
-from .utils import check_permission, encapsulate
+from .utils import check_permission, encapsulate, labelize
 
 
 def try_catch(f):
@@ -26,7 +26,8 @@ def try_catch(f):
 
 
 def action(path=None, label=None, icon='', permission=None,
-           css_class="btn btn-success", order=999, visible=empty, wraps=False):
+           css_class="btn btn-success auto-disable", order=999, visible=empty,
+           urls=None):
     """
     decorator to mark ModelAdmin method.
 
@@ -47,8 +48,6 @@ def action(path=None, label=None, icon='', permission=None,
     :type order: int
     :param visible: button visibility. Can be a callable
     :type visible: Any
-    :param wraps:
-    :type wraps: bool
     """
 
     if callable(permission):
@@ -82,9 +81,6 @@ def action(path=None, label=None, icon='', permission=None,
                 url = reverse(admin_urlname(modeladmin.model._meta, 'changelist'))
                 if permission:
                     check_permission(permission, request)
-            # if wraps:
-            #     ret = try_catch(func, modeladmin, request, *args, **kwargs)
-            # else:
             ret = func(modeladmin, request, *args, **kwargs)
 
             if not isinstance(ret, HttpResponse):
@@ -95,12 +91,13 @@ def action(path=None, label=None, icon='', permission=None,
 
         _inner.action = ButtonAction(func=func,
                                      path=path,
-                                     label=label,
+                                     label=label or labelize(func.__name__),
                                      icon=icon,
                                      permission=permission,
                                      order=order,
                                      css_class=css_class,
                                      visible=visibility,
+                                     urls=urls,
                                      details=details)
 
         return _inner

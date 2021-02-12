@@ -4,12 +4,11 @@ from collections import namedtuple
 from functools import update_wrapper
 
 from django.conf import settings
-from django.conf.urls import url
 from django.contrib import messages
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
-from django.urls import reverse
+from django.urls import re_path, reverse
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +63,15 @@ class ExtraUrlConfigException(RuntimeError):
     pass
 
 
+class DummyAdminform:
+    def __init__(self, **kwargs):
+        self.prepopulated_fields = []
+        self.__dict__.update(**kwargs)
+
+    def __iter__(self):
+        yield
+
+
 class ExtraUrlMixin:
     """
     Allow to add new 'url' to the standard ModelAdmin
@@ -81,6 +89,42 @@ class ExtraUrlMixin:
         self.extra_actions = []
         # self.extra_detail_actions = []
         super().__init__(model, admin_site)
+
+    def get_common_context(self, request, pk=None, **kwargs):
+        """ returns a general context that can be used in custom actions
+
+        es.
+        >>> from admin_extra_urls.api import ExtraUrlMixin, action
+        >>> @action()
+        ... def revert(self, request, pk):
+        ...    context = self.get_common_context(request, pk, MONITORED_FIELDS=MONITORED_FIELDS)
+
+        """
+        opts = self.model._meta
+        app_label = opts.app_label
+        self.object = None
+
+        context = {
+            **self.admin_site.each_context(request),
+            **kwargs,
+            "opts": opts,
+            "add": False,
+            "change": True,
+            "save_as": False,
+            "has_delete_permission": self.has_delete_permission(request, pk),
+            "has_editable_inline_admin_formsets": False,
+            "has_view_permission": self.has_view_permission(request, pk),
+            "has_change_permission": self.has_change_permission(request, pk),
+            "has_add_permission": self.has_add_permission(request),
+            "app_label": app_label,
+            "adminform": DummyAdminform(model_admin=self),
+        }
+        context.setdefault("title", "")
+        # context.update(**kwargs)
+        if pk:
+            self.object = self.get_object(request, pk)
+            context["original"] = self.object
+        return context
 
     def get_urls(self):
         extra_actions = []
@@ -105,16 +149,28 @@ class ExtraUrlMixin:
         for __, options in extra_urls.items():
             # isdetail, method_name, options = entry
             info[2] = options.method
-            if options.details:
-                extra_actions.append(options)
-                uri = r'^%s/(?P<pk>.*)/$' % options.path
+            signature = inspect.signature(options.func)
+            arguments = {
+                k: v.default
+                for k, v in signature.parameters.items()
+                if v.default is not inspect.Parameter.empty
+            }
+            if options.urls:
+                for uri in options.urls:
+                    options.details = 'pk' in uri
+                    extras.append(re_path(uri,
+                                          wrap(getattr(self, options.method)),
+                                          name='{}_{}_{}'.format(*info)))
             else:
-                uri = r'^%s/$' % options.path
-                extra_actions.append(options)
-
-            extras.append(url(uri,
-                              wrap(getattr(self, options.method)),
-                              name='{}_{}_{}'.format(*info)))
+                if options.details:
+                    extra_actions.append(options)
+                    uri = r'^%s/(?P<pk>.*)/$' % options.path
+                else:
+                    uri = r'^%s/$' % options.path
+                    extra_actions.append(options)
+                extras.append(re_path(uri,
+                                      wrap(getattr(self, options.method)),
+                                      name='{}_{}_{}'.format(*info)))
 
         for href in self.extra_buttons:
             extra_actions.append(href)

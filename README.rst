@@ -10,8 +10,8 @@ pluggable django application that offers one single mixin class ``ExtraUrlMixin`
 to easily add new url (and related buttons on the screen) to any ModelAdmin.
 
 - ``action()`` decorator It will produce a button in the change form view.
-- ``ChangeFormButton()`` to add button that pont to external urls.
-- ``ChangeListButton()`` to add button that pont to external urls.
+- ``ChangeFormButton()`` to add button that point to external urls.
+- ``ChangeListButton()`` to add button that point to external urls.
 
 
 
@@ -45,24 +45,22 @@ How to use it
         actions = ['smart_action']
 
         @extras.action() # /admin/myapp/mymodel/update_all/
-        def update_all(self, request):
+        def consolidate(self, request):
             ...
             ...
 
         @extras.action() # /admin/myapp/mymodel/update/10/
         def update(self, request, pk):
-            # if `pk` exists the button will be in change_form
+            # if we use `pk` in the args, the button will be in change_form
             obj = self.get_object(pk=pk)
             ...
 
-        @extras.action() # /admin/myapp/mymodel/
-        @extras.try_catch
-        def smart_action(self, request, queryset=None):
-            # apply actionnto the whole data without
-            # check all
-            if not queryset:
-                queryset = self.model.objects.all()
+        @action(urls=[r'^aaa/(?P<pk>.*)/(?P<state>.*)/$',
+                      r'^bbb/(?P<pk>.*)/$'])
+        def revert(self, request, pk, state=None):
+            obj = self.get_object(pk=pk)
             ...
+
 
         @extras.action(label='Truncate', permission=lambda request, obj: request.user.is_superuser)
         def truncate(self, request):
@@ -73,6 +71,8 @@ How to use it
                 return extras._confirm_action(self, request, self.truncate,
                                        'Continuing will erase the entire content of the table.',
                                        'Successfully executed', )
+
+
 
 You don't need to return a HttpResponse. The default behavior is:
 
@@ -96,6 +96,8 @@ action() options
 | order      | 999                  | in case of multiple button the order to use                                            |
 +------------+----------------------+----------------------------------------------------------------------------------------+
 | visible    | lambda o: o and o.pk | callable or bool. By default do not display "action" button if in `add` mode           |
++------------+----------------------+----------------------------------------------------------------------------------------+
+| urls       | None                 | list of urls to be linked to the action.                                               |
 +------------+----------------------+----------------------------------------------------------------------------------------+
 
 
