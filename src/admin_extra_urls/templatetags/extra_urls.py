@@ -29,6 +29,13 @@ def nlless(parser, token):
     return NewlinelessNode(nodelist)
 
 
+@register.filter
+def default_if_empty(v, default):
+    if v and v.strip():
+        return v
+    return default
+
+
 def get_preserved_filters(request, **extras):
     filters = request.GET.get('_changelist_filters', '')
     if filters:

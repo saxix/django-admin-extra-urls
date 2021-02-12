@@ -55,14 +55,12 @@ How to use it
             obj = self.get_object(pk=pk)
             ...
 
-        @extras.action() # /admin/myapp/mymodel/
-        @extras.try_catch
-        def call_handler(self, request, queryset=None):
-            # apply actionnto the whole data without
-            # check all
-            if not queryset:
-                queryset = self.model.objects.all()
+        @action(urls=[r'^aaa/(?P<pk>.*)/(?P<state>.*)/$',
+                      r'^bbb/(?P<pk>.*)/$'])
+        def revert(self, request, pk, state=None):
+            obj = self.get_object(pk=pk)
             ...
+
 
         @extras.action(label='Truncate', permission=lambda request, obj: request.user.is_superuser)
         def truncate(self, request):

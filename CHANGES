@@ -1,3 +1,11 @@
+Release 3.2
+-----------
+* Code refactoring
+* New Feature: disable buttons form values are changed
+* add ability to customize urls and add extra paramenters
+* new `action_page.html` to be used as is or as template for multi-step actions
+
+
 Release 3.1
 -----------
 * ButtonLink splitted in ChangeFormButton, ChangeListButton
