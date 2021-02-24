@@ -10,8 +10,7 @@ pluggable django application that offers one single mixin class ``ExtraUrlMixin`
 to easily add new url (and related buttons on the screen) to any ModelAdmin.
 
 - ``action()`` decorator It will produce a button in the change form view.
-- ``ChangeFormButton()`` to add button that point to external urls.
-- ``ChangeListButton()`` to add button that point to external urls.
+- ``href()`` to add button that point to external urls.
 
 
 
@@ -41,8 +40,22 @@ How to use it
     from admin_extra_urls import api as extras
 
     class MyModelModelAdmin(extras.ExtraUrlMixin, admin.ModelAdmin):
-        extra_buttons = [extras.ChangeFormButton('/{original.pk}/'),]
         actions = ['smart_action']
+
+        @extras.href(label='Search On Google', 'http://www.google.com?q={target}') # /admin/myapp/mymodel/update_all/
+        def search_on_google(self, button):
+            # this is called by the template engine just before rendering the button
+            # `context` is the Context instance in the template
+            if 'original' in button.context:
+                obj = button.context['original']
+                return {'target': obj.name}
+            else:
+                button.visible = False
+
+        @extras.href()
+        def search_on_bing(self, button):
+            return 'http://www.bing.com?q=target'
+
 
         @extras.action() # /admin/myapp/mymodel/update_all/
         def consolidate(self, request):

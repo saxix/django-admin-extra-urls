@@ -1,3 +1,11 @@
+Release 3.3
+-----------
+* deprecate action() new `button()` decorator - action() will be removed in future releases
+* new `href()` decorator
+* removed deprecated `link()` decorator
+* new colored buttons
+
+
 Release 3.2
 -----------
 * Code refactoring

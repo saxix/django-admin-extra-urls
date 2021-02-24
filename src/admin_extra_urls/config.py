@@ -1,14 +1,16 @@
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
-from django.urls import NoReverseMatch, reverse
+from django.urls import reverse
 
-from admin_extra_urls.templatetags.extra_urls import get_preserved_filters
+from admin_extra_urls.utils import get_preserved_filters, safe
 
 empty = object()
 
 
 class Button:
     def __init__(self, path, *, label=None, icon='', permission=None,
-                 css_class="btn btn-success", order=999, visible=empty, details=True, urls=None):
+                 css_class="btn btn-success disable-on-click", order=999, visible=empty,
+                 modeladmin=None,
+                 details=True, urls=None):
         self.path = path
         self.label = label or path
 
@@ -20,6 +22,7 @@ class Button:
         self._bound = False
         self.details = details
         self.urls = urls
+        self.modeladmin = modeladmin
 
     def bind(self, context):
         self.context = context
@@ -28,7 +31,7 @@ class Button:
         user = request.user
         self.querystring = get_preserved_filters(request)
         if callable(self._visible):
-            self.visible = self._visible(obj)
+            self.visible = safe(self._visible, obj)
         else:
             self.visible = self._visible
 
@@ -41,25 +44,28 @@ class Button:
 
 
 class ButtonHREF(Button):
+    def __init__(self, func, *, path=None, label=None, icon='', permission=None,
+                 css_class="btn btn-success", order=999, visible=empty,
+                 modeladmin=None, details=True, html_attrs=None):
+        self.func = func
+        self.html_attrs = html_attrs
+        self.callback_paramenter = None
+        super().__init__(path=path, label=label, icon=icon, permission=permission,
+                         css_class=css_class, order=order, visible=visible,
+                         modeladmin=modeladmin, details=details)
+
+    def __repr__(self):
+        return f"<ButtonHREF {self.label} {self.func.__name__}>"
+
+    def bind(self, context):
+        super().bind(context)
+        self.callback_paramenter = self.func(self)
 
     def url(self):
-        try:
-            base_url = reverse(self.path)
-        except NoReverseMatch:
-            try:
-                base_url = self.path.format(**self.context.flatten())
-            except KeyError as e:
-                base_url = str(e)
-        self.label = base_url
-        return "%s?%s" % (base_url, self.querystring)
-
-
-class ChangeFormButton(ButtonHREF):
-    details = True
-
-
-class ChangeListButton(ButtonHREF):
-    details = False
+        if isinstance(self.callback_paramenter, dict):
+            return self.path.format(**self.callback_paramenter)
+        else:
+            return self.callback_paramenter
 
 
 class ButtonAction(Button):
@@ -67,7 +73,6 @@ class ButtonAction(Button):
         self.func = func
         super().__init__(**kwargs)
         self.path = self.path or func.__name__
-        # self.label = self.label or labelize(func.__name__)
         self.method = func.__name__
 
     def url(self):

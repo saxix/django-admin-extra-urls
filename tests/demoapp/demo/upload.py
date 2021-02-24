@@ -5,7 +5,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 
 from admin_extra_urls.mixins import ExtraUrlMixin
-from admin_extra_urls.decorators import link, action
+from admin_extra_urls.api import button
 
 
 class UploadMixin(ExtraUrlMixin):
@@ -15,7 +15,7 @@ class UploadMixin(ExtraUrlMixin):
     def get_upload_form_template(self, request):
         return self.upload_form_template
 
-    @link(icon='icon-upload')
+    @button(icon='icon-upload')
     def upload(self, request):
         opts = self.model._meta
         context = dict(

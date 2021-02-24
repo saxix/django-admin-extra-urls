@@ -11,14 +11,15 @@ from setuptools.command.test import test as TestCommand
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
 init = os.path.join(ROOT, 'src', 'admin_extra_urls', '__init__.py')
 
-
 _version_re = re.compile(r'__version__\s+=\s+(.*)')
 _name_re = re.compile(r'NAME\s+=\s+(.*)')
 
 with open(init, 'rb') as f:
     content = f.read().decode('utf-8')
     version = str(ast.literal_eval(_version_re.search(content).group(1)))
-    name = str(ast.literal_eval(_name_re.search(content).group(1)))
+    name = os.getenv('PACKAGE_NAME',
+                     str(ast.literal_eval(_name_re.search(content).group(1))))
+
 
 def read(*parts):
     here = os.path.abspath(os.path.dirname(__file__))
@@ -48,7 +49,6 @@ setup_requires = []
 
 if 'test' in sys.argv:
     setup_requires += tests_require
-
 
 setup(
     name=name,
