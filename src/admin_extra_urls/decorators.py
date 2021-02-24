@@ -7,12 +7,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import urlencode
 
-from .config import ButtonAction, empty
-from .utils import check_permission, encapsulate, labelize
+from .config import ButtonAction, ButtonHREF, empty
+from .utils import check_permission, deprecated, encapsulate, labelize
 
 
 def try_catch(f):
-
     @wraps(f)
     def _inner(modeladmin, request, *args, **kwargs):
         try:
@@ -25,8 +24,8 @@ def try_catch(f):
     return _inner
 
 
-def action(path=None, label=None, icon='', permission=None,
-           css_class="btn btn-success auto-disable", order=999, visible=empty,
+def button(path=None, label=None, icon='', permission=None,
+           css_class="btn-action auto-disable", order=999, visible=empty,
            urls=None):
     """
     decorator to mark ModelAdmin method.
@@ -55,6 +54,7 @@ def action(path=None, label=None, icon='', permission=None,
 
     def action_decorator(func):
         sig = inspect.signature(func)
+        # modeladmin = list(sig.parameters)[0]
         args = list(sig.parameters)[1:2]
         if not args == ['request']:
             raise ValueError('AdminExtraUrls: error decorating `{0}`. '
@@ -90,6 +90,7 @@ def action(path=None, label=None, icon='', permission=None,
             return ret
 
         _inner.action = ButtonAction(func=func,
+                                     # modeladmin=modeladmin,
                                      path=path,
                                      label=label or labelize(func.__name__),
                                      icon=icon,
@@ -105,6 +106,27 @@ def action(path=None, label=None, icon='', permission=None,
     return action_decorator
 
 
-def link(**kwargs):
-    assert 'pk' not in kwargs
-    return action(**kwargs)
+@deprecated(button, "{name}() decorator has been deprecated. Use {updated}() now")
+def action(*a, **kw):
+    return button(*a, **kw)
+
+
+def href(*, label=None, url=None, icon='', permission=None, html_attrs=None,
+         css_class="btn-href", order=999, visible=empty):
+    def action_decorator(func):
+        def _inner(modeladmin, btn):
+            return func(modeladmin, btn)
+
+        _inner.button = ButtonHREF(func=func,
+                                   css_class=css_class,
+                                   permission=permission,
+                                   visible=visible,
+                                   path=url,
+                                   html_attrs=html_attrs or {},
+                                   icon=icon,
+                                   label=label or labelize(func.__name__),
+                                   order=order)
+
+        return _inner
+
+    return action_decorator

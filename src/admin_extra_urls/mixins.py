@@ -1,7 +1,7 @@
 import inspect
 import logging
 from collections import namedtuple
-from functools import update_wrapper
+from functools import partial, update_wrapper
 
 from django.conf import settings
 from django.contrib import messages
@@ -94,8 +94,8 @@ class ExtraUrlMixin:
         """ returns a general context that can be used in custom actions
 
         es.
-        >>> from admin_extra_urls.api import ExtraUrlMixin, action
-        >>> @action()
+        >>> from admin_extra_urls.api import ExtraUrlMixin, button
+        >>> @button()
         ... def revert(self, request, pk):
         ...    context = self.get_common_context(request, pk, MONITORED_FIELDS=MONITORED_FIELDS)
 
@@ -128,12 +128,19 @@ class ExtraUrlMixin:
 
     def get_urls(self):
         extra_actions = []
+        extra_buttons = []
         # extra_detail_actions = []
         extra_urls = {}
         for c in inspect.getmro(self.__class__):
             for method_name, method in c.__dict__.items():
-                if hasattr(method, 'action'):
-                    extra_urls[method_name] = getattr(method, 'action')
+                if callable(method):
+                    if hasattr(method, 'action'):
+                        extra_urls[method_name] = getattr(method, 'action')
+                    elif hasattr(method, 'button'):
+                        button = getattr(method, 'button')
+                        button.func = partial(method, self)
+                        button.func.__name__ = method_name
+                        extra_buttons.append(button)
 
         original = super().get_urls()
 
@@ -149,12 +156,6 @@ class ExtraUrlMixin:
         for __, options in extra_urls.items():
             # isdetail, method_name, options = entry
             info[2] = options.method
-            signature = inspect.signature(options.func)
-            arguments = {
-                k: v.default
-                for k, v in signature.parameters.items()
-                if v.default is not inspect.Parameter.empty
-            }
             if options.urls:
                 for uri in options.urls:
                     options.details = 'pk' in uri
@@ -172,7 +173,7 @@ class ExtraUrlMixin:
                                       wrap(getattr(self, options.method)),
                                       name='{}_{}_{}'.format(*info)))
 
-        for href in self.extra_buttons:
+        for href in extra_buttons:
             extra_actions.append(href)
         self.extra_actions = sorted(extra_actions, key=lambda d: d.order)
 

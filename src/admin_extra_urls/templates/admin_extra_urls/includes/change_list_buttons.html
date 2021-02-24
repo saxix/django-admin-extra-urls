@@ -1,17 +1,19 @@
 {% load extra_urls i18n static admin_list admin_urls %}
 {% for urlattrs in cl.model_admin.extra_actions %}
-    {% bind urlattrs as options %}
-    {% if not options.details and options.visible and options.authorized %}
-        {% include "admin_extra_urls/includes/button.html" with options=options %}
+    {% if not urlattrs.details %}
+        {% bind urlattrs as options %}
+        {% if  options.visible and options.authorized %}
+            {% include "admin_extra_urls/includes/button.html" with options=options %}
+        {% endif %}
     {% endif %}
 {% endfor %}
 
 <script>
-    (function($) {
-        $('.btn').click(function(e) {
-            if ($(this).hasClass( "disabled" )){
+     (function ($) {
+        $('.btn').click(function (e) {
+            if ($(this).hasClass("disabled")) {
                 e.preventDefault();
-            }else{
+            } else {
                 $(this).removeClass('btn-success').addClass('disabled');
             }
         });

@@ -4,7 +4,7 @@ from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from admin_extra_urls.decorators import link, action
+from admin_extra_urls.api import button
 from admin_extra_urls.mixins import _confirm_action, ExtraUrlMixin
 
 from .models import DemoModel1, DemoModel2, DemoModel3, DemoModel4
@@ -28,29 +28,29 @@ class TestFilter(SimpleListFilter):
 class Admin1(ExtraUrlMixin, admin.ModelAdmin):
     list_filter = [TestFilter]
 
-    @link(label='Refresh', permission='demo.add_demomodel1')
+    @button(label='Refresh', permission='demo.add_demomodel1')
     def refresh(self, request):
         opts = self.model._meta
         self.message_user(request, 'refresh called')
         return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
 
-    @link(label='Refresh', permission=lambda request, object: False)
+    @button(label='Refresh', permission=lambda request, object: False)
     def refresh_callable(self, request):
         opts = self.model._meta
         self.message_user(request, 'refresh called')
         return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
 
-    @link(path='a/b')
+    @button(path='a/b')
     def custom_path(self, request):
         opts = self.model._meta
         self.message_user(request, 'refresh called')
         return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
 
-    @link()
+    @button()
     def no_response(self, request):
         self.message_user(request, 'No_response')
 
-    @link()
+    @button()
     def confirm(self, request):
         def _action(request):
             pass
@@ -62,23 +62,23 @@ class Admin1(ExtraUrlMixin, admin.ModelAdmin):
 class Admin2(ExtraUrlMixin, admin.ModelAdmin):
     list_filter = [TestFilter]
 
-    @action(permission='demo_delete_demomodel2')
+    @button(permission='demo_delete_demomodel2')
     def update(self, request, pk):
         opts = self.model._meta
         self.message_user(request, 'action called')
         return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
 
-    @action()
+    @button()
     def no_response(self, request, pk):
         self.message_user(request, 'No_response')
 
-    @action(permission=lambda request, obj: False)
+    @button(permission=lambda request, obj: False)
     def update_callable_permission(self, request, pk):
         opts = self.model._meta
         self.message_user(request, 'action called')
         return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
 
-    @action(path='a/b')
+    @button(path='a/b')
     def custom_update(self, request, pk):
         opts = self.model._meta
         self.message_user(request, 'action called')

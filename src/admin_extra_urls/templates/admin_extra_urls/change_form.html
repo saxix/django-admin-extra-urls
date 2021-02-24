@@ -1,10 +1,6 @@
 {% extends "admin/change_form.html" %}{% load i18n static admin_list admin_urls %}
-{% block extrastyle %}{{ block.super }}<style>
-    .object-tools a.extra-link.disabled {
-        background: #ece8e8;
-        cursor: not-allowed;
-    }
-</style>{% endblock %}
+{% block extrastyle %}{{ block.super }}
+{% include "admin_extra_urls/includes/styles.html" %}{% endblock %}
 
 {% block object-tools-items %}
     {{ block.super }}
@@ -14,14 +10,23 @@
 
     <script>
         (function ($) {
-            window.AdminExtraUrl = {update: function(){
-                var changes = $mainForm.serialize()
-                if (changes !== $mainForm.data('serialized')) {
-                    $('.object-tools').find('a.auto-disable').addClass('disabled');
+            $('.btn.disable-on-click').click(function (e) {
+                if ($(this).hasClass("disabled")) {
+                    e.preventDefault();
                 } else {
-                    $('.object-tools').find('a.auto-disable').removeClass('disabled');
+                    $(this).removeClass('btn-success').addClass('disabled');
                 }
-            }
+            });
+
+            window.AdminExtraUrl = {
+                update: function () {
+                    var changes = $mainForm.serialize()
+                    if (changes !== $mainForm.data('serialized')) {
+                        $('.object-tools').find('a.auto-disable').addClass('disabled');
+                    } else {
+                        $('.object-tools').find('a.auto-disable').removeClass('disabled');
+                    }
+                }
             }
             var $mainForm = $('#{{ opts.model_name }}_form');
             $mainForm.data('serialized', $mainForm.serialize());

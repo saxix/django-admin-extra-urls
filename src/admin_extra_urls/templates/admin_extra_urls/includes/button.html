@@ -1,4 +1,5 @@
 {% spaceless %}<li>
 <a id="btn-{{ options.method }}" href="{{ options.url }}{% if is_popup %}&_popup=1{% endif %}"
+   {% include "admin_extra_urls/includes/attrs.html" %}
    class="btn extra-link {{ options.css_class }} {{ options.method_name }}">{% if icon %}<i class="{{ options.icon }}"></i>&nbsp;{% endif %}{{ options.label }}</a>
 </li>{% endspaceless %}

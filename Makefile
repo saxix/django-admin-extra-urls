@@ -21,6 +21,13 @@ lint:
 	@flake8 src/
 	@isort src/
 
+release:
+	tox
+	rm -fr dist/
+	./setup.py sdist
+	#PACKAGE_NAME=django-admin-extra-buttons ./setup.py sdist
+	twine upload dist/
+
 
 .PHONY: build docs
 

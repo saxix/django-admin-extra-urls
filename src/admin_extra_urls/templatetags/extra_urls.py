@@ -1,7 +1,8 @@
 import re
 
 from django import template
-from django.utils.http import urlencode
+
+from ..config import Button
 
 register = template.Library()
 
@@ -36,19 +37,7 @@ def default_if_empty(v, default):
     return default
 
 
-def get_preserved_filters(request, **extras):
-    filters = request.GET.get('_changelist_filters', '')
-    if filters:
-        preserved_filters = request.GET.get('_changelist_filters')
-    else:
-        preserved_filters = request.GET.urlencode()
-
-    if preserved_filters:
-        return urlencode({'_changelist_filters': preserved_filters})
-    return ''
-
-
 @register.simple_tag(takes_context=True)
-def bind(context, attrs):
+def bind(context, attrs: Button):
     attrs.bind(context)
     return attrs
