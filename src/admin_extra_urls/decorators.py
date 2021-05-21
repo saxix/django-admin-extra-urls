@@ -71,7 +71,7 @@ def button(path=None, label=None, icon='', permission=None,
         def _inner(modeladmin, request, *args, **kwargs):
             if details:
                 pk = kwargs['pk']
-                obj = modeladmin.model.objects.get(pk=pk)
+                obj = modeladmin.get_object(request, pk)
                 url = reverse(admin_urlname(modeladmin.model._meta, 'change'),
                               args=[pk])
                 if permission:
