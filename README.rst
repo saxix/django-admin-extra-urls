@@ -9,7 +9,7 @@ django-admin-extra-urls
 Pluggable django application that offers one single mixin class ``ExtraUrlMixin``
 to easily add new url (and related buttons on the screen) to any ModelAdmin.
 
-- ``button()`` decorator It will produce a button in the change form view.
+- ``button()`` decorator will produce a button in the list and change form views.
 - ``href()`` to add button that point to external urls.
 
 
@@ -91,25 +91,27 @@ argument user will be redirected to the 'update' view, otherwise and the browser
 
 
 ``button()`` options
--------------------------
+--------------------
 
-+------------+----------------------+-----------------------------------------------------------------------------------------+
-| path       | None                 | `path` url path for the button. Will be the url where the button will point to.         |
-+------------+----------------------+-----------------------------------------------------------------------------------------+
-| label      | None                 | Label for the button. By default the "labelized" function name                          |
-+------------+----------------------+-----------------------------------------------------------------------------------------+
-| icon       | ''                   | Icon for the button                                                                     |
-+------------+----------------------+-----------------------------------------------------------------------------------------+
-| permission | None                 | Permission required to use the button. Can be a callable (current object as argument).  |
-+------------+----------------------+-----------------------------------------------------------------------------------------+
-| css_class  | "btn btn-success"    | Extra css classes to use for the button                                                 |
-+------------+----------------------+-----------------------------------------------------------------------------------------+
-| order      | 999                  | In case of multiple button the order to use                                             |
-+------------+----------------------+-----------------------------------------------------------------------------------------+
-| visible    | lambda o: o and o.pk | callable or bool. By default do not display "action" button if in `add` mode            |
-+------------+----------------------+-----------------------------------------------------------------------------------------+
-| urls       | None                 | list of urls to be linked to the action.                                                |
-+------------+----------------------+------------------------------------------------------------------------------------------------+
+These are the arguments that ``button()`` accepts
+
++-------------+----------------------+----------------------------------------------------------------------------------------+
+| path        | None                 | `path` url path for the button. Will be the url where the button will point to.        |
++-------------+----------------------+----------------------------------------------------------------------------------------+
+| label       | None                 | Label for the button. By default the "labelized" function name.                        |
++-------------+----------------------+----------------------------------------------------------------------------------------+
+| icon        |  ''                  | Icon for the button.                                                                   |
++-------------+----------------------+----------------------------------------------------------------------------------------+
+| permission  | None                 | Permission required to use the button. Can be a callable (current object as argument). |
++-------------+----------------------+----------------------------------------------------------------------------------------+
+| css_class   | "btn btn-success"    | Extra css classes to use for the button                                                |
++-------------+----------------------+----------------------------------------------------------------------------------------+
+| order       | 999                  | In case of multiple button the order to use                                            |
++-------------+----------------------+----------------------------------------------------------------------------------------+
+| visible     | lambda o: o and o.pk | callable or bool. By default do not display "action" button if in `add` mode           |
++-------------+----------------------+----------------------------------------------------------------------------------------+
+| urls        | None                 | list of urls to be linked to the action.                                               |
++-------------+----------------------+----------------------------------------------------------------------------------------+
 
 
 
