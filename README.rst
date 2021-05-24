@@ -9,7 +9,7 @@ django-admin-extra-urls
 Pluggable django application that offers one single mixin class ``ExtraUrlMixin``
 to easily add new url (and related buttons on the screen) to any ModelAdmin.
 
-- ``button()`` decorator It will produce a button in the change form view.
+- ``button()`` decorator will produce a button in the list and change form views.
 - ``href()`` to add button that point to external urls.
 
 
