@@ -16,10 +16,10 @@ jobs:
 
             -   name: Install dependencies
                 run: |
-                    python -m pip install --upgrade pip tox
+                    python -m pip install --upgrade pip flake8
             -   name: Lint with flake8
                 run: |
-                    tox -e lint
+                    flake8 src
 
     test:
         #        if: ${{github.event}} && ${{ !contains(github.event.head_commit.message, 'ci skip') }}
