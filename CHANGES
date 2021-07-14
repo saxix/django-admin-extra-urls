@@ -1,6 +1,11 @@
+Release 3.5
+-----------
+* new `group` attribute allows to set buttons visibility -
+* BACKWARD INCOMPATIBLE - visible() callable now expect 2 params (obj, request)
+
 Release 3.4
 -----------
-* new `display` attribute allow button to be displayed both on changelist/change_form pages
+* new `display` attribute allows button to be displayed both on changelist/change_form pages
 
 
 Release 3.3

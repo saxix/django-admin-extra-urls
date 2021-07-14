@@ -65,7 +65,7 @@ setup(
     setup_requires=setup_requires,
     platforms=['linux'],
     extras_require={
-        'tests': tests_require,
+        'test': tests_require,
         'dev': dev_require + tests_require,
     },
     tests_require=tests_require,

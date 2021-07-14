@@ -1,5 +1,4 @@
 import inspect
-from enum import unique, IntEnum
 from functools import wraps
 
 from django.contrib import messages
@@ -27,7 +26,7 @@ def try_catch(f):
 
 def button(path=None, label=None, icon='', permission=None, visible=empty,
            css_class="btn-action auto-disable", order=999, urls=None,
-           display=Display.NOT_SET):
+           display=Display.NOT_SET, group=None):
     """
     decorator to mark ModelAdmin method.
 
@@ -67,7 +66,7 @@ def button(path=None, label=None, icon='', permission=None, visible=empty,
         if not visible == empty:
             visibility = visible
         elif details:
-            visibility = lambda o: o and details and o.pk
+            visibility = lambda o, r: o and details and o.pk
         else:
             visibility = bool(visible)
 
@@ -107,6 +106,7 @@ def button(path=None, label=None, icon='', permission=None, visible=empty,
                                      label=label or labelize(func.__name__),
                                      icon=icon,
                                      display=_display,
+                                     group=group,
                                      permission=permission,
                                      order=order,
                                      css_class=css_class,
@@ -125,7 +125,7 @@ def action(*a, **kw):
 
 
 def href(*, label=None, url=None, icon='', permission=None, html_attrs=None,
-         css_class="btn-href", order=999, visible=empty, display=Display.NOT_SET, details=True):
+         css_class="btn-href", order=999, visible=empty, display=Display.NOT_SET, details=True, group=None):
     """
     decorator to mark ModelAdmin method.
 
@@ -158,6 +158,7 @@ def href(*, label=None, url=None, icon='', permission=None, html_attrs=None,
                                    details=details,
                                    visible=visible,
                                    display=display,
+                                   group=group,
                                    path=url,
                                    html_attrs=html_attrs or {},
                                    icon=icon,

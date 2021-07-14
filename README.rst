@@ -86,7 +86,7 @@ How to use it
 
 
 
-If the return value from a `button` decorated method is a HttpResponse, that will be used.  Otherwise if the method contains the `pk` 
+If the return value from a `button` decorated method is a HttpResponse, that will be used.  Otherwise if the method contains the `pk`
 argument user will be redirected to the 'update' view, otherwise and the browser will be redirected to the admin's list view
 
 
@@ -158,14 +158,14 @@ Links
 +--------------------+---------------+---------------------------------------------+
 
 
-.. |master-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=master
-                    :target: http://travis-ci.org/saxix/django-admin-extra-urls/
+.. |master-build| image:: https://github.com/saxix/django-admin-extra-urls/actions/workflows/test.yml/badge.svg?branch=master
+                    :target: https://github.com/saxix/django-admin-extra-urls
 
 .. |master-cov| image:: https://codecov.io/gh/saxix/django-admin-extra-urls/branch/master/graph/badge.svg
                     :target: https://codecov.io/gh/saxix/django-admin-extra-urls
 
-.. |dev-build| image:: https://secure.travis-ci.org/saxix/django-admin-extra-urls.png?branch=develop
-                  :target: http://travis-ci.org/saxix/django-admin-extra-urls/
+.. |dev-build| image:: https://github.com/saxix/django-admin-extra-urls/actions/workflows/test.yml/badge.svg?branch=develop
+                  :target: https://github.com/saxix/django-admin-extra-urls
 
 .. |dev-cov| image:: https://codecov.io/gh/saxix/django-admin-extra-urls/branch/develop/graph/badge.svg
                     :target: https://codecov.io/gh/saxix/django-admin-extra-urls
