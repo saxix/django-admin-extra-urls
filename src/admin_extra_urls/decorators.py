@@ -1,4 +1,5 @@
 import inspect
+from enum import unique, IntEnum
 from functools import wraps
 
 from django.contrib import messages
@@ -8,7 +9,7 @@ from django.urls import reverse
 from django.utils.http import urlencode
 
 from .config import ButtonAction, ButtonHREF, empty
-from .utils import check_permission, deprecated, encapsulate, labelize
+from .utils import check_permission, deprecated, encapsulate, labelize, Display
 
 
 def try_catch(f):
@@ -24,9 +25,9 @@ def try_catch(f):
     return _inner
 
 
-def button(path=None, label=None, icon='', permission=None,
-           css_class="btn-action auto-disable", order=999, visible=empty,
-           urls=None):
+def button(path=None, label=None, icon='', permission=None, visible=empty,
+           css_class="btn-action auto-disable", order=999, urls=None,
+           display=Display.NOT_SET):
     """
     decorator to mark ModelAdmin method.
 
@@ -47,6 +48,8 @@ def button(path=None, label=None, icon='', permission=None,
     :type order: int
     :param visible: button visibility. Can be a callable
     :type visible: Any
+    :param display
+    :param urls
     """
 
     if callable(permission):
@@ -64,9 +67,18 @@ def button(path=None, label=None, icon='', permission=None,
         if not visible == empty:
             visibility = visible
         elif details:
-            visibility = lambda o: o and o.pk
+            visibility = lambda o: o and details and o.pk
         else:
             visibility = bool(visible)
+
+        # Backward comm
+        if display == Display.NOT_SET:
+            if details:
+                _display = Display.CHANGE_FORM
+            else:
+                _display = Display.CHANGELIST
+        else:
+            _display = display
 
         def _inner(modeladmin, request, *args, **kwargs):
             if details:
@@ -94,6 +106,7 @@ def button(path=None, label=None, icon='', permission=None,
                                      path=path,
                                      label=label or labelize(func.__name__),
                                      icon=icon,
+                                     display=_display,
                                      permission=permission,
                                      order=order,
                                      css_class=css_class,
@@ -112,7 +125,29 @@ def action(*a, **kw):
 
 
 def href(*, label=None, url=None, icon='', permission=None, html_attrs=None,
-         css_class="btn-href", order=999, visible=empty):
+         css_class="btn-href", order=999, visible=empty, display=Display.NOT_SET, details=True):
+    """
+    decorator to mark ModelAdmin method.
+
+    Each decorated method will show a button in the changelist/change_form page
+
+    :param label: button label. Normalized method name will be used ad default
+    :type label: str
+    :param url:
+    :param icon: button icon.
+    :type icon: str
+    :param permission: required permission. Can be a callable
+    :type permission: Any
+    :param details: if True will be visible only in change_form, if `None`
+    :param css_class: button css classes
+    :type css_class: str
+    :param order: button order
+    :type order: int
+    :param visible: button visibility. Can be a callable
+    :type visible: Any
+    :param html_attrs:
+    """
+
     def action_decorator(func):
         def _inner(modeladmin, btn):
             return func(modeladmin, btn)
@@ -120,7 +155,9 @@ def href(*, label=None, url=None, icon='', permission=None, html_attrs=None,
         _inner.button = ButtonHREF(func=func,
                                    css_class=css_class,
                                    permission=permission,
+                                   details=details,
                                    visible=visible,
+                                   display=display,
                                    path=url,
                                    html_attrs=html_attrs or {},
                                    icon=icon,

@@ -3,6 +3,7 @@ import re
 from django import template
 
 from ..config import Button
+from ..utils import Display
 
 register = template.Library()
 
@@ -18,6 +19,16 @@ class NewlinelessNode(template.Node):
         value = re.sub(r'\n', ' ', value)
         value = re.sub(r'\s+', ' ', value)
         return value
+
+
+@register.filter
+def changelist(button):
+    return bool(button.display & Display.CHANGELIST)
+
+
+@register.filter
+def change_form(button):
+    return bool(button.display & Display.CHANGE_FORM)
 
 
 @register.tag

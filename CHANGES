@@ -1,3 +1,8 @@
+Release 3.4
+-----------
+* new `display` attribute allow button to be displayed both on changelist/change_form pages
+
+
 Release 3.3
 -----------
 * deprecate action() new `button()` decorator - action() will be removed in future releases
@@ -29,7 +34,7 @@ Release 3.0
 * project renamed as "django-admin-extra-urls"
 
 
-Release 2.3 (in development)
+Release 2.3
 -----------
 * added support Django 3.1
 * added support Python 3.9
