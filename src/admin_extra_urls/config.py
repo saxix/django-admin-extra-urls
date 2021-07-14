@@ -9,7 +9,7 @@ empty = object()
 class Button:
     def __init__(self, path, *, label=None, icon='', permission=None,
                  css_class="btn btn-success disable-on-click", order=999, visible=empty,
-                 modeladmin=None, display=Display.NOT_SET,
+                 modeladmin=None, display=Display.NOT_SET, group=None,
                  details=True, urls=None):
         self.path = path
         self.label = label or path
@@ -19,23 +19,26 @@ class Button:
         self._perm = permission
         self.order = order
         self.css_class = css_class
+        self.group = group
         self._visible = visible
         self._bound = False
         self.details = details
         self.urls = urls
         self.modeladmin = modeladmin
 
-
     def bind(self, context):
         self.context = context
         obj = context.get('original', None)
         request = context['request']
         user = request.user
+        groups = context.get('aeu_groups', ['None'])
         self.querystring = get_preserved_filters(request)
         if callable(self._visible):
-            self.visible = safe(self._visible, obj)
+            self.visible = safe(self._visible, obj, request)
         else:
             self.visible = self._visible
+        if self.visible and str(self.group) not in groups:
+            self.visible = False
 
         if self._perm is None:
             self.authorized = True
@@ -47,13 +50,13 @@ class Button:
 
 class ButtonHREF(Button):
     def __init__(self, func, *, path=None, label=None, icon='', permission=None,
-                 css_class="btn btn-success", order=999, visible=empty,
+                 css_class="btn btn-success", order=999, visible=empty, group=None,
                  modeladmin=None, details=True, html_attrs=None, display=Display.NOT_SET):
         self.func = func
         self.html_attrs = html_attrs
         self.callback_parameter = None
         super().__init__(path=path, label=label, icon=icon, permission=permission,
-                         css_class=css_class, order=order, visible=visible,
+                         css_class=css_class, order=order, visible=visible, group=group,
                          modeladmin=modeladmin, details=details, display=display)
 
     def __repr__(self):

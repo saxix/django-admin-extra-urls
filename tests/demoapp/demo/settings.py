@@ -27,6 +27,7 @@ MIDDLEWARE = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '.db.sqlite',
         'HOST': '',
         'PORT': ''}}
 
@@ -45,3 +46,8 @@ TEMPLATES = [
         },
     },
 ]
+
+#
+# AUTHENTICATION_BACKENDS = [
+#     "demo.backends.AnyUserBackend",
+# ]
