@@ -154,7 +154,6 @@ class ExtraUrlMixin:
         extras = []
 
         for __, options in extra_urls.items():
-            # isdetail, method_name, options = entry
             info[2] = options.method
             if options.urls:
                 for uri in options.urls:

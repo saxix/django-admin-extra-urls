@@ -1,9 +1,18 @@
 import inspect
 import warnings
+from enum import unique, IntEnum
 from functools import wraps
 from urllib.parse import urlencode
 
 from django.core.exceptions import PermissionDenied
+
+
+@unique
+class Display(IntEnum):
+    NOT_SET = -1
+    CHANGELIST = 1
+    CHANGE_FORM = 2
+    ALWAYS = 3
 
 
 def safe(func, *args, **kwargs):
