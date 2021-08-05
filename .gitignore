@@ -4,6 +4,7 @@
 !.github
 !.isort.cfg
 !.flake8
+!.bumpversion.cfg
 *.py[co]
 *.egg-info
 dist/*
