@@ -26,10 +26,17 @@ class Button:
         self.urls = urls
         self.modeladmin = modeladmin
 
+    def __repr__(self):
+        return f"<{self.__class__.__name__} '{self.label}' object at  {id(self)}>"
     def bind(self, context):
         self.context = context
         obj = context.get('original', None)
-        request = context['request']
+        try:
+            request = context['request']
+        except KeyError:
+            raise KeyError("Cannot find 'request' in context. "
+                           "Be sure you have 'django.template.context_processors.request' in"
+                           "your templates context_processors")
         user = request.user
         groups = context.get('aeu_groups', ['None'])
         self.querystring = get_preserved_filters(request)

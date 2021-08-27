@@ -5,16 +5,12 @@
 <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
 &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
 &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
-{% if original %}
-    &rsaquo; <a href="{% url opts|admin_urlname:'change' original.pk %}">{{ original }}</a>
-{% endif %}
-    {% block breadcrumbs-active %}
-&rsaquo; {{ action|default_if_empty:title }}
-{% endblock %}
+{% if original %}&rsaquo; <a href="{% url opts|admin_urlname:'change' original.pk %}">{{ original }}</a>{% endif %}
+{% block breadcrumbs-active %}&rsaquo; {{ action|default_if_empty:title }}{% endblock %}
 {% endblock %}
 </div>
 {% endblock %}
-{% block content_title %}<h1>{{ title|default_if_empty:"&nbsp;" }}</h1>{% endblock %}
+{% if title %}{% block content_title %}<h1>{{ title|default_if_empty:"&nbsp;" }}</h1>{% endblock %}{% endif %}
 {% block content %}<div id="content-main">
 {% block object-tools %}
   <ul class="object-tools">
@@ -24,10 +20,5 @@
   </ul>
 {% endblock %}{% block action-content %}{% endblock %}
 {% block document_ready %}{% endblock %}
+</div>
 {% endblock %}
-
-{#{% block object-tools-items %}#}
-{#    {{ block.super }}#}
-{#    {% include "admin_extra_urls/includes/change_form_buttons.html" %}#}
-{#{% endblock %}#}
-
