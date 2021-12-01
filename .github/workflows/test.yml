@@ -20,6 +20,7 @@ jobs:
             -   name: Lint with flake8
                 run: |
                     flake8 src
+                    isort -c src
 
     test:
         #        if: ${{github.event}} && ${{ !contains(github.event.head_commit.message, 'ci skip') }}

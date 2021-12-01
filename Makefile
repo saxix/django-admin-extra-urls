@@ -26,7 +26,7 @@ docs:
 
 lint:
 	@flake8 src/
-	@isort src/
+	@isort -c src/
 
 release:
 	tox
