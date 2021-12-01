@@ -10,7 +10,8 @@ from django.utils.text import slugify
 from functools import partial, update_wrapper
 
 from admin_extra_urls.button import Button, UrlButton
-from admin_extra_urls.utils import check_decorators, labelize
+from admin_extra_urls.utils import labelize
+from admin_extra_urls.checks import check_decorators, check_decorator_errors
 
 logger = logging.getLogger(__name__)
 
@@ -112,10 +113,12 @@ class ExtraUrlMixin:
             if not isinstance(btn, Button):
                 errors.append(Error(f'{cls}.buttons can only contains "dict()" or '
                                     f'"admin_extra.url.api.Button" instances'))
-        deco = check_decorators(cls)
-        if deco:
-            for method, decorators in deco.items():
-                errors.append(Warning(f'"{cls.__name__}.{method}" uses deprecated decorator "@{decorators[0]}"'))
+        errors.extend(check_decorator_errors(cls))
+        # if deco:
+        #     for method, decorators in deco.items():
+        #         FIXME: remove me (print)
+                # print(111, "mixins.py:119 (check)", 111)
+                # errors.append(Warning(f'"{cls.__name__}.{method}" uses deprecated decorator "@{decorators[0]}"'))
 
         return errors
 

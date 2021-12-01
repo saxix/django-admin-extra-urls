@@ -80,25 +80,3 @@ def deprecated(updated, message='{name}() has been deprecated. Use {updated}() n
         return decorator
     else:
         raise TypeError('deprecated() first parameter must be a ' % repr(type(updated)))
-
-
-def check_decorators(cls):
-    target = cls
-    decorators = {}
-
-    def visit_FunctionDef(node):
-        deco = []
-        for n in node.decorator_list:
-            if isinstance(n, ast.Call):
-                name = n.func.attr if isinstance(n.func, ast.Attribute) else n.func.id
-            else:
-                name = n.attr if isinstance(n, ast.Attribute) else n.id
-            if name in ['href', ]:
-                deco.append(name)
-        if deco:
-            decorators[node.name] = deco
-
-    node_iter = ast.NodeVisitor()
-    node_iter.visit_FunctionDef = visit_FunctionDef
-    node_iter.visit(ast.parse(inspect.getsource(target)))
-    return decorators
