@@ -1,18 +1,11 @@
 import inspect
 import warnings
-from enum import unique, IntEnum
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from functools import wraps
 from urllib.parse import urlencode
 
-from django.core.exceptions import PermissionDenied
-
-
-@unique
-class Display(IntEnum):
-    NOT_SET = -1
-    CHANGELIST = 1
-    CHANGE_FORM = 2
-    ALWAYS = 3
+empty = object()
 
 
 def safe(func, *args, **kwargs):
@@ -20,6 +13,19 @@ def safe(func, *args, **kwargs):
         return func(*args, **kwargs)
     except Exception:
         return False
+
+
+def try_catch(f):
+    @wraps(f)
+    def _inner(modeladmin, request, *args, **kwargs):
+        try:
+            ret = f(modeladmin, request, *args, **kwargs)
+            modeladmin.message_user(request, 'Success', messages.SUCCESS)
+            return ret
+        except Exception as e:
+            modeladmin.message_user(request, str(e), messages.ERROR)
+
+    return _inner
 
 
 def get_preserved_filters(request, **extras):
@@ -54,7 +60,7 @@ def check_permission(permission, request, obj=None):
     return True
 
 
-def deprecated(updated, message="{name}() has been deprecated. Use {updated}() now"):
+def deprecated(updated, message='{name}() has been deprecated. Use {updated}() now'):
     if inspect.isfunction(updated):
         def decorator(func1):
             @wraps(func1)
@@ -72,4 +78,4 @@ def deprecated(updated, message="{name}() has been deprecated. Use {updated}() n
 
         return decorator
     else:
-        raise TypeError("deprecated() first parameter must be a " % repr(type(updated)))
+        raise TypeError('deprecated() first parameter must be a ' % repr(type(updated)))

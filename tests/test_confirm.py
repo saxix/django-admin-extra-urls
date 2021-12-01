@@ -4,7 +4,7 @@ from django.urls import reverse
 from demo.models import DemoModel1
 from django.contrib.admin import site
 
-from admin_extra_urls.mixins import _confirm_action
+from admin_extra_urls.api import confirm_action
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ def test_confirm(django_app, admin_user):
 def test_confirm_action(rf, staff_user):
     request = rf.get('/customer/details')
     request.user = staff_user
-    _confirm_action(site._registry[DemoModel1], request,
+    confirm_action(site._registry[DemoModel1], request,
                     lambda r: True,
                     "Confirm action",
                     "Successfully executed",

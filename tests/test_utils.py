@@ -1,7 +1,7 @@
 import pytest
 from django.core.exceptions import PermissionDenied
 
-from admin_extra_urls.decorators import check_permission
+from admin_extra_urls.utils import check_permission
 
 
 def test_check_permission(rf, staff_user, admin_user):
