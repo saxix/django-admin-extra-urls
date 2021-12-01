@@ -35,7 +35,7 @@ def test_action_preserve_filters(django_app, admin_user):
     res = django_app.get(url, user=admin_user)
     res = res.click('DemoModel2 #%s' % a.pk)
     link = res.pyquery('#btn-update')[0]
-    assert link.get('href') == '/admin/demo/demomodel2/update/1/?_changelist_filters=filter%3Don'
+    assert link.get('href') == '/admin/demo/demomodel2/1/update/?_changelist_filters=filter%3Don'
 
 
 def test_action_permission(app, staff_user):

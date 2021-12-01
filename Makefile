@@ -1,3 +1,9 @@
+help:
+	echo
+
+demo:
+	cd tests && ./manage.py migrate
+	cd tests && ./manage.py runserver
 
 develop:
 	python3 -m venv .venv
