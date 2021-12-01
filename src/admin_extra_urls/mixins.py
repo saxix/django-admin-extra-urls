@@ -11,7 +11,7 @@ from functools import partial, update_wrapper
 
 from admin_extra_urls.button import Button, UrlButton
 from admin_extra_urls.utils import labelize
-from admin_extra_urls.checks import check_decorators, check_decorator_errors
+from admin_extra_urls.checks import check_decorator_errors
 
 logger = logging.getLogger(__name__)
 
@@ -107,18 +107,13 @@ class ExtraUrlMixin:
 
     @classmethod
     def check(cls, **kwargs):
-        from django.core.checks import Error, Warning
+        from django.core.checks import Error
         errors = []
         for btn in cls.buttons:
             if not isinstance(btn, Button):
                 errors.append(Error(f'{cls}.buttons can only contains "dict()" or '
                                     f'"admin_extra.url.api.Button" instances'))
         errors.extend(check_decorator_errors(cls))
-        # if deco:
-        #     for method, decorators in deco.items():
-        #         FIXME: remove me (print)
-                # print(111, "mixins.py:119 (check)", 111)
-                # errors.append(Warning(f'"{cls.__name__}.{method}" uses deprecated decorator "@{decorators[0]}"'))
 
         return errors
 

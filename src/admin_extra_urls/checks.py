@@ -1,13 +1,15 @@
 import ast
 import inspect
-from django.core.checks import Warning, Error
+from django.core.checks import Warning
 from django.conf import settings
 
 
 def get_all_permissions():
     from django.contrib.auth.models import Permission
     return [f'{p[0]}.{p[1]}'
-            for p in Permission.objects.select_related('content_type').values_list('content_type__app_label', 'codename')]
+            for p in (Permission.objects
+                      .select_related('content_type')
+                      .values_list('content_type__app_label', 'codename'))]
 
 
 def check_decorator_errors(cls):
@@ -15,7 +17,6 @@ def check_decorator_errors(cls):
     standard_permissions = []
     errors = []
     if 'django.contrib.auth' in settings.INSTALLED_APPS:
-        from django.contrib.auth.models import Permission
         standard_permissions = get_all_permissions()
 
     def visit_FunctionDef(node):
