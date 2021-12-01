@@ -1,4 +1,5 @@
 import logging
+
 from django.urls import NoReverseMatch, reverse
 
 from admin_extra_urls.utils import (check_permission,

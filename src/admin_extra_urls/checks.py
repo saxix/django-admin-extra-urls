@@ -1,7 +1,8 @@
 import ast
 import inspect
-from django.core.checks import Warning
+
 from django.conf import settings
+from django.core.checks import Warning
 
 
 def get_all_permissions():

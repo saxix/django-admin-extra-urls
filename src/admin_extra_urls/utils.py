@@ -1,9 +1,10 @@
 import inspect
 import warnings
-from django.contrib import messages
-from django.core.exceptions import PermissionDenied
 from functools import wraps
 from urllib.parse import urlencode
+
+from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 
 empty = object()
 

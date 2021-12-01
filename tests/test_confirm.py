@@ -1,8 +1,8 @@
 import logging
-from django.urls import reverse
 
 from demo.models import DemoModel1
 from django.contrib.admin import site
+from django.urls import reverse
 
 from admin_extra_urls.api import confirm_action
 
@@ -22,9 +22,9 @@ def test_confirm_action(rf, staff_user):
     request = rf.get('/customer/details')
     request.user = staff_user
     confirm_action(site._registry[DemoModel1], request,
-                    lambda r: True,
-                    "Confirm action",
-                    "Successfully executed",
-                    description="",
-                    pk=None,
-                    extra_context={'a': 1})
+                   lambda r: True,
+                   "Confirm action",
+                   "Successfully executed",
+                   description="",
+                   pk=None,
+                   extra_context={'a': 1})

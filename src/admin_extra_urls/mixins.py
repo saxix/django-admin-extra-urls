@@ -1,5 +1,7 @@
 import inspect
 import logging
+from functools import partial, update_wrapper
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
@@ -7,11 +9,10 @@ from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
 from django.utils.text import slugify
-from functools import partial, update_wrapper
 
 from admin_extra_urls.button import Button, UrlButton
-from admin_extra_urls.utils import labelize
 from admin_extra_urls.checks import check_decorator_errors
+from admin_extra_urls.utils import labelize
 
 logger = logging.getLogger(__name__)
 
