@@ -1,9 +1,8 @@
 import pytest
-from django.urls import reverse
-from factory.django import DjangoModelFactory
-
 from demo.models import DemoModel2
 from django.contrib.auth.models import Permission
+from django.urls import reverse
+from factory.django import DjangoModelFactory
 
 
 class DemoModel2Factory(DjangoModelFactory):

@@ -4,8 +4,7 @@ from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from admin_extra_urls.api import url
-from admin_extra_urls.api import confirm_action, ExtraUrlMixin, UrlButton
+from admin_extra_urls.api import ExtraUrlMixin, UrlButton, confirm_action, url
 from admin_extra_urls.decorators import button
 
 from .models import DemoModel1, DemoModel2, DemoModel3, DemoModel4
