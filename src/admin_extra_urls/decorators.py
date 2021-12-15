@@ -16,10 +16,9 @@ def url(permission=None, button=False, details=empty, path=None, **extra):
 
     def decorator(func):
         sig = inspect.signature(func)
-        object_id_arg_name = 'object_id'
-        if len(sig.parameters) > 2:
-            object_id_arg_name = list(sig.parameters)[2]
-
+        object_id_arg_name = 'pk'  # backward compatibility
+        # if len(sig.parameters) > 2:
+        #     object_id_arg_name = list(sig.parameters)[2]
         if details == empty:
             _details = object_id_arg_name in sig.parameters
         else:
@@ -65,7 +64,7 @@ def url(permission=None, button=False, details=empty, path=None, **extra):
 def button(**kwargs):
     url_args = {'permission': kwargs.pop('permission', None),
                 'details': kwargs.pop('details', empty),
-                'path': kwargs.pop('path', None)
+                'path': kwargs.pop('path', None),
                 }
     if urls := kwargs.pop('urls', None):
         if len(urls) > 1:

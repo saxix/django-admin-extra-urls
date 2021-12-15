@@ -90,11 +90,21 @@ class ExtraUrlMixin:
     buttons = []
 
     def __init__(self, model, admin_site):
+        opts = model._meta
+        app_label = opts.app_label
         self.original_change_form_template = self.change_form_template or 'admin/change_form.html'
         self.original_change_list_template = self.change_list_template or 'admin/change_list.html'
 
-        self.change_form_template = self._change_form_template
-        self.change_list_template = self._change_list_template
+        self.change_form_template = [
+            'admin/%s/%s/change_form.html' % (app_label, opts.model_name),
+            'admin/%s/change_form.html' % app_label,
+            self._change_form_template,
+        ]
+        self.change_list_template = [
+            'admin/%s/%s/change_list.html' % (app_label, opts.model_name),
+            'admin/%s/change_list.html' % app_label,
+            self._change_list_template,
+        ]
 
         self.extra_actions = []
         self.extra_buttons = []
