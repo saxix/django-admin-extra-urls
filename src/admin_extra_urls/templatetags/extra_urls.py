@@ -2,9 +2,6 @@ import re
 
 from django import template
 
-from ..config import Button
-from ..utils import Display
-
 register = template.Library()
 
 
@@ -22,20 +19,7 @@ class NewlinelessNode(template.Node):
 
 
 @register.filter
-def changelist(button):
-    return bool(button.display & Display.CHANGELIST)
-
-
-@register.filter
-def change_form(button):
-    return bool(button.display & Display.CHANGE_FORM)
-
-
-@register.filter
 def active_group(button, group):
-    # FIXME: remove me (print)
-    print(111, "extra_urls.py:37 (active_group)", group)
-    return True
     return bool(button.group == group)
 
 
@@ -57,6 +41,6 @@ def default_if_empty(v, default):
 
 
 @register.simple_tag(takes_context=True)
-def bind(context, attrs: Button):
-    attrs.bind(context)
-    return attrs
+def bind(context, button):
+    button.bind(context)
+    return button

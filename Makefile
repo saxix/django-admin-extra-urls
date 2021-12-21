@@ -1,3 +1,9 @@
+help:
+	echo
+
+demo:
+	cd tests && ./manage.py migrate
+	cd tests && ./manage.py runserver
 
 develop:
 	python3 -m venv .venv
@@ -20,7 +26,7 @@ docs:
 
 lint:
 	@flake8 src/
-	@isort src/
+	@isort -c src/
 
 release:
 	tox

@@ -9,8 +9,9 @@ django-admin-extra-urls
 Pluggable django application that offers one single mixin class ``ExtraUrlMixin``
 to easily add new url (and related buttons on the screen) to any ModelAdmin.
 
-- ``button()`` decorator will produce a button in the list and change form views.
-- ``href()`` to add button that point to external urls.
+- ``url()`` decorator will create a new view for the ModelAdmin.
+- ``button()`` shortcut for ``url(button={...})``.
+- ``link()`` to add button that point to external urls.
 
 
 
@@ -37,11 +38,11 @@ How to use it
 
 .. code-block:: python
 
-    from admin_extra_urls import api as extras
+    from admin_extra_urls.api import url, button, link, href
 
     class MyModelModelAdmin(extras.ExtraUrlMixin, admin.ModelAdmin):
 
-        @extras.href(label='Search On Google', 'http://www.google.com?q={target}') # /admin/myapp/mymodel/update_all/
+        @link(label='Search On Google', 'http://www.google.com?q={target}') # /admin/myapp/mymodel/update_all/
         def search_on_google(self, button):
             # this is called by the template engine just before rendering the button
             # `context` is the Context instance in the template
@@ -51,12 +52,12 @@ How to use it
             else:
                 button.visible = False
 
-        @extras.href()
+        @link()
         def search_on_bing(self, button):
             return 'http://www.bing.com?q=target'
 
 
-        @extras.button() # /admin/myapp/mymodel/update_all/
+        @button() # /admin/myapp/mymodel/update_all/
         def consolidate(self, request):
             ...
             ...
@@ -74,7 +75,7 @@ How to use it
             ...
 
 
-        @extras.button(label='Truncate', permission=lambda request, obj: request.user.is_superuser)
+        @button(label='Truncate', permission=lambda request, obj: request.user.is_superuser)
         def truncate(self, request):
 
             if request.method == 'POST':

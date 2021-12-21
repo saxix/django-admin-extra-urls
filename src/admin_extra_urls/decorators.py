@@ -1,170 +1,97 @@
 import inspect
-from functools import wraps
 
-from django.contrib import messages
 from django.contrib.admin.templatetags.admin_urls import admin_urlname
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils.http import urlencode
 
-from .config import ButtonAction, ButtonHREF, empty
-from .utils import check_permission, deprecated, encapsulate, labelize, Display
+from .button import Button
+from .config import UrlConfig
+from .utils import check_permission, empty, encapsulate
 
 
-def try_catch(f):
-    @wraps(f)
-    def _inner(modeladmin, request, *args, **kwargs):
-        try:
-            ret = f(modeladmin, request, *args, **kwargs)
-            modeladmin.message_user(request, 'Success', messages.SUCCESS)
-            return ret
-        except Exception as e:
-            modeladmin.message_user(request, str(e), messages.ERROR)
-
-    return _inner
-
-
-def button(path=None, label=None, icon='', permission=None, visible=empty,
-           css_class="btn-action auto-disable", order=999, urls=None,
-           display=Display.NOT_SET, group=None):
-    """
-    decorator to mark ModelAdmin method.
-
-    Each decorated method will be added to the ModelAdmin.urls and
-    appear as button close to the 'Add <model>' button.
-
-    :param path: url path
-    :type path: str
-    :param label: button label
-    :type label: str
-    :param icon: button icon.
-    :type icon: str
-    :param permission: required permission. Can be a callable
-    :type permission: Any
-    :param css_class: button css classes
-    :type css_class: str
-    :param order: button order
-    :type order: int
-    :param visible: button visibility. Can be a callable
-    :type visible: Any
-    :param display
-    :param urls
-    """
-
+def url(permission=None, button=False, details=empty, path=None, **extra):
     if callable(permission):
         permission = encapsulate(permission)
 
-    def action_decorator(func):
+    def decorator(func):
         sig = inspect.signature(func)
-        # modeladmin = list(sig.parameters)[0]
-        args = list(sig.parameters)[1:2]
-        if not args == ['request']:
-            raise ValueError('AdminExtraUrls: error decorating `{0}`. '
-                             'action need 2 or 3 arguments '
-                             '(ie. action(self, request, pk, *args, **kwargs)'.format(func.__name__))
-        details = 'pk' in sig.parameters
-        if not visible == empty:
-            visibility = visible
-        elif details:
-            visibility = lambda o, r: o and details and o.pk
+        object_id_arg_name = 'pk'  # backward compatibility
+        if len(sig.parameters) > 2:
+            object_id_arg_name = list(sig.parameters)[2]
+        if details == empty:
+            _details = object_id_arg_name in sig.parameters
         else:
-            visibility = bool(visible)
+            _details = details
 
-        # Backward comm
-        if display == Display.NOT_SET:
-            if details:
-                _display = Display.CHANGE_FORM
-            else:
-                _display = Display.CHANGELIST
-        else:
-            _display = display
+        url_config = UrlConfig(func=func,
+                               permission=permission,
+                               button=button,
+                               details=_details,
+                               path=path,
+                               object_id_arg_name=object_id_arg_name,
+                               **extra)
 
-        def _inner(modeladmin, request, *args, **kwargs):
-            if details:
-                pk = kwargs['pk']
+        def view(modeladmin, request, *args, **kwargs):
+            if url_config.details:
+                pk = kwargs[object_id_arg_name]
                 obj = modeladmin.get_object(request, pk)
-                url = reverse(admin_urlname(modeladmin.model._meta, 'change'),
-                              args=[pk])
-                if permission:
-                    check_permission(permission, request, obj)
+                url_path = reverse(admin_urlname(modeladmin.model._meta, 'change'),
+                                   args=[pk])
+                if url_config.permission:
+                    check_permission(url_config.permission, request, obj)
 
             else:
-                url = reverse(admin_urlname(modeladmin.model._meta, 'changelist'))
-                if permission:
-                    check_permission(permission, request)
+                url_path = reverse(admin_urlname(modeladmin.model._meta, 'changelist'))
+                if url_config.permission:
+                    check_permission(url_config.permission, request)
+
             ret = func(modeladmin, request, *args, **kwargs)
 
             if not isinstance(ret, HttpResponse):
                 preserved_filters = request.GET.get('_changelist_filters', '')
                 filters = urlencode({'_changelist_filters': preserved_filters})
-                return HttpResponseRedirect("?".join([url, filters]))
+                return HttpResponseRedirect('?'.join([url_path, filters]))
             return ret
 
-        _inner.action = ButtonAction(func=func,
-                                     # modeladmin=modeladmin,
-                                     path=path,
-                                     label=label or labelize(func.__name__),
-                                     icon=icon,
-                                     display=_display,
-                                     group=group,
-                                     permission=permission,
-                                     order=order,
-                                     css_class=css_class,
-                                     visible=visibility,
-                                     urls=urls,
-                                     details=details)
+        view.url = url_config
 
-        return _inner
+        return view
 
-    return action_decorator
+    return decorator
 
 
-@deprecated(button, "{name}() decorator has been deprecated. Use {updated}() now")
-def action(*a, **kw):
-    return button(*a, **kw)
+def button(**kwargs):
+    url_args = {'permission': kwargs.pop('permission', None),
+                'details': kwargs.pop('details', empty),
+                'path': kwargs.pop('path', None),
+                }
+    if urls := kwargs.pop('urls', None):
+        if len(urls) > 1:
+            raise ValueError('urls in not supported in this version of admin-extra-urls')
+        url_args['path'] = urls[0]
+
+    url_args['button'] = {'visible': kwargs.pop('visible', True)}
+    if 'label' in kwargs:
+        url_args['button']['label'] = kwargs.pop('label')
+    return url(**url_args)
 
 
-def href(*, label=None, url=None, icon='', permission=None, html_attrs=None,
-         css_class="btn-href", order=999, visible=empty, display=Display.NOT_SET, details=True, group=None):
-    """
-    decorator to mark ModelAdmin method.
+def link(**kwargs):
+    url_args = {'permission': kwargs.pop('permission', None),
+                'button': Button(html_attrs=kwargs.pop('html_attrs', {}),
+                                 change_list=True,
+                                 change_form=True,
+                                 visible=True,
+                                 url=kwargs.get('url', '.')
+                                 ),
+                'details': kwargs.pop('details', empty),
+                'path': kwargs.pop('path', None)
+                }
+    if 'label' in kwargs:
+        url_args['button'].options['label'] = kwargs.pop('label')
 
-    Each decorated method will show a button in the changelist/change_form page
+    return url(**url_args)
 
-    :param label: button label. Normalized method name will be used ad default
-    :type label: str
-    :param url:
-    :param icon: button icon.
-    :type icon: str
-    :param permission: required permission. Can be a callable
-    :type permission: Any
-    :param details: if True will be visible only in change_form, if `None`
-    :param css_class: button css classes
-    :type css_class: str
-    :param order: button order
-    :type order: int
-    :param visible: button visibility. Can be a callable
-    :type visible: Any
-    :param html_attrs:
-    """
 
-    def action_decorator(func):
-        def _inner(modeladmin, btn):
-            return func(modeladmin, btn)
-
-        _inner.button = ButtonHREF(func=func,
-                                   css_class=css_class,
-                                   permission=permission,
-                                   details=details,
-                                   visible=visible,
-                                   display=display,
-                                   group=group,
-                                   path=url,
-                                   html_attrs=html_attrs or {},
-                                   icon=icon,
-                                   label=label or labelize(func.__name__),
-                                   order=order)
-
-        return _inner
-
-    return action_decorator
+href = link
