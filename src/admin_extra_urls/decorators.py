@@ -17,8 +17,8 @@ def url(permission=None, button=False, details=empty, path=None, **extra):
     def decorator(func):
         sig = inspect.signature(func)
         object_id_arg_name = 'pk'  # backward compatibility
-        # if len(sig.parameters) > 2:
-        #     object_id_arg_name = list(sig.parameters)[2]
+        if len(sig.parameters) > 2:
+            object_id_arg_name = list(sig.parameters)[2]
         if details == empty:
             _details = object_id_arg_name in sig.parameters
         else:
