@@ -225,7 +225,7 @@ class ExtraUrlMixin:
 
         return extras + original
 
-    def get_changeform_buttons(self, request):
+    def get_changeform_buttons(self, request, original):
         return self.extra_buttons
 
     def get_changelist_buttons(self, request):

@@ -47,7 +47,8 @@ def get_action_buttons(context, model_admin):
 
 @register.simple_tag(takes_context=True)
 def get_changeform_buttons(context, model_admin):
-    return [button.bind(context) for button in model_admin.get_changeform_buttons(context['request'])]
+    original = context['original']
+    return [button.bind(context) for button in model_admin.get_changeform_buttons(context['request'], original)]
 
 
 @register.simple_tag(takes_context=True)
