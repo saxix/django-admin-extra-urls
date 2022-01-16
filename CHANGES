@@ -1,8 +1,3 @@
-Release 4.2
-----------------------------
-* new `get_changeform_buttons()`, `get_changelist_buttons()`, `get_action_buttons()` callbacks
-
-
 Release 4.1
 ----------------------------
 * code refactoring
