@@ -40,7 +40,7 @@ class Admin1(ExtraUrlMixin, admin.ModelAdmin):
         self.message_user(request, 'refresh called')
         return HttpResponseRedirect(reverse(admin_urlname(opts, 'changelist')))
 
-    @button(path='a/b/', button=True)
+    @button(path='a/b/')
     def custom_path(self, request):
         opts = self.model._meta
         self.message_user(request, 'refresh called')

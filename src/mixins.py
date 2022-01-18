@@ -90,27 +90,6 @@ class ExtraUrlMixin:
     buttons = []
 
     def __init__(self, model, admin_site):
-        # opts = model._meta
-        # app_label = opts.app_label
-        # self.original_change_form_template = self.change_form_template or 'admin/change_form.html'
-        # self.original_change_list_template = self.change_list_template or 'admin/change_list.html'
-        # self.change_form_template = self._change_form_template
-        # self.change_list_template = self._change_list_template
-
-        # if not self.change_form_template:
-        #     self.change_form_template = [
-        #         'admin/%s/%s/change_form.html' % (app_label, opts.model_name),
-        #         'admin/%s/change_form.html' % app_label,
-        #         self._change_form_template,
-        #     ]
-        # if not self.change_list_template:
-        #     self.change_list_template = [
-        #         self.change_form_template,
-        #         'admin/%s/%s/change_list.html' % (app_label, opts.model_name),
-        #         'admin/%s/change_list.html' % app_label,
-        #         self._change_list_template,
-        #     ]
-
         self.extra_actions = []
         self.extra_buttons = []
         super().__init__(model, admin_site)
@@ -198,8 +177,7 @@ class ExtraUrlMixin:
 
             if url_config.button:
                 params = dict(label=labelize(url_config.func.__name__),
-                              # func=url_config.func,
-                              func=partial(url_config.func, self),
+                              func=update_wrapper(partial(url_config.func, self), url_config.func),
                               name=slugify(url_config.func.__name__),
                               details=url_config.details,
                               permission=url_config.permission,
@@ -225,11 +203,11 @@ class ExtraUrlMixin:
 
         return extras + original
 
-    def get_changeform_buttons(self, request):
-        return self.extra_buttons
+    def get_changeform_buttons(self, request, original):
+        return [b for b in self.extra_buttons if b.change_form]
 
     def get_changelist_buttons(self, request):
-        return self.extra_buttons
+        return [b for b in self.extra_buttons if b.change_list]
 
     def get_action_buttons(self, request):
         return []
