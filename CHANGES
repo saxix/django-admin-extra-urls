@@ -1,6 +1,12 @@
+Release 4.1
+----------------------------
+* code refactoring
+* BACKWARD INCOMPATIBLE - visible() callable now expect 1 params (context)
+
+
 Release 4.0
 ----------------------------
-* Code refactoring
+* code refactoring
 * added support Django 4.0 and Python 3.10
 
 
