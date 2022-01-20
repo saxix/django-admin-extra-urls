@@ -3,7 +3,7 @@
 {#    {% bind button as button %}#}
 {% get_changelist_buttons cl.model_admin as buttons %}
 {% for button in buttons %}
-    {% if button.change_list and button.visible and button.authorized %}
+    {% if button.visible and button.authorized %}
         {% include "admin_extra_urls/includes/button.html" with button=button %}
     {% endif %}
 {% endfor %}

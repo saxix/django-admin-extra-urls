@@ -62,7 +62,7 @@ How to use it
             ...
             ...
 
-        @extras.button() # /admin/myapp/mymodel/update/10/
+        @button() # /admin/myapp/mymodel/update/10/
         def update(self, request, pk):
             # if we use `pk` in the args, the button will be in change_form
             obj = self.get_object(request, pk)

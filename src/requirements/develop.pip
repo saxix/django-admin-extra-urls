@@ -1,9 +1,0 @@
-autopep8
-check-manifest
-django
-flake8
-pep8
-readme
-sphinx
-wheel
-isort

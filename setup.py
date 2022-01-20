@@ -26,29 +26,29 @@ def read(*parts):
     return codecs.open(os.path.join(here, *parts), "r").read()
 
 
-class PyTest(TestCommand):
-
-    def finalize_options(self):
-        sys.path.append(os.path.join(os.path.dirname(__file__), "tests"))
-        TestCommand.finalize_options(self)
-        self.test_args = ['tests', '--ds', 'demo.settings']
-        self.test_suite = True
-
-    def run_tests(self):
-        import pytest
-
-        errno = pytest.main(self.test_args)
-        sys.exit(errno)
-
-
-tests_require = read('src/requirements/testing.pip')
-dev_require = read('src/requirements/develop.pip')
-
-install_requires = []
-setup_requires = []
-
-if 'test' in sys.argv:
-    setup_requires += tests_require
+tests_require =['coverage',
+                'factory-boy',
+                'django_webtest',
+                'pdbpp',
+                'pyquery',
+                'pytest',
+                'pytest-cov',
+                'pytest-django',
+                'pytest-echo',
+                'pytest-pythonpath',
+                'tox>=2.3',
+                'wheel',
+                ]
+dev_require = ['autopep8',
+               'check-manifest',
+               'django',
+               'flake8',
+               'pep8',
+               'readme',
+               'sphinx',
+               'wheel',
+               'isort',
+               ]
 
 setup(
     name=name,
@@ -61,27 +61,21 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages('src'),
     include_package_data=True,
-    install_requires=install_requires,
-    setup_requires=setup_requires,
     platforms=['linux'],
     extras_require={
         'test': tests_require,
-        'dev': dev_require + tests_require,
+        'dev': dev_require,
     },
     tests_require=tests_require,
-    cmdclass={'test': PyTest},
     classifiers=[
         'Environment :: Web Environment',
         'Operating System :: OS Independent',
         'Framework :: Django',
         'Framework :: Django :: 2.2',
-        'Framework :: Django :: 3.0',
-        'Framework :: Django :: 3.1',
         'Framework :: Django :: 3.2',
         'Framework :: Django :: 4.0',
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',

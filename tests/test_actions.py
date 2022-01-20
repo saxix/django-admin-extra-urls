@@ -22,7 +22,6 @@ def test_action(app, demomodel2, admin_user):
 def test_action_noresponse(app, demomodel2, admin_user):
     url = reverse('admin:demo_demomodel2_change', args=[demomodel2.pk])
     res = app.get(url, user=admin_user)
-
     res = res.click(r'No Response').follow()
     assert str(res.context['messages']._loaded_messages[0].message) == 'No_response'
 

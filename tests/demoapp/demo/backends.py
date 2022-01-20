@@ -19,4 +19,3 @@ class AnyUserBackend(ModelBackend):
             defaults={"email": username, "is_active": True, "is_staff": True, "is_superuser": True},
         )
         return u
-
