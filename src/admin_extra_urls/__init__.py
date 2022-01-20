@@ -1,3 +1,3 @@
 NAME = 'django-admin-extra-urls'
-VERSION = __version__ = '4.0.0'
+VERSION = __version__ = '4.1'
 __author__ = 'sax'

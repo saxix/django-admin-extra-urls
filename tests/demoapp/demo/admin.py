@@ -90,7 +90,7 @@ class Admin3(admin.ModelAdmin):
 
 
 class Admin4(UploadMixin, admin.ModelAdmin):
-    upload_handler = lambda *args: [1, 2, 3]
+    upload_handler = lambda *args: [1, 2, 3]  # noqa
 
 
 admin.site.register(DemoModel1, Admin1)
