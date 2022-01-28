@@ -1,4 +1,5 @@
 import logging
+from inspect import getfullargspec
 
 from django.urls import NoReverseMatch, reverse
 
@@ -55,9 +56,22 @@ class BaseExtraButton:
     def visible(self):
         # if self.details and not self.original:
         #     return False
-        if callable(self.options['visible']):
-            return self.options['visible'](self.context)
-        return self.options['visible']
+        f = self.options['visible']
+        if callable(f):
+            info = getfullargspec(f)
+            params = []
+            # BACKWARD COMPATIBLE CODE: To remove in future release
+            if len(info.args) == 1:
+                params = [self.context]
+            elif len(info.args) == 2:
+                params = [self.context.get('original', None),
+                          self.context.get('request', None)]
+            elif len(info.args) == 3:
+                params = [self.context,
+                          self.context.get('original', None),
+                          self.context.get('request', None)]
+            return f(*params)
+        return f
 
     def authorized(self):
         if self.permission:

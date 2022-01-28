@@ -23,6 +23,10 @@
     <div class="module">
     {% block action-content %}{% endblock %}
     </div>
-{% block admin_change_form_document_ready %}{% endblock %}
+{% block admin_change_form_document_ready %}
+{% block document_ready %}
+
+{% endblock %}
+{% endblock %}
 </div>
 {% endblock %}
