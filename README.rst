@@ -1,12 +1,14 @@
 django-admin-extra-urls
 =======================
 
-.. note:: This project is not maintained anymore. Please check https://github.com/saxix/django-admin-extra-buttons
+------
+
+**This project is not actively maintained. Please check https://github.com/saxix/django-admin-extra-buttons**
+
+------
 
 
-.. image:: https://raw.githubusercontent.com/saxix/django-admin-extra-urls/develop/docs/image.png
-    :scale: 80%
-    :align: center
+
 
 
 Pluggable django application that offers one single mixin class ``ExtraUrlMixin``
